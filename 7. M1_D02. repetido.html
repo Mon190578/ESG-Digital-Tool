@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - Mapa Inicial de la Cadena de Valor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: white;
+            border-bottom: 1px solid #e1e1e1;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 22px;
+            height: 22px;
+            margin-right: 10px;
+        }
+        .logo h1 {
+            font-size: 18px;
+            color: #333;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        .search-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 20px;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 100%;
+        }
+        .search-bar input {
+            border: none;
+            background: transparent;
+            flex-grow: 1;
+            height: 30px;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-icon {
+            color: #999;
+            cursor: pointer;
+            background-color: transparent;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+        .user-icons {
+            display: flex;
+            align-items: center;
+        }
+        .icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .icon.question {
+            background-color: #4169E1;
+            color: white;
+        }
+        .icon.user {
+            background-color: #1976d2;
+            color: white;
+            font-weight: bold;
+        }
+        .user-info {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            border-right: 1px solid #e1e1e1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .menu-item {
+            padding: 10px 15px;
+            font-size: 13px;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            display: flex;
+        }
+        .menu-item.active {
+            background-color: #4169E1;
+            color: white;
+        }
+        .menu-item .number {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+        .menu-item:hover:not(.active) {
+            background-color: #f9f9f9;
+        }
+        .submenu {
+            background-color: #f9f9f9;
+        }
+        .submenu-item {
+            padding: 8px 8px 8px 30px;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+        .submenu-item:before {
+            content: "▶";
+            position: absolute;
+            left: 15px;
+            color: #999;
+            font-size: 8px;
+        }
+        .submenu-item:hover {
+            background-color: #f0f0f0;
+        }
+        .submenu-item.active {
+            background-color: #e6e6e6;
+            color: #333;
+            font-weight: 600;
+        }
+        .content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .page-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-bottom: 15px;
+        }
+        .card-header {
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            background-color: #f0f7ff;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+        .card-content {
+            padding: 10px 15px;
+        }
+        .activity-icons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .activity-icon {
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            border-right: 1px solid #ddd;
+        }
+        .activity-icon.active {
+            background-color: white;
+            border-bottom: 2px solid #4169E1;
+            margin-bottom: -1px;
+        }
+        .value-chain {
+            display: flex;
+            margin-top: 10px;
+            justify-content: space-between;
+        }
+        .value-chain-section {
+            width: 32%;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .value-chain-title {
+            text-align: center;
+            font-weight: 600;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            font-size: 13px;
+        }
+        .value-chain-process {
+            margin: 8px;
+            padding: 8px;
+            background-color: #e6f7e6;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .value-chain-process-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        .badge {
+            font-size: 10px;
+            padding: 1px 5px;
+            border-radius: 10px;
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        .summary-section {
+            margin-top: 15px;
+        }
+        .summary-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .summary-charts {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .chart-container {
+            width: 32%;
+            text-align: center;
+        }
+        .chart-title {
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .chart {
+            height: 120px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .chart-legend {
+            font-size: 10px;
+            text-align: left;
+            margin-top: 5px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        .summary-table th,
+        .summary-table td {
+            padding: 8px 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .summary-table th {
+            background-color: #f0f0f0;
+            font-weight: 600;
+        }
+        .summary-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .alert-box {
+            margin-bottom: 10px;
+            border-left: 4px solid #ffc107;
+            background-color: #fff9e6;
+            padding: 10px;
+            font-size: 12px;
+            display: flex;
+        }
+        .alert-icon {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #ffc107;
+        }
+        .alert-content {
+            flex: 1;
+        }
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        .comparative-box {
+            margin-bottom: 10px;
+            border-left: 4px solid #17a2b8;
+            background-color: #e6f7ff;
+            padding: 10px;
+            font-size: 12px;
+            display: flex;
+        }
+        .comparative-icon {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #17a2b8;
+        }
+        .positive-box {
+            margin-bottom: 10px;
+            border-left: 4px solid #28a745;
+            background-color: #e6ffe6;
+            padding: 10px;
+            font-size: 12px;
+            display: flex;
+        }
+        .positive-icon {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #28a745;
+        }
+        .recommendation-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+        .recommendation-list {
+            list-style-type: none;
+            margin-left: 0;
+            font-size: 12px;
+        }
+        .recommendation-item {
+            margin-bottom: 5px;
+            padding-left: 12px;
+            position: relative;
+        }
+        .recommendation-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #4169E1;
+        }
+        .btn-primary {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            float: right;
+        }
+        .alto {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        .medio {
+            color: #ff8f00;
+            font-weight: bold;
+        }
+        .database-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .database-item {
+            width: 32%;
+            border: 1px solid #ddd;
+            font-size: 11px;
+            padding: 8px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMSIgZmlsbD0id2hpdGUiIHN0cm9rZT0iIzY1ODBjNSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTYgMTJMMTIgNkwxOCAxMkwxMiAxOEw2IDEyWiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNjU4MGM1IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNiAxMkwxOCAxMiIgc3Ryb2tlPSIjNjU4MGM1IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNMTIgNkwxMiAxOCIgc3Ryb2tlPSIjNjU4MGM1IiBzdHJva2Utd2lkdGg9IjEiLz48cGF0aCBkPSJNNy41IDguNUw5LjUgMTIiIHN0cm9rZT0iIzhiYWRlZiIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9zdmc+" alt="ESG Logo">
+            <h1>ESG Digital Tool</h1>
+        </div>
+        <div class="search-container">
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar en la plataforma..." />
+                <div class="search-icon">?</div>
+            </div>
+        </div>
+        <div class="user-icons">
+            <div class="icon question">?</div>
+            <div class="icon settings">⚙️</div>
+            <div class="icon upload">↑</div>
+            <div class="icon notifications">🔔</div>
+            <div class="icon user">U</div>
+            <div class="user-info">Usuario X</div>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="menu-item active">
+                <div class="number">1.</div>
+                <div>Datos Base</div>
+            </div>
+            <div class="submenu">
+                <div class="submenu-item">Evaluación de Requisitos</div>
+                <div class="submenu-item">Definición Normativa</div>
+                <div class="submenu-item active">Cadena de Valor</div>
+            </div>
+            <div class="menu-item">
+                <div class="number">2.</div>
+                <div>Datos GGII</div>
+            </div>
+            <div class="menu-item">
+                <div class="number">3.</div>
+                <div>Integración Externa</div>
+            </div>
+            <div class="menu-item">
+                <div class="number">4.</div>
+                <div>Análisis DM</div>
+            </div>
+            <div class="menu-item">
+                <div class="number">5.</div>
+                <div>Datapoints</div>
+            </div>
+            <div class="menu-item">
+                <div class="number">6.</div>
+                <div>Reporting</div>
+            </div>
+        </div>
+        <div class="content">
+            <h1 class="page-title">M1_D02: Mapa Inicial de la Cadena de Valor</h1>
+            
+            <div class="card">
+                <div class="card-header">
+                    Representación Gráfica de la Cadena de Valor
+                </div>
+                <div class="activity-icons">
+                    <div class="activity-icon active">Aguas Arriba</div>
+                    <div class="activity-icon">Actividad Propia</div>
+                    <div class="activity-icon">Aguas Abajo</div>
+                    <div class="activity-icon">Relación Contractual</div>
+                    <div class="activity-icon">Relación No Contractual</div>
+                </div>
+                <div class="card-content">
+                    <div class="value-chain">
+                        <div class="value-chain-section">
+                            <div class="value-chain-title">Aguas Arriba</div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Abastecimiento de materias primas
+                                    <span class="badge">5 actores</span>
+                                </div>
+                            </div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Transporte y logística de entrada
+                                    <span class="badge">2 actores</span>
+                                </div>
+                            </div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Subcontratación de fabricación
+                                    <span class="badge">3 actores</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="value-chain-section">
+                            <div class="value-chain-title">Actividad Propia</div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Producción / Ensamblaje
+                                    <span class="badge">5 actores</span>
+                                </div>
+                            </div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Control de calidad
+                                    <span class="badge">1 actor</span>
+                                </div>
+                            </div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Gestión administrativa y financiera
+                                    <span class="badge">3 actores</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="value-chain-section">
+                            <div class="value-chain-title">Aguas Abajo</div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Distribución y logística final
+                                    <span class="badge">3 actores</span>
+                                </div>
+                            </div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Clientes minoristas / mayoristas
+                                    <span class="badge">5 actores</span>
+                                </div>
+                            </div>
+                            
+                            <div class="value-chain-process">
+                                <div class="value-chain-process-title">
+                                    Gestión de residuos y reciclaje
+                                    <span class="badge">3 actores</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Resumen de Información Estructurada
+                </div>
+                <div class="card-content">
+                    <div class="summary-charts">
+                        <div class="chart-container">
+                            <div class="chart-title">Actores por Fase</div>
+                            <div class="chart">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNTAiIGZpbGw9IiNmMmYyZjIiIHN0cm9rZT0iI2VlZWVlZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTYwIDEwIEE1MCA1MCAwIDAgMSA5MCA4NSBMNjAgNjAgWiIgZmlsbD0iIzRDQUY1MCIvPjxwYXRoIGQ9Ik02MCAxMCBBNTAgNTAgMCAwIDEgOTAgODUgTDYwIDYwIFoiIGZpbGw9IiNGRkVCM0IiLz48cGF0aCBkPSJNNjAgMTAgQTUwIDUwIDAgMCAxIDkwIDg1IEw2MCA2MCBaIiBmaWxsPSIjOUMyN0IwIi8+PC9zdmc+" alt="Chart 1">
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #4CAF50;"></div>
+                                    <span>Aguas Arriba: 10 (35%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #FFEB3B;"></div>
+                                    <span>Actividad Propia: 8 (28%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #9C27B0;"></div>
+                                    <span>Aguas Abajo: 8 (28%)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-title">Tipo de Relación</div>
+                            <div class="chart">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNTAiIGZpbGw9IiNmMmYyZjIiIHN0cm9rZT0iI2VlZWVlZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTYwIDEwIEE1MCA1MCAwIDAgMSAxMDkgNjAgTDYwIDYwIFoiIGZpbGw9IiMxNTY1QzAiLz48cGF0aCBkPSJNNjAgMTAgQTUwIDUwIDAgMCAxIDEwOSA2MCBMNjAgNjAgWiIgZmlsbD0iI0ZGQzEwNyIvPjwvc3ZnPg==" alt="Chart 2">
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #1565C0;"></div>
+                                    <span>Contractual: 20 (80%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #FFC107;"></div>
+                                    <span>No Contractual: 5 (20%)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-title">Ubicación Geográfica</div>
+                            <div class="chart">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNTAiIGZpbGw9IiNmMmYyZjIiIHN0cm9rZT0iI2VlZWVlZSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTYwIDEwIEE1MCA1MCAwIDAgMSA5MCA4NSBMNjAgNjAgWiIgZmlsbD0iIzRDQUY1MCIvPjxwYXRoIGQ9Ik05MCA4NSBBNTAgNTAgMCAwIDEgMzUgMTA1IEw2MCA2MCBaIiBmaWxsPSIjMjE5NkYzIi8+PHBhdGggZD0iTTM1IDEwNSBBNTAgNTAgMCAwIDEgMTAgMTUgTDYwIDYwIFoiIGZpbGw9IiNDOTk2MkQiLz48L3N2Zz4=" alt="Chart 3">
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #4CAF50;"></div>
+                                    <span>España: 15 (60%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #2196F3;"></div>
+                                    <span>Europa: 8 (32%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #C9962D;"></div>
+                                    <span>Global: 2 (8%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Fase de la CV</th>
+                                <th>Número de Actores</th>
+                                <th>Relaciones Contractuales</th>
+                                <th>Relaciones No Contractuales</th>
+                                <th>Países de Operación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Aguas Arriba</td>
+                                <td>10</td>
+                                <td>8</td>
+                                <td>2</td>
+                                <td>España, China, Alemania</td>
+                            </tr>
+                            <tr>
+                                <td>Actividad Propia</td>
+                                <td>8</td>
+                                <td>8</td>
+                                <td>0</td>
+                                <td>España</td>
+                            </tr>
+                            <tr>
+                                <td>Aguas Abajo</td>
+                                <td>8</td>
+                                <td>6</td>
+                                <td>3</td>
+                                <td>España, Francia, EEUU</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td><strong>26</strong></td>
+                                <td><strong>22</strong></td>
+                                <td><strong>5</strong></td>
+                                <td><strong>6 países</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="kritical-processes">
+                        <h3 class="summary-title">Procesos Críticos Identificados</h3>
+                        <table class="summary-table">
+                            <thead>
+                                <tr>
+                                    <th>Proceso</th>
+                                    <th>Fase</th>
+                                    <th>Actores Implicados</th>
+                                    <th>Nivel de Criticidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Abastecimiento de materias primas</td>
+                                    <td>Aguas Arriba</td>
+                                    <td>5</td>
+                                    <td class="alto">Alto</td>
+                                </tr>
+                                <tr>
+                                    <td>Producción / Ensamblaje</td>
+                                    <td>Actividad Propia</td>
+                                    <td>3</td>
+                                    <td class="alto">Alto</td>
+                                </tr>
+                                <tr>
+                                    <td>Gestión de residuos y reciclaje</td>
+                                    <td>Aguas Abajo</td>
+                                    <td>2</td>
+                                    <td class="medio">Medio</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    Alertas y Recomendaciones
+                    <button class="btn-primary">PRIORITY</button>
+                </div>
+                <div class="card-content">
+                    <div class="alert-box">
+                        <div class="alert-icon">⚠</div>
+                        <div class="alert-content">
+                            <div class="alert-title">Fase incompleta: Aguas Arriba</div>
+                            <div class="alert-text">
+                                Se detectan vacíos en la identificación de proveedores secundarios. La guía IG 2 de EFRAG recomienda incluir proveedores de segundo nivel.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comparative-box">
+                        <div class="comparative-icon">ⓘ</div>
+                        <div class="alert-content">
+                            <div class="alert-title">Comparativa sectorial: Gestión de residuos</div>
+                            <div class="alert-text">
+                                Su empresa ha identificado menos actores en el proceso de gestión de residuos que la media del sector. Considere ampliar la información sobre economía circular.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="positive-box">
+                        <div class="positive-icon">✓</div>
+                        <div class="alert-content">
+                            <div class="alert-title">Proceso con alto impacto potencial ESG identificado:</div>
+                            <div class="alert-text">
+                                El abastecimiento de materias primas ha sido correctamente identificado como crítico. Este proceso suele tener alto impacto en las informes de sostenibilidad del sector.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendations">
+                        <h4 class="recommendation-title">Recomendaciones para completar el mapa de la CV:</h4>
+                        <ul class="recommendation-list">
+                            <li class="recommendation-item">
+                                <strong>Aguas Arriba:</strong> Ampliar información sobre proveedores secundarios y origen de materias primas críticas.
+                            </li>
+                            <li class="recommendation-item">
+                                <strong>Actividad Propia:</strong> Detallar los procesos internos de eficiencia energética y consumo de recursos.
+                            </li>
+                            <li class="recommendation-item">
+                                <strong>Aguas Abajo:</strong> Completar información sobre el fin de vida útil del producto y economía circular.
+                            </li>
+                        </ul>
+                        
+                        <div style="margin-top: 15px;">
+                            <h4 class="recommendation-title">Sugerencia de integración con bases de datos externas:</h4>
+                            <div class="database-container">
+                                <div class="database-item">
+                                    <strong>Clarity AI</strong>
+                                    <p style="margin-top: 5px; line-height: 1.3;">Accede a datos detallados de cadenas de valor sectoriales y prácticas comparables.</p>
+                                </div>
+                                <div class="database-item">
+                                    <strong>Bloomberg ESG</strong>
+                                    <p style="margin-top: 5px; line-height: 1.3;">Conecta la información sobre proveedores críticos y sus riesgos ESG.</p>
+                                </div>
+                                <div class="database-item">
+                                    <strong>WBCSD</strong>
+                                    <p style="margin-top: 5px; line-height: 1.3;">Alinea el Mapa ESRS de la cadena de suministro con estándares del sector.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

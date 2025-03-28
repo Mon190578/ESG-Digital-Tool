@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard M1_D02: Mapa Inicial de la Cadena de Valor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #333333;
+            margin-left: 15px;
+        }
+        .main-content {
+            display: flex;
+            margin-top: 10px;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            min-height: calc(100vh - 70px);
+        }
+        .sidebar-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+        .sidebar-item.active {
+            background-color: #3b78c3;
+            color: #ffffff;
+        }
+        .sidebar-subitem {
+            padding: 10px 20px 10px 35px;
+            font-size: 11px;
+            color: #666666;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+        .sidebar-subitem.active {
+            background-color: #ebf2fa;
+            color: #3b78c3;
+            font-weight: 600;
+        }
+        .dashboard {
+            flex: 1;
+            padding: 20px;
+        }
+        .dashboard-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        .panel {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .panel-header {
+            background-color: #f5f8ff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: #3b78c3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .panel-body {
+            padding: 20px;
+        }
+        /* Estilos específicos para la cadena de valor */
+        .supply-chain-diagram {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            position: relative;
+        }
+        .supply-chain-diagram::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background-color: #9e9e9e;
+            z-index: 1;
+        }
+        .chain-stage {
+            width: 30%;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #ffffff;
+            position: relative;
+            z-index: 2;
+        }
+        .stage-title {
+            text-align: center;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 10px;
+        }
+        .upstream {
+            background-color: #e8f5e9;
+        }
+        .own-activity {
+            background-color: #e3f2fd;
+        }
+        .downstream {
+            background-color: #fff3e0;
+        }
+        .process-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            position: relative;
+        }
+        .process-item:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        .process-item.contractual {
+            border-left: 3px solid #3b78c3;
+        }
+        .process-item.non-contractual {
+            border-left: 3px solid #ff9800;
+        }
+        .actor-badge {
+            display: inline-block;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            margin-left: 5px;
+            background-color: #e0e0e0;
+        }
+        .actor-count {
+            font-weight: 600;
+            color: #3b78c3;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .summary-table th {
+            text-align: left;
+            padding: 10px;
+            background-color: #f5f8ff;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 12px;
+        }
+        .summary-table td {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+        .summary-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        .alert-box {
+            background-color: #fff6f6;
+            border-left: 4px solid #d16565;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .alert-icon {
+            color: #d16565;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .alert-message {
+            font-size: 13px;
+        }
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        .legend {
+            display: flex;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #666;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+            border-radius: 2px;
+        }
+        .actor-popup {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 200px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            z-index: 10;
+            display: none;
+        }
+        .process-item:hover .actor-popup {
+            display: block;
+        }
+        .actor-list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        .actor-list li {
+            padding: 3px 0;
+            font-size: 11px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .actor-list li:last-child {
+            border-bottom: none;
+        }
+        .actor-type {
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 3px;
+            margin-left: 5px;
+        }
+        .actor-contractual {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+        .actor-non-contractual {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+        /* Estilos para gráfico de pie */
+        .pie-charts-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .pie-chart {
+            width: 30%;
+            text-align: center;
+        }
+        .pie-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .pie-graphic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .pie-legend {
+            margin-top: 10px;
+            font-size: 10px;
+            text-align: left;
+            padding-left: 20px;
+        }
+        .pie-legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3px;
+        }
+        .pie-legend-color {
+            width: 8px;
+            height: 8px;
+            margin-right: 5px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <svg width="44" height="44" viewBox="0 0 44 44">
+                    <!-- Logo de la brújula -->
+                    <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                    <!-- Puntas de la brújula -->
+                    <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                    <path d="M44,22 L39,25 L37,22 L39,19 Z" fill="#666666"/>
+                    <path d="M22,44 L19,39 L22,37 L25,39 Z" fill="#666666"/>
+                    <path d="M0,22 L5,19 L7,22 L5,25 Z" fill="#666666"/>
+                    <!-- Aguja -->
+                    <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#3b78c3" transform="rotate(-45, 22, 22)"/>
+                    <!-- Punto central -->
+                    <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                </svg>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="sidebar-item active">1. Datos Base</div>
+                <div class="sidebar-subitem">► Evaluación de Requisitos</div>
+                <div class="sidebar-subitem">► Diagnóstico Normativo</div>
+                <div class="sidebar-subitem active">► Cadena de Valor</div>
+                <div class="sidebar-item">2. Datos GGII</div>
+                <div class="sidebar-item">3. Integración Externa</div>
+                <div class="sidebar-item">4. Análisis DM</div>
+                <div class="sidebar-item">5. Datapoints</div>
+                <div class="sidebar-item">6. Reporting</div>
+            </div>
+            <div class="dashboard">
+                <div class="dashboard-title">M1_D02: Mapa Inicial de la Cadena de Valor</div>
+                
+                <!-- Panel 1: Representación Gráfica de la Cadena de Valor -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>Representación Gráfica de la Cadena de Valor</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #e8f5e9;"></div>
+                                <span>Aguas Arriba</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #e3f2fd;"></div>
+                                <span>Actividad Propia</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #fff3e0;"></div>
+                                <span>Aguas Abajo</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="border-left: 3px solid #3b78c3;"></div>
+                                <span>Relación Contractual</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="border-left: 3px solid #ff9800;"></div>
+                                <span>Relación No Contractual</span>
+                            </div>
+                        </div>
+                        
+                        <div class="supply-chain-diagram">
+                            <!-- Fase Aguas Arriba -->
+                            <div class="chain-stage upstream">
+                                <div class="stage-title">Aguas Arriba</div>
+                                <div class="process-item contractual">
+                                    Abastecimiento de materias primas
+                                    <span class="actor-badge"><span class="actor-count">5</span> actores</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Proveedor de metales <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Proveedor de componentes eléctricos <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Proveedor de plásticos <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Mina de extracción <span class="actor-type actor-non-contractual">No contractual</span></li>
+                                            <li>Proveedor de minerales <span class="actor-type actor-contractual">Contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="process-item non-contractual">
+                                    Transporte y logística de entrada
+                                    <span class="actor-badge"><span class="actor-count">3</span> actores</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Empresa de transporte A <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Empresa de transporte B <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Distribuidor internacional <span class="actor-type actor-non-contractual">No contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="process-item contractual">
+                                    Subcontratación de fabricación
+                                    <span class="actor-badge"><span class="actor-count">2</span> actores</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Fábrica subcontratada A <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Fábrica subcontratada B <span class="actor-type actor-contractual">Contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Fase Actividad Propia -->
+                            <div class="chain-stage own-activity">
+                                <div class="stage-title">Actividad Propia</div>
+                                <div class="process-item contractual">
+                                    Producción / Ensamblaje
+                                    <span class="actor-badge"><span class="actor-count">3</span> actores</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Planta de producción principal <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Taller de ensamblaje <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Laboratorio de control <span class="actor-type actor-contractual">Contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="process-item contractual">
+                                    Control de calidad
+                                    <span class="actor-badge"><span class="actor-count">1</span> actor</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Departamento de calidad <span class="actor-type actor-contractual">Contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="process-item contractual">
+                                    Gestión administrativa y financiera
+                                    <span class="actor-badge"><span class="actor-count">2</span> actores</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Departamento administrativo <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Departamento financiero <span class="actor-type actor-contractual">Contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Fase Aguas Abajo -->
+                            <div class="chain-stage downstream">
+                                <div class="stage-title">Aguas Abajo</div>
+                                <div class="process-item contractual">
+                                    Distribución y logística final
+                                    <span class="actor-badge"><span class="actor-count">3</span> actores</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Distribuidor nacional <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Distribuidor internacional <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Transportista final <span class="actor-type actor-contractual">Contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="process-item non-contractual">
+                                    Clientes mayoristas / minoristas
+                                    <span class="actor-badge"><span class="actor-count">4</span> actores</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Cadena de tiendas A <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Cadena de tiendas B <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Minorista independiente <span class="actor-type actor-non-contractual">No contractual</span></li>
+                                            <li>Plataforma de ventas online <span class="actor-type actor-contractual">Contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="process-item non-contractual">
+                                    Gestión de residuos y reciclaje
+                                    <span class="actor-badge"><span class="actor-count">2</span> actores</span>
+                                    <div class="actor-popup">
+                                        <strong>Actores involucrados:</strong>
+                                        <ul class="actor-list">
+                                            <li>Gestor de residuos <span class="actor-type actor-contractual">Contractual</span></li>
+                                            <li>Planta de reciclaje <span class="actor-type actor-non-contractual">No contractual</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Panel 2: Resumen de Información Estructurada -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>Resumen de Información Estructurada</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="pie-charts-container">
+                            <div class="pie-chart">
+                                <div class="pie-title">Actores por Fase</div>
+                                <div class="pie-graphic" style="background-image: conic-gradient(#e8f5e9 0% 33%, #e3f2fd 33% 50%, #fff3e0 50% 100%);">
+                                </div>
+                                <div class="pie-legend">
+                                    <div class="pie-legend-item">
+                                        <div class="pie-legend-color" style="background-color: #e8f5e9;"></div>
+                                        <span>Aguas Arriba: 10 (33%)</span>
+                                    </div>
+                                    <div class="pie-legend-item">
+                                        <div class="pie-legend-color" style="background-color: #e3f2fd;"></div>
+                                        <span>Actividad Propia: 6 (20%)</span>
+                                    </div>
+                                    <div class="pie-legend-item">
+                                        <div class="pie-legend-color" style="background-color: #fff3e0;"></div>
+                                        <span>Aguas Abajo: 9 (30%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pie-chart">
+                                <div class="pie-title">Tipo de Relación</div>
+                                <div class="pie-graphic" style="background-image: conic-gradient(#3b78c3 0% 80%, #ff9800 80% 100%);">
+                                </div>
+                                <div class="pie-legend">
+                                    <div class="pie-legend-item">
+                                        <div class="pie-legend-color" style="background-color: #3b78c3;"></div>
+                                        <span>Contractual: 20 (80%)</span>
+                                    </div>
+                                    <div class="pie-legend-item">
+                                        <div class="pie-legend-color" style="background-color: #ff9800;"></div>
+                                        <span>No Contractual: 5 (20%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pie-chart">
+                                <div class="pie-title">Ubicación Geográfica</div>
+                                <div class="pie-graphic" style="background-image: conic-gradient(#4caf50 0% 60%, #2196f3 60% 80%, #9c27b0 80% 100%);">
+                                </div>
+                                <div class="pie-legend">
+                                    <div class="pie-legend-item">
+                                        <div class="pie-legend-color" style="background-color: #4caf50;"></div>
+                                        <span>Europa: 15 (60%)</span>
+                                    </div>
+                                    <div class="pie-legend-item">
+                                        <div class="pie-legend-color" style="background-color: #2196f3;"></div>
+                                        <span>Asia: 5 (20%)</span>
+                                    </div>
+                                    <div class="pie-legend-item">
+                                        <div class="pie-legend-color" style="background-color: #9c27b0;"></div>
+                                        <span>América: 5 (20%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <table class="summary-table">
+                            <thead>
+                                <tr>
+                                    <th>Fase de la CV</th>
+                                    <th>Número de Actores</th>
+                                    <th>Relaciones Contractuales</th>
+                                    <th>Relaciones No Contractuales</th>
+                                    <th>Países de Operación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Aguas Arriba</td>
+                                    <td>10</td>
+                                    <td>8</td>
+                                    <td>2</td>
+                                    <td>España, China, Alemania</td>
+                                </tr>
+                                <tr>
+                                    <td>Actividad Propia</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                    <td>0</td>
+                                    <td>España</td>
+                                </tr>
+                                <tr>
+                                    <td>Aguas Abajo</td>
+                                    <td>9</td>
+                                    <td>6</td>
+                                    <td>3</td>
+                                    <td>España, Francia, EEUU</td>
+                                </tr>
+                                <tr style="font-weight: 600; background-color: #f5f8ff;">
+                                    <td>Total</td>
+                                    <td>25</td>
+                                    <td>20</td>
+                                    <td>5</td>
+                                    <td>5 países</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h4 style="margin-top: 20px; font-size: 14px;">Procesos Críticos Identificados</h4>
+                        <table class="summary-table">
+                            <thead>
+                                <tr>
+                                    <th>Proceso</th>
+                                    <th>Fase</th>
+                                    <th>Actores Implicados</th>
+                                    <th>Nivel de Criticidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Abastecimiento de materias primas</td>
+                                    <td>Aguas Arriba</td>
+                                    <td>5</td>
+                                    <td style="color: #d16565; font-weight: 600;">Alto</td>
+                                </tr>
+                                <tr>
+                                    <td>Producción / Ensamblaje</td>
+                                    <td>Actividad Propia</td>
+                                    <td>3</td>
+                                    <td style="color: #d16565; font-weight: 600;">Alto</td>
+                                </tr>
+                                <tr>
+                                    <td>Gestión de residuos y reciclaje</td>
+                                    <td>Aguas Abajo</td>
+                                    <td>2</td>
+                                    <td style="color: #e6a23c; font-weight: 600;">Medio</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Panel 3: Alertas y Recomendaciones -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>Alertas y Recomendaciones</div>
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="alert-box">
+                            <div class="alert-icon">⚠️</div>
+                            <div class="alert-message">
+                                <div class="alert-title">Fase incompleta: Aguas Arriba</div>
+                                <div>Se detectan vacíos en la identificación de proveedores secundarios. La guía IG 2 de EFRAG recomienda incluir proveedores de segundo nivel para materias primas críticas.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-box" style="background-color: #fff8e6; border-color: #e6a23c;">
+                            <div class="alert-icon" style="color: #e6a23c;">ℹ️</div>
+                            <div class="alert-message">
+                                <div class="alert-title">Comparativa sectorial: Gestión de residuos</div>
+                                <div>Su empresa ha identificado menos actores en el proceso de gestión de residuos que la media del sector. Considere ampliar la información sobre economía circular.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert-box" style="background-color: #f1f8e9; border-color: #4caf50;">
+                            <div class="alert-icon" style="color: #4caf50;">✓</div>
+                            <div class="alert-message">
+                                <div class="alert-title">Proceso con alto impacto potencial ESG identificado</div>
+                                <div>El abastecimiento de materias primas ha sido correctamente identificado como crítico. Este proceso suele tener alto impacto en los informes de sostenibilidad del sector.</div>
+                            </div>
+                        </div>
+                        
+                        <h4 style="margin-top: 20px; font-size: 14px;">Recomendaciones para completar el mapa de la CV</h4>
+                        <ul style="font-size: 13px;">
+                            <li><strong>Aguas Arriba:</strong> Ampliar información sobre proveedores secundarios y origen de materias primas críticas.</li>
+                            <li><strong>Actividad Propia:</strong> Detallar los procesos internos de eficiencia energética y consumo de recursos.</li>
+                            <li><strong>Aguas Abajo:</strong> Completar información sobre el ciclo de vida del producto y responsabilidades post-consumo.</li>
+                        </ul>
+                        
+                        <div style="margin-top: 20px;">
+                            <h4 style="font-size: 14px;">Sugerencia de integración con bases de datos externas:</h4>
+                            <div style="display: flex; margin-top: 10px;">
+                                <div style="flex: 1; padding: 10px; background-color: #f5f8ff; border-radius: 5px; margin-right: 10px; font-size: 12px;">
+                                    <strong>Clarity AI</strong>
+                                    <p style="margin: 5px 0; font-size: 11px;">Acceda a datos detallados de cadenas de valor sectoriales y métricas comparativas.</p>
+                                </div>
+                                <div style="flex: 1; padding: 10px; background-color: #f5f8ff; border-radius: 5px; margin-right: 10px; font-size: 12px;">
+                                    <strong>Bloomberg ESG</strong>
+                                    <p style="margin: 5px 0; font-size: 11px;">Obtenga información sobre proveedores críticos y sus calificaciones ESG.</p>
+                                </div>
+                                <div style="flex: 1; padding: 10px; background-color: #f5f8ff; border-radius: 5px; font-size: 12px;">
+                                    <strong>MSCI</strong>
+                                    <p style="margin: 5px 0; font-size: 11px;">Analice riesgos ESG en la cadena de suministro con datos específicos del sector.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
