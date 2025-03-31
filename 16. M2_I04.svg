@@ -1,0 +1,282 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <!-- Fondo general -->
+  <rect width="1200" height="800" fill="#f5f7f9"/>
+  
+  <!-- Elementos gráficos de fondo -->
+  <circle cx="1100" cy="700" r="250" fill="#f9e6e8" opacity="0.5"/>
+  <circle cx="100" cy="100" r="180" fill="#f6dade" opacity="0.4"/>
+  
+  <!-- Líneas decorativas -->
+  <g stroke="#C83E4D" stroke-width="1" opacity="0.15">
+    <line x1="920" y1="0" x2="1200" y2="280" />
+    <line x1="950" y1="0" x2="1200" y2="250" />
+    <line x1="980" y1="0" x2="1200" y2="220" />
+    <line x1="1010" y1="0" x2="1200" y2="190" />
+    <line x1="1040" y1="0" x2="1200" y2="160" />
+    <line x1="1070" y1="0" x2="1200" y2="130" />
+    <line x1="1100" y1="0" x2="1200" y2="100" />
+    <line x1="1130" y1="0" x2="1200" y2="70" />
+    <line x1="1160" y1="0" x2="1200" y2="40" />
+  </g>
+  
+  <!-- Barra superior -->
+  <rect width="1200" height="70" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- Logo de la brújula -->
+  <g transform="translate(50, 35)">
+    <!-- Círculo exterior -->
+    <circle cx="0" cy="0" r="22" fill="#faeaec" stroke="#9a8f8f" stroke-width="2"/>
+    
+    <!-- Puntas de la brújula -->
+    <path d="M0,-26 L3,-21 L0,-19 L-3,-21 Z" fill="#666666" transform="rotate(0)"/>
+    <path d="M0,-26 L3,-21 L0,-19 L-3,-21 Z" fill="#666666" transform="rotate(90)"/>
+    <path d="M0,-26 L3,-21 L0,-19 L-3,-21 Z" fill="#666666" transform="rotate(180)"/>
+    <path d="M0,-26 L3,-21 L0,-19 L-3,-21 Z" fill="#666666" transform="rotate(270)"/>
+    
+    <!-- Aguja -->
+    <path d="M0,-17 L5,0 L0,17 L-5,0 Z" fill="#C83E4D" transform="rotate(-45)"/>
+    
+    <!-- Punto central -->
+    <circle cx="0" cy="0" r="3" fill="#C83E4D"/>
+  </g>
+  
+  <text x="90" y="40" font-family="Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="0.5" fill="#333333">ESG Digital Tool</text>
+  
+  <!-- Barra de búsqueda -->
+  <rect x="350" y="20" width="300" height="30" fill="#f5f5f5" stroke="#dddddd" stroke-width="1" rx="15" ry="15"/>
+  <text x="370" y="40" font-family="Arial, sans-serif" font-size="12" fill="#999999">Buscar en la plataforma...</text>
+  <circle cx="630" cy="35" r="8" fill="none" stroke="#999999" stroke-width="1.5"/>
+  <line x1="636" y1="41" x2="645" y2="50" stroke="#999999" stroke-width="1.5"/>
+  
+  <!-- Iconos parte superior derecha -->
+  <!-- Chat (verde)-->
+  <g transform="translate(735, 35)">
+    <circle cx="0" cy="0" r="15" fill="#129953"/>
+    <circle cx="-5" cy="0" r="2" fill="white"/>
+    <circle cx="0" cy="0" r="2" fill="white"/>
+    <circle cx="5" cy="0" r="2" fill="white"/>
+  </g>
+  
+  <!-- Configuración -->
+  <g transform="translate(780, 35)">
+    <circle cx="0" cy="0" r="15" fill="#f5f5f5" stroke="#dddddd" stroke-width="1"/>
+    <rect x="-7" y="-7" width="14" height="14" rx="2" ry="2" fill="none" stroke="#888888" stroke-width="1.5"/>
+    <line x1="-4" y1="-2" x2="4" y2="-2" stroke="#888888" stroke-width="1.5"/>
+    <line x1="-4" y1="2" x2="4" y2="2" stroke="#888888" stroke-width="1.5"/>
+    <circle cx="-4" cy="-2" r="1.5" fill="#888888"/>
+    <circle cx="4" cy="2" r="1.5" fill="#888888"/>
+  </g>
+  
+  <!-- Historial -->
+  <g transform="translate(825, 35)">
+    <circle cx="0" cy="0" r="15" fill="#f5f5f5" stroke="#dddddd" stroke-width="1"/>
+    <path d="M0,-7 L0,0 L5,5" stroke="#888888" stroke-width="1.5" fill="none"/>
+    <circle cx="0" cy="0" r="7" stroke="#888888" stroke-width="1.5" fill="none"/>
+  </g>
+  
+  <!-- Notificaciones -->
+  <g transform="translate(870, 35)">
+    <circle cx="0" cy="0" r="15" fill="#f5f5f5" stroke="#dddddd" stroke-width="1"/>
+    <path d="M0,-7 L0,-2 M-6,5 L6,5 M-4,-5 C-4,-5 -7,0 -7,5 C-7,5 -7,5 -6,5 M4,-5 C4,-5 7,0 7,5 C7,5 7,5 6,5" stroke="#888888" stroke-width="1.5" fill="none"/>
+    <circle cx="0" cy="8" r="2" fill="#888888"/>
+    <circle cx="8" cy="-8" r="8" fill="#C83E4D"/>
+    <text x="8" y="-5" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">3</text>
+  </g>
+  
+  <!-- Ayuda -->
+  <g transform="translate(915, 35)">
+    <circle cx="0" cy="0" r="15" fill="#C83E4D"/>
+    <text x="0" y="5" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle">?</text>
+  </g>
+
+  <!-- Usuario -->
+  <g transform="translate(960, 35)">
+    <circle cx="0" cy="0" r="15" fill="#f2f2f2" stroke="#dddddd" stroke-width="1"/>
+    <text x="30" y="5" font-family="Arial, sans-serif" font-size="12" fill="#333333">Usuario X</text>
+    <circle cx="-2" cy="-2" r="7" fill="#6c7680"/>
+    <path d="M-2,5 C-8,5 -12,10 -12,15 C-8,13 4,13 8,15 C8,10 4,5 -2,5" fill="#6c7680" transform="scale(0.6)"/>
+  </g>
+  
+  <!-- Selector de centro/unidad de negocio -->
+  <rect x="1050" y="20" width="130" height="30" fill="#f5f5f5" stroke="#dddddd" stroke-width="1" rx="5" ry="5"/>
+  <text x="1070" y="40" font-family="Arial, sans-serif" font-size="12" fill="#333333">Empresa S.A.</text>
+  <polygon points="1160,35 1150,30 1170,30" fill="#666666" transform="scale(0.6) translate(810, 20)"/>
+  
+  <!-- Barra lateral (menú de navegación) -->
+  <rect x="0" y="70" width="200" height="730" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- Módulo 1 (completado) - Cambiado de rojo a azul -->
+  <rect x="0" y="70" width="200" height="50" fill="#ffffff"/>
+  <text x="20" y="100" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#2196f3">1. Datos Base ✓</text>
+  <polygon points="180,100 170,95 190,95" fill="#666666" transform="rotate(270, 180, 100)"/>
+  
+  <!-- Módulo 2 (activo) -->
+  <rect x="0" y="120" width="200" height="50" fill="#C83E4D" opacity="0.8"/>
+  <text x="20" y="150" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#ffffff">2. Datos GGII</text>
+  <polygon points="180,150 170,145 190,145" fill="#ffffff" transform="rotate(90, 180, 150)"/>
+  
+  <!-- Submódulos del Módulo 2 desplegados -->
+  <rect x="0" y="170" width="200" height="40" fill="#f9e6e8"/>
+  <text x="35" y="195" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#C83E4D">► GGII Internos</text>
+  
+  <rect x="0" y="210" width="200" height="40" fill="#ffffff"/>
+  <text x="35" y="235" font-family="Arial, sans-serif" font-size="11" fill="#666666">► GGII Externos</text>
+  
+  <!-- Módulo 3 -->
+  <rect x="0" y="250" width="200" height="50" fill="#ffffff"/>
+  <text x="20" y="280" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666666">3. Integración Externa</text>
+  <polygon points="180,280 170,275 190,275" fill="#666666" transform="rotate(270, 180, 280)"/>
+  
+  <!-- Módulo 4 -->
+  <rect x="0" y="300" width="200" height="50" fill="#ffffff"/>
+  <text x="20" y="330" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666666">4. Análisis DM</text>
+  <polygon points="180,330 170,325 190,325" fill="#666666" transform="rotate(270, 180, 330)"/>
+  
+  <!-- Módulo 5 -->
+  <rect x="0" y="350" width="200" height="50" fill="#ffffff"/>
+  <text x="20" y="380" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666666">5. Datapoints</text>
+  <polygon points="180,380 170,375 190,375" fill="#666666" transform="rotate(270, 180, 380)"/>
+  
+  <!-- Módulo 6 -->
+  <rect x="0" y="400" width="200" height="50" fill="#ffffff"/>
+  <text x="20" y="430" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666666">6. Reporting</text>
+  <polygon points="180,430 170,425 190,425" fill="#666666" transform="rotate(270, 180, 430)"/>
+  
+  <!-- Panel lateral de actividad reciente -->
+  <rect x="0" y="690" width="200" height="110" fill="#f0f0f0"/>
+  <text x="15" y="715" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#666666">ACTIVIDAD RECIENTE</text>
+  <line x1="15" y1="725" x2="185" y2="725" stroke="#dddddd" stroke-width="1"/>
+  <text x="15" y="745" font-family="Arial, sans-serif" font-size="9" fill="#666666">M2_I03 completado - Hace 10m</text>
+  <text x="15" y="765" font-family="Arial, sans-serif" font-size="9" fill="#666666">M2_I02 completado - Hace 25m</text>
+  <text x="15" y="785" font-family="Arial, sans-serif" font-size="9" fill="#666666">M2_I01 completado - Hace 35m</text>
+  
+  <!-- Contenido principal con margen uniforme -->
+  <rect x="200" y="70" width="1000" height="700" fill="#ffffff"/>
+  
+  <!-- Contenedor principal del contenido -->
+  <rect x="220" y="80" width="960" height="680" fill="#ffffff" stroke="#e0e0e0" stroke-width="1" rx="8" ry="8"/>
+  
+  <!-- Título del módulo con estilo moderno -->
+  <rect x="220" y="80" width="960" height="50" fill="#C83E4D" opacity="0.1"/>
+  <text x="270" y="115" font-family="Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="0.5" fill="#333333">Módulo 2: Datos de los Grupos de Interés</text>
+  
+  <!-- Pestañas de navegación horizontal -->
+  <rect x="220" y="130" width="960" height="35" fill="#f9f9f9" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- Pestañas principales -->
+  <!-- Botón GGII Internos (activo) -->
+  <rect x="220" y="130" width="480" height="35" fill="#C83E4D" opacity="0.1"/>
+  <text x="340" y="153" font-family="Arial, sans-serif" font-size="13" font-weight="600" fill="#C83E4D" text-anchor="middle">GRUPOS DE INTERÉS INTERNOS</text>
+  
+  <!-- Botón GGII Externos -->
+  <rect x="700" y="130" width="480" height="35" fill="#ffffff"/>
+  <text x="820" y="153" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666666" text-anchor="middle">GRUPOS DE INTERÉS EXTERNOS</text>
+  
+  <!-- Submenu de fases -->
+  <rect x="220" y="165" width="960" height="30" fill="#f5f8ff" stroke="#e0e0e0" stroke-width="1"/>
+  
+  <!-- Fase histórico activa -->
+  <rect x="220" y="165" width="480" height="30" fill="#C83E4D" opacity="0.2"/>
+  <text x="340" y="185" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#C83E4D" text-anchor="middle">HISTORIAL Y EVOLUCIÓN DE LA RELACIÓN</text>
+  
+  <!-- Fase 2 inactiva -->
+  <text x="820" y="185" font-family="Arial, sans-serif" font-size="11" fill="#666666" text-anchor="middle">PERCEPCIÓN Y PRIORIDADES</text>
+  
+  <!-- Indicador de fase -->
+  <rect x="240" y="205" width="920" height="35" fill="#f9e2e5" stroke="#C83E4D" stroke-width="1" rx="8" ry="8" opacity="0.3"/>
+  <text x="270" y="228" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#C83E4D">M2_I04: Historial y Evolución de la Relación con GGII Internos</text>
+  
+  <!-- Panel informativo de la sección -->
+  <rect x="240" y="250" width="920" height="60" fill="#ffffff" stroke="#e0e0e0" stroke-width="1" rx="5" ry="5"/>
+  <text x="270" y="270" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#333333">Objetivo: </text>
+  <text x="325" y="270" font-family="Arial, sans-serif" font-size="11" fill="#555555">Registrar cómo ha cambiado la relación ESG entre la empresa y sus grupos de interés internos.</text>
+  <text x="270" y="288" font-family="Arial, sans-serif" font-size="10" fill="#555555">📌 Fundamentación: CSRD (Seguimiento de evolución de stakeholders internos en ESG), NEIS 2 IRO-1.</text>
+  
+  <!-- Selector de grupo de interés -->
+  <rect x="240" y="320" width="920" height="50" fill="#f0f0f5" stroke="#e0e0e0" stroke-width="1" rx="5" ry="5"/>
+  <text x="270" y="350" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#333333">Grupo de interés interno:</text>
+  <rect x="430" y="330" width="400" height="30" fill="#ffffff" stroke="#C83E4D" stroke-width="1" rx="3" ry="3"/>
+  <text x="450" y="350" font-family="Arial, sans-serif" font-size="12" fill="#333333">Alta Dirección y Consejo de Administración</text>
+  <polygon points="800,345 790,335 810,335" fill="#666666"/>
+  
+  <!-- Formulario de Historial -->
+  <rect x="240" y="380" width="920" height="330" fill="#ffffff" stroke="#e0e0e0" stroke-width="1" rx="5" ry="5"/>
+  
+  <!-- Tendencia de relación -->
+  <text x="270" y="410" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#C83E4D">Tendencia de la relación ESG con el grupo de interés interno</text>
+  
+  <rect x="270" y="425" width="200" height="40" fill="#f0faf0" stroke="#129953" stroke-width="1" rx="5" ry="5"/>
+  <circle cx="290" cy="445" r="10" fill="#ffffff" stroke="#129953" stroke-width="1"/>
+  <circle cx="290" cy="445" r="5" fill="#129953"/>
+  <text x="310" y="450" font-family="Arial, sans-serif" font-size="12" fill="#129953">Relación en mejora</text>
+  
+  <rect x="480" y="425" width="200" height="40" fill="#f9f9f9" stroke="#cccccc" stroke-width="1" rx="5" ry="5"/>
+  <circle cx="500" cy="445" r="10" fill="#ffffff" stroke="#999999" stroke-width="1"/>
+  <text x="520" y="450" font-family="Arial, sans-serif" font-size="12" fill="#555555">Relación estable</text>
+  
+  <rect x="690" y="425" width="200" height="40" fill="#f9f9f9" stroke="#cccccc" stroke-width="1" rx="5" ry="5"/>
+  <circle cx="710" cy="445" r="10" fill="#ffffff" stroke="#999999" stroke-width="1"/>
+  <text x="730" y="450" font-family="Arial, sans-serif" font-size="12" fill="#555555">Relación en deterioro</text>
+  
+  <!-- Eventos clave ESG -->
+  <text x="270" y="495" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#C83E4D">Registro de eventos clave ESG que han modificado la relación</text>
+  
+  <rect x="270" y="510" width="400" height="40" fill="#f9f9f9" stroke="#cccccc" stroke-width="1" rx="3" ry="3"/>
+  <rect x="280" y="520" width="20" height="20" fill="#ffffff" stroke="#999999" stroke-width="1" rx="3" ry="3"/>
+  <path d="M285 530 L290 535 L300 525" stroke="#C83E4D" stroke-width="2" fill="none"/>
+  <text x="310" y="535" font-family="Arial, sans-serif" font-size="12" fill="#555555">Cambios en la normativa que afectan a este grupo</text>
+  
+  <rect x="270" y="560" width="400" height="40" fill="#f9f9f9" stroke="#cccccc" stroke-width="1" rx="3" ry="3"/>
+  <rect x="280" y="570" width="20" height="20" fill="#ffffff" stroke="#999999" stroke-width="1" rx="3" ry="3"/>
+  <text x="310" y="585" font-family="Arial, sans-serif" font-size="12" fill="#555555">Cambios organizacionales internos</text>
+  
+  <rect x="270" y="610" width="400" height="40" fill="#f9f9f9" stroke="#cccccc" stroke-width="1" rx="3" ry="3"/>
+  <rect x="280" y="620" width="20" height="20" fill="#ffffff" stroke="#999999" stroke-width="1" rx="3" ry="3"/>
+  <text x="310" y="635" font-family="Arial, sans-serif" font-size="12" fill="#555555">Conflictos o acuerdos en ESG</text>
+  
+  <!-- Cambio en percepción -->
+  <text x="680" y="495" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#C83E4D">Cambio en la percepción ESG del grupo interno</text>
+  
+  <rect x="680" y="510" width="300" height="40" fill="#e3f2fd" stroke="#2196f3" stroke-width="1" rx="5" ry="5"/>
+  <circle cx="700" cy="530" r="10" fill="#ffffff" stroke="#2196f3" stroke-width="1"/>
+  <circle cx="700" cy="530" r="5" fill="#2196f3"/>
+  <text x="720" y="535" font-family="Arial, sans-serif" font-size="12" fill="#2196f3">Se ha vuelto más relevante</text>
+  
+  <rect x="680" y="560" width="300" height="40" fill="#f9f9f9" stroke="#cccccc" stroke-width="1" rx="5" ry="5"/>
+  <circle cx="700" cy="580" r="10" fill="#ffffff" stroke="#999999" stroke-width="1"/>
+  <text x="720" y="585" font-family="Arial, sans-serif" font-size="12" fill="#555555">Se mantiene igual</text>
+  
+  <rect x="680" y="610" width="300" height="40" fill="#f9f9f9" stroke="#cccccc" stroke-width="1" rx="5" ry="5"/>
+  <circle cx="700" cy="630" r="10" fill="#ffffff" stroke="#999999" stroke-width="1"/>
+  <text x="720" y="635" font-family="Arial, sans-serif" font-size="12" fill="#555555">Ha perdido relevancia en ESG</text>
+  
+  <!-- Registro de reuniones -->
+  <text x="270" y="670" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#C83E4D">Registros de reuniones o consultas clave en ESG con este grupo</text>
+  
+  <rect x="270" y="685" width="500" height="35" fill="#f9f9f9" stroke="#cccccc" stroke-width="1" rx="5" ry="5"/>
+  <text x="290" y="708" font-family="Arial, sans-serif" font-size="12" fill="#999999">Seleccione archivo para subir documentación...</text>
+  <rect x="780" y="685" width="100" height="35" fill="#C83E4D" stroke="#C83E4D" stroke-width="1" rx="5" ry="5"/>
+  <text x="830" y="708" font-family="Arial, sans-serif" font-size="12" fill="#ffffff" text-anchor="middle">Explorar</text>
+  
+  <!-- Botones de navegación (fijo en la parte inferior) -->
+  <rect x="240" y="720" width="920" height="40" fill="#f5f5f5" stroke="#dddddd" stroke-width="1" rx="5" ry="5"/>
+  
+  <!-- Botones alineados -->
+  <rect x="350" y="727" width="100" height="25" fill="#F5CB57" stroke="#F5CB57" stroke-width="1" rx="4" ry="4"/>
+  <text x="400" y="743" font-family="Arial, sans-serif" font-size="11" fill="#333333" text-anchor="middle">Anterior</text>
+  
+  <!-- Botón Guardar verde -->
+  <rect x="470" y="727" width="100" height="25" fill="#129953" stroke="#129953" stroke-width="1" rx="4" ry="4"/>
+  <text x="520" y="743" font-family="Arial, sans-serif" font-size="11" fill="#ffffff" text-anchor="middle">Guardar</text>
+  
+  <rect x="590" y="727" width="200" height="25" fill="#f5f5f5" stroke="#E57373" stroke-width="1" rx="4" ry="4"/>
+  <text x="690" y="743" font-family="Arial, sans-serif" font-size="11" fill="#E57373" font-weight="500" text-anchor="middle">Restablecer selección</text>
+  
+  <rect x="810" y="727" width="180" height="25" fill="#C83E4D" rx="4" ry="4"/>
+  <text x="900" y="743" font-family="Arial, sans-serif" font-size="11" fill="#ffffff" font-weight="500" text-anchor="middle">Siguiente (M2_I05)</text>
+  
+  <!-- Pie de página -->
+  <rect x="0" y="770" width="1200" height="30" fill="#f5f5f5"/>
+  <text x="50" y="790" font-family="Arial, sans-serif" font-size="9" fill="#666666">© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</text>
+  <text x="1150" y="790" font-family="Arial, sans-serif" font-size="9" fill="#666666" text-anchor="end">Versión 1.2.4</text>
+</svg>

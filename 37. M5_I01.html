@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - M5_I01 Datapoints Automáticos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .top-bar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            height: 30px;
+        }
+        
+        .search-text {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        /* Module Colors */
+        .menu-item.module1 {
+            color: #3b78c3; /* Azul para Módulo 1 */
+        }
+        
+        .menu-item.module2 {
+            color: #d16565; /* Rojo para Módulo 2 */
+        }
+        
+        .menu-item.module3 {
+            color: #F5CB57; /* Amarillo para Módulo 3 */
+        }
+        
+        .menu-item.module4 {
+            color: #1a9967; /* Verde para Módulo 4 */
+        }
+
+        .menu-item.module5 {
+            color: #ff7043; /* Naranja para Módulo 5 */
+        }
+        
+        .menu-item.active {
+            background-color: #ff7043;
+            color: #fff !important;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .submenu-item.active {
+            background-color: #fff1ec;
+            font-weight: 600;
+            color: #ff7043;
+        }
+        
+        .activity-panel {
+            background: #f0f0f0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-item {
+            margin-bottom: 5px;
+            font-size: 9px;
+        }
+        
+        /* Main panel */
+        .main-panel {
+            flex-grow: 1;
+            padding: 10px 20px;
+        }
+        
+        .content-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-header {
+            background-color: rgba(255, 112, 67, 0.1);
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background-color: rgba(255, 112, 67, 0.1);
+            font-weight: 600;
+            color: #ff7043;
+        }
+        
+        .subtabs {
+            display: flex;
+            background-color: #f5f8ff;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .subtab {
+            padding: 8px 15px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 11px;
+            flex: 1;
+        }
+        
+        .subtab.active {
+            background-color: rgba(255, 112, 67, 0.2);
+            font-weight: 600;
+            color: #ff7043;
+        }
+        
+        /* Phase indicator */
+        .phase-indicator {
+            background-color: #fff1ec;
+            border: 1px solid #ffe0d6;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #ff7043;
+            font-weight: 600;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        /* Info panel */
+        .info-panel {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-desc {
+            color: #555;
+        }
+        
+        .info-help {
+            font-size: 9px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        /* Form content */
+        .form-content {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        /* Datapoints Table */
+        .datapoints-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-bottom: 20px;
+        }
+        
+        .datapoints-table th {
+            background-color: #f2f2f2;
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-weight: 600;
+        }
+        
+        .datapoints-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+        }
+        
+        .datapoint-row {
+            transition: background-color 0.2s;
+        }
+        
+        .datapoint-row:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .datapoint-title {
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .datapoint-info-icon {
+            width: 14px;
+            height: 14px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 5px;
+            cursor: help;
+        }
+        
+        .datapoint-mandatory {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 9px;
+            color: white;
+            font-weight: 500;
+            margin-left: 5px;
+        }
+        
+        .mandatory-yes {
+            background-color: #d16565;
+        }
+        
+        .mandatory-recommended {
+            background-color: #ffb74d;
+        }
+        
+        .mandatory-no {
+            background-color: #90CAF9;
+        }
+        
+        .datapoint-source {
+            display: flex;
+            align-items: center;
+            color: #666;
+        }
+        
+        .source-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+        
+        .datapoint-value {
+            font-family: 'Courier New', monospace;
+            padding: 4px 8px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            color: #333;
+            min-width: 50px;
+            display: inline-block;
+        }
+        
+        .datapoint-value:focus {
+            outline: none;
+            border-color: #ff7043;
+            background-color: #fff;
+        }
+        
+        .datapoint-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .action-button {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .accept-button {
+            background-color: #66bb6a;
+        }
+        
+        .accept-button:hover {
+            background-color: #4caf50;
+        }
+        
+        .edit-button {
+            background-color: #42a5f5;
+        }
+        
+        .edit-button:hover {
+            background-color: #2196f3;
+        }
+        
+        .reject-button {
+            background-color: #ef5350;
+        }
+        
+        .reject-button:hover {
+            background-color: #e53935;
+        }
+        
+        .data-status {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-valid {
+            background-color: #66bb6a;
+        }
+        
+        .status-warning {
+            background-color: #ffb74d;
+        }
+        
+        .status-error {
+            background-color: #ef5350;
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .filter-select {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 10px;
+            background-color: white;
+        }
+        
+        .search-input {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 10px;
+            flex-grow: 1;
+        }
+        
+        /* Info Tip */
+        .info-tip {
+            background-color: #fff1ec;
+            border: 1px solid #ffe0d6;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #ff7043;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        
+        .info-text {
+            font-size: 9px;
+            color: #555;
+        }
+        
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .nav-button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-button.previous {
+            background-color: #F5CB57;
+            color: #333;
+        }
+        
+        .nav-button.save {
+            background-color: #ff9770;
+            color: white;
+        }
+        
+        .nav-button.next {
+            background-color: #ff7043;
+            color: white;
+        }
+        
+        /* Footer */
+        .footer {
+            height: 30px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 9px;
+            color: #666;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 4px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 9px;
+            line-height: 1.4;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <!-- Círculo exterior -->
+                        <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                        
+                        <!-- Puntas de la brújula -->
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                        <path d="M44,22 L39,25 L37,22 L39,19 Z" fill="#666666"/>
+                        <path d="M22,44 L19,39 L22,37 L25,39 Z" fill="#666666"/>
+                        <path d="M0,22 L5,19 L7,22 L5,25 Z" fill="#666666"/>
+                        
+                        <!-- Aguja -->
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#ff7043" transform="rotate(-45 22 22)"/>
+                        
+                        <!-- Punto central -->
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+            
+            <div class="search-bar">
+                <div class="search-text">Buscar en la plataforma...</div>
+                <div class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                        <circle cx="7" cy="7" r="7" fill="#2196f3" stroke="#2196f3" stroke-width="1"/>
+                        <line x1="11" y1="11" x2="16" y2="16" stroke="#2196f3" stroke-width="2"/>
+                        <circle cx="7" cy="7" r="4" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="icon-button" style="background-color: #ff7043;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                        <circle cx="4" cy="7" r="2" />
+                        <circle cx="7" cy="7" r="2" />
+                        <circle cx="10" cy="7" r="2" />
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#888888">
+                        <rect x="3" y="3" width="8" height="8" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="6" x2="9" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#666666">
+                        <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="7" y2="4" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="9" y2="9" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5; position: relative;">
+                    <svg width="14" height="14" viewBox="0 0 14 14">
+                        <path d="M3,11 C3,11 2,7 2,3 C2,-1 5,-3 7,-3 C9,-3 12,-1 12,3 C12,7 11,11 11,11 Z" fill="#FFCA28" stroke="#FFCA28" stroke-width="1" transform="translate(0, 3)"/>
+                        <circle cx="7" cy="12" r="2" fill="#FFCA28"/>
+                    </svg>
+                    <div style="position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background-color: #d16565; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold;">3</div>
+                </div>
+                
+                <div class="icon-button" style="background-color: #E91E63; color: white; font-weight: bold;">?</div>
+                
+                <div style="display: flex; align-items: center;">
+                    <div class="icon-button" style="background-color: #673AB7; color: white;">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                            <circle cx="7" cy="5" r="3"/>
+                            <path d="M2,14 C2,9 12,9 12,14" fill="white" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span style="margin-left: 8px; font-size: 12px;">Usuario X</span>
+                </div>
+                
+                <div class="company-selector">
+                    <span style="font-size: 12px;">Empresa S.A.</span>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#666" style="margin-left: 8px;">
+                        <polygon points="5,8 0,3 10,3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="menu-item module1">1. Datos Base</div>
+                <div class="menu-item module2">2. Datos GGII</div>
+                <div class="menu-item module3">3. Integración Externa</div>
+                <div class="menu-item module4">4. Análisis DM</div>
+                <div class="menu-item module5 active">5. Datapoints</div>
+                <div class="submenu-item active">► Datapoints Automáticos</div>
+                <div class="submenu-item">► Cumplimentación y Documentación</div>
+                <div class="submenu-item">► Faseado</div>
+                <div class="submenu-item">► Seguimiento y Validación</div>
+                <div class="menu-item">6. Reporting</div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <div class="activity-panel">
+                    <div class="activity-title">ACTIVIDAD RECIENTE</div>
+                    <div class="activity-item">M4_D05 completado - Hace 30m</div>
+                    <div class="activity-item">M5_I01 en progreso - Hace 5m</div>
+                    <div class="activity-item">Matriz DM confirmada - Hace 40m</div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-panel">
+                <div class="content-box">
+                    <div class="module-header">
+                        <div class="module-title">Módulo 5: Datapoints</div>
+                    </div>
+                    
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab active">DATAPOINTS AUTOMÁTICOS</div>
+                        <div class="tab">CUMPLIMENTACIÓN Y DOCUMENTACIÓN</div>
+                        <div class="tab">FASEADO</div>
+                        <div class="tab">SEGUIMIENTO Y VALIDACIÓN</div>
+                    </div>
+                    
+                    <!-- Phase Indicator -->
+                    <div class="phase-indicator">
+                        Bloque 1: Identificación y Validación de Datapoints Automáticos
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                    
+                    <!-- Info Panel -->
+                    <div class="info-panel">
+                        <div class="info-title">M5_I01: Datapoints Automáticos: </div>
+                        <div class="info-desc">Revisión y edición de datos automáticamente cumplimentados desde sistemas internos y externos.</div>
+                        <div class="info-help">Esta interfaz muestra los datapoints precargados según el análisis de doble materialidad, permitiendo aceptar, editar o rechazar cada uno.</div>
+                    </div>
+                    
+                    <!-- Filter Bar -->
+                    <div class="filter-bar">
+                        <div class="filter-label">Filtrar por:</div>
+                        <select class="filter-select">
+                            <option>Todos los temas</option>
+                            <option>E1: Cambio climático</option>
+                            <option>E2: Contaminación</option>
+                            <option>E3: Agua y recursos marinos</option>
+                            <option>E4: Biodiversidad</option>
+                            <option>E5: Economía circular</option>
+                            <option>S1: Personal propio</option>
+                            <option>S2: Trabajadores en cadena de valor</option>
+                            <option>S3: Comunidades afectadas</option>
+                            <option>S4: Consumidores y usuarios</option>
+                            <option>G1: Conducta empresarial</option>
+                        </select>
+                        
+                        <select class="filter-select">
+                            <option>Todos los estados</option>
+                            <option>Pendiente de revisión</option>
+                            <option>Aceptado</option>
+                            <option>Editado</option>
+                            <option>Rechazado</option>
+                        </select>
+                        
+                        <select class="filter-select">
+                            <option>Todas las fuentes</option>
+                            <option>Base interna</option>
+                            <option>Bloomberg</option>
+                            <option>MSCI</option>
+                            <option>Clarity AI</option>
+                            <option>Estimación IA</option>
+                        </select>
+                        
+                        <input type="text" class="search-input" placeholder="Buscar por descripción...">
+                    </div>
+                    
+                    <!-- Form Content -->
+                    <div class="form-content">
+                        <div class="form-section-title">DATAPOINTS PRECARGADOS AUTOMÁTICAMENTE</div>
+                        
+                        <table class="datapoints-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">Datapoint ESG</th>
+                                    <th style="width: 15%;">Fuente</th>
+                                    <th style="width: 20%;">Valor Precargado</th>
+                                    <th style="width: 15%;">Estado</th>
+                                    <th style="width: 25%;">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="datapoint-row">
+                                    <td>
+                                        <div class="datapoint-title">
+                                            Emisiones directas de GEI (Alcance 1)
+                                            <div class="tooltip">
+                                                <div class="datapoint-info-icon">i</div>
+                                                <span class="tooltiptext">Todas las emisiones directas que provienen de fuentes que son propiedad o están controladas por la organización (ESRS E1)</span>
+                                            </div>
+                                            <span class="datapoint-mandatory mandatory-yes">Obligatorio</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-source">
+                                            <svg class="source-icon" viewBox="0 0 16 16">
+                                                <rect x="2" y="2" width="12" height="12" fill="#4285f4" rx="2" ry="2"/>
+                                                <rect x="4" y="4" width="8" height="8" fill="white" rx="1" ry="1"/>
+                                                <rect x="6" y="6" width="4" height="4" fill="#4285f4"/>
+                                            </svg>
+                                            Base interna
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="datapoint-value" contenteditable="true">15,056.82</span> tCO₂e
+                                    </td>
+                                    <td>
+                                        <span class="data-status status-valid"></span> Validado
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-actions">
+                                            <button class="action-button accept-button">Aceptar</button>
+                                            <button class="action-button edit-button">Editar</button>
+                                            <button class="action-button reject-button">Rechazar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="datapoint-row">
+                                    <td>
+                                        <div class="datapoint-title">
+                                            Emisiones indirectas de GEI (Alcance 2)
+                                            <div class="tooltip">
+                                                <div class="datapoint-info-icon">i</div>
+                                                <span class="tooltiptext">Emisiones indirectas de GEI procedentes de la generación de la electricidad, calor o vapor adquiridos (ESRS E1)</span>
+                                            </div>
+                                            <span class="datapoint-mandatory mandatory-yes">Obligatorio</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-source">
+                                            <svg class="source-icon" viewBox="0 0 16 16">
+                                                <rect x="2" y="2" width="12" height="12" fill="#4285f4" rx="2" ry="2"/>
+                                                <rect x="4" y="4" width="8" height="8" fill="white" rx="1" ry="1"/>
+                                                <rect x="6" y="6" width="4" height="4" fill="#4285f4"/>
+                                            </svg>
+                                            Base interna
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="datapoint-value" contenteditable="true">7,829.45</span> tCO₂e
+                                    </td>
+                                    <td>
+                                        <span class="data-status status-valid"></span> Validado
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-actions">
+                                            <button class="action-button accept-button">Aceptar</button>
+                                            <button class="action-button edit-button">Editar</button>
+                                            <button class="action-button reject-button">Rechazar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="datapoint-row">
+                                    <td>
+                                        <div class="datapoint-title">
+                                            Consumo de energía procedente de fuentes renovables
+                                            <div class="tooltip">
+                                                <div class="datapoint-info-icon">i</div>
+                                                <span class="tooltiptext">Porcentaje del consumo energético total que proviene de fuentes renovables (ESRS E1)</span>
+                                            </div>
+                                            <span class="datapoint-mandatory mandatory-recommended">Recomendado</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-source">
+                                            <svg class="source-icon" viewBox="0 0 16 16">
+                                                <rect x="2" y="2" width="12" height="12" fill="#0d6efd" rx="2" ry="2"/>
+                                                <path d="M4,8 L6,10 L12,4" stroke="white" stroke-width="2" fill="none"/>
+                                            </svg>
+                                            Bloomberg
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="datapoint-value" contenteditable="true">18.2</span> %
+                                    </td>
+                                    <td>
+                                        <span class="data-status status-warning"></span> Pendiente
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-actions">
+                                            <button class="action-button accept-button">Aceptar</button>
+                                            <button class="action-button edit-button">Editar</button>
+                                            <button class="action-button reject-button">Rechazar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="datapoint-row">
+                                    <td>
+                                        <div class="datapoint-title">
+                                            Consumo de agua en zonas de estrés hídrico
+                                            <div class="tooltip">
+                                                <div class="datapoint-info-icon">i</div>
+                                                <span class="tooltiptext">Volumen de agua extraída y consumida en zonas de estrés hídrico (ESRS E3)</span>
+                                            </div>
+                                            <span class="datapoint-mandatory mandatory-recommended">Recomendado</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-source">
+                                            <svg class="source-icon" viewBox="0 0 16 16">
+                                                <rect x="2" y="2" width="12" height="12" fill="#20c997" rx="2" ry="2"/>
+                                                <circle cx="8" cy="8" r="3" fill="white"/>
+                                                <path d="M11,5 L13,3" stroke="white" stroke-width="1"/>
+                                                <path d="M11,11 L13,13" stroke="white" stroke-width="1"/>
+                                                <path d="M5,11 L3,13" stroke="white" stroke-width="1"/>
+                                                <path d="M5,5 L3,3" stroke="white" stroke-width="1"/>
+                                            </svg>
+                                            MSCI
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="datapoint-value" contenteditable="true">5,928</span> m³
+                                    </td>
+                                    <td>
+                                        <span class="data-status status-warning"></span> Pendiente
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-actions">
+                                            <button class="action-button accept-button">Aceptar</button>
+                                            <button class="action-button edit-button">Editar</button>
+                                            <button class="action-button reject-button">Rechazar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="datapoint-row">
+                                    <td>
+                                        <div class="datapoint-title">
+                                            Porcentaje de rotación de empleados
+                                            <div class="tooltip">
+                                                <div class="datapoint-info-icon">i</div>
+                                                <span class="tooltiptext">Porcentaje de empleados que salen de la organización en un período (ESRS S1)</span>
+                                            </div>
+                                            <span class="datapoint-mandatory mandatory-yes">Obligatorio</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-source">
+                                            <svg class="source-icon" viewBox="0 0 16 16">
+                                                <rect x="2" y="2" width="12" height="12" fill="#4285f4" rx="2" ry="2"/>
+                                                <rect x="4" y="4" width="8" height="8" fill="white" rx="1" ry="1"/>
+                                                <rect x="6" y="6" width="4" height="4" fill="#4285f4"/>
+                                            </svg>
+                                            Base interna
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="datapoint-value" contenteditable="true">15</span> %
+                                    </td>
+                                    <td>
+                                        <span class="data-status status-valid"></span> Validado
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-actions">
+                                            <button class="action-button accept-button">Aceptar</button>
+                                            <button class="action-button edit-button">Editar</button>
+                                            <button class="action-button reject-button">Rechazar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="datapoint-row">
+                                    <td>
+                                        <div class="datapoint-title">
+                                            Empleados cubiertos por convenios colectivos
+                                            <div class="tooltip">
+                                                <div class="datapoint-info-icon">i</div>
+                                                <span class="tooltiptext">Porcentaje del total de la plantilla cubierta por convenios colectivos (ESRS S1)</span>
+                                            </div>
+                                            <span class="datapoint-mandatory mandatory-yes">Obligatorio</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-source">
+                                            <svg class="source-icon" viewBox="0 0 16 16">
+                                                <rect x="2" y="2" width="12" height="12" fill="#4285f4" rx="2" ry="2"/>
+                                                <rect x="4" y="4" width="8" height="8" fill="white" rx="1" ry="1"/>
+                                                <rect x="6" y="6" width="4" height="4" fill="#4285f4"/>
+                                            </svg>
+                                            Base interna
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="datapoint-value" contenteditable="true">92</span> %
+                                    </td>
+                                    <td>
+                                        <span class="data-status status-valid"></span> Validado
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-actions">
+                                            <button class="action-button accept-button">Aceptar</button>
+                                            <button class="action-button edit-button">Editar</button>
+                                            <button class="action-button reject-button">Rechazar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="datapoint-row">
+                                    <td>
+                                        <div class="datapoint-title">
+                                            Porcentaje de empleados con discapacidad
+                                            <div class="tooltip">
+                                                <div class="datapoint-info-icon">i</div>
+                                                <span class="tooltiptext">Porcentaje de la plantilla con alguna discapacidad reconocida (ESRS S1)</span>
+                                            </div>
+                                            <span class="datapoint-mandatory mandatory-recommended">Recomendado</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-source">
+                                            <svg class="source-icon" viewBox="0 0 16 16">
+                                                <rect x="2" y="2" width="12" height="12" fill="#4285f4" rx="2" ry="2"/>
+                                                <rect x="4" y="4" width="8" height="8" fill="white" rx="1" ry="1"/>
+                                                <rect x="6" y="6" width="4" height="4" fill="#4285f4"/>
+                                            </svg>
+                                            Base interna
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="datapoint-value" contenteditable="true">2.1</span> %
+                                    </td>
+                                    <td>
+                                        <span class="data-status status-valid"></span> Validado
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-actions">
+                                            <button class="action-button accept-button">Aceptar</button>
+                                            <button class="action-button edit-button">Editar</button>
+                                            <button class="action-button reject-button">Rechazar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="datapoint-row">
+                                    <td>
+                                        <div class="datapoint-title">
+                                            Número de sitios en o cerca de áreas clave de biodiversidad
+                                            <div class="tooltip">
+                                                <div class="datapoint-info-icon">i</div>
+                                                <span class="tooltiptext">Número total de sitios operativos ubicados en o cerca de áreas protegidas o áreas de alto valor para la biodiversidad (ESRS E4)</span>
+                                            </div>
+                                            <span class="datapoint-mandatory mandatory-yes">Obligatorio</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-source">
+                                            <svg class="source-icon" viewBox="0 0 16 16">
+                                                <rect x="2" y="2" width="12" height="12" fill="#fd7e14" rx="2" ry="2"/>
+                                                <text x="8" y="11" font-size="10" fill="white" text-anchor="middle" font-family="Arial" font-weight="bold">AI</text>
+                                            </svg>
+                                            Estimación IA
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="datapoint-value" contenteditable="true">3</span>
+                                    </td>
+                                    <td>
+                                        <span class="data-status status-error"></span> Verificar
+                                    </td>
+                                    <td>
+                                        <div class="datapoint-actions">
+                                            <button class="action-button accept-button">Aceptar</button>
+                                            <button class="action-button edit-button">Editar</button>
+                                            <button class="action-button reject-button">Rechazar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="text-align: center; margin: 10px 0;">
+                            <span style="font-size: 10px; color: #666;">Mostrando 8 de 42 datapoints. <a href="#" style="color: #ff7043; text-decoration: none;">Ver más</a></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Tip -->
+                    <div class="info-tip">
+                        <div class="info-icon">i</div>
+                        <div class="info-text">Los valores marcados en naranja requieren verificación manual debido a discrepancias con datos históricos. Los valores en rojo requieren atención urgente ya que presentan variaciones superiores al 20% respecto al año anterior. Recuerde que todos los datos obligatorios deben ser completados para proceder a la fase de documentación.</div>
+                    </div>
+                    
+                    <!-- Nav Buttons -->
+                    <div class="nav-buttons">
+                        <div class="nav-button previous">Anterior</div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="nav-button save">Guardar</div>
+                            <div class="nav-button next">Siguiente</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+            <div>Versión 1.2.4</div>
+        </div>
+    </div>
+</body>
+</html>

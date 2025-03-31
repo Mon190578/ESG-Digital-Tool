@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard M3_D02: Análisis de Bases de Datos ESG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333333;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Header styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 5px;
+            outline: none;
+            font-size: 12px;
+            color: #999999;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            padding-top: 70px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+        
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .menu-item.active {
+            background-color: #FFC107; /* Amarillo para el módulo 3 */
+            color: #212121;
+        }
+        
+        .sub-menu-item {
+            padding: 12px 35px;
+            font-size: 13px;
+            color: #666666;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .sub-menu-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .sub-menu-item.active {
+            background-color: #FFF8E1; /* Amarillo claro */
+            color: #FF6F00; /* Amarillo oscuro */
+            font-weight: 600;
+            border-left: 3px solid #FFC107;
+        }
+        
+        /* Main content */
+        .main-content {
+            margin-left: 220px;
+            padding: 90px 30px 30px;
+            width: calc(100% - 220px);
+        }
+        
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .tabs-container {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        
+        .tabs {
+            display: flex;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .tab:hover {
+            color: #FF6F00;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #FFC107;
+            color: #FF6F00;
+            font-weight: 600;
+        }
+        
+        .phase-indicator {
+            background-color: #FFF8E1;
+            border: 1px solid #FFE082;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            color: #FF6F00;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        /* Filtros */
+        .filters-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+        }
+        
+        .filter-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            background-color: white;
+        }
+        
+        .export-btn {
+            background-color: #FFC107;
+            color: #212121;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: auto;
+        }
+        
+        /* Radar Chart Styles */
+        .radar-chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* Chart containers */
+        .chart-container {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #FF6F00;
+        }
+        
+        /* Flex containers for layout */
+        .flex-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .flex-col {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        /* KPI cards */
+        .kpi-cards {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .kpi-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 15px;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .kpi-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #FF6F00;
+        }
+        
+        .kpi-context {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .kpi-trend-up {
+            color: #4CAF50;
+        }
+        
+        .kpi-trend-down {
+            color: #F44336;
+        }
+        
+        /* Table styles */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .performance-good {
+            color: #4CAF50;
+        }
+        
+        .performance-average {
+            color: #FFC107;
+        }
+        
+        .performance-bad {
+            color: #F44336;
+        }
+        
+        /* Radar chart placeholder styles */
+        .radar-chart-placeholder {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 0 auto;
+        }
+        
+        .radar-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+        
+        .radar-lines:nth-child(2) {
+            transform: scale(0.8);
+        }
+        
+        .radar-lines:nth-child(3) {
+            transform: scale(0.6);
+        }
+        
+        .radar-lines:nth-child(4) {
+            transform: scale(0.4);
+        }
+        
+        .radar-lines:nth-child(5) {
+            transform: scale(0.2);
+        }
+        
+        .radar-axis {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 1px;
+            background-color: #ddd;
+            transform-origin: left center;
+        }
+        
+        .radar-axis:nth-child(6) {
+            transform: rotate(0deg);
+        }
+        
+        .radar-axis:nth-child(7) {
+            transform: rotate(60deg);
+        }
+        
+        .radar-axis:nth-child(8) {
+            transform: rotate(120deg);
+        }
+        
+        .radar-axis:nth-child(9) {
+            transform: rotate(180deg);
+        }
+        
+        .radar-axis:nth-child(10) {
+            transform: rotate(240deg);
+        }
+        
+        .radar-axis:nth-child(11) {
+            transform: rotate(300deg);
+        }
+        
+        .radar-label {
+            position: absolute;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .company-polygon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            clip-path: polygon(50% 10%, 90% 30%, 85% 80%, 50% 90%, 15% 80%, 10% 30%);
+            background-color: rgba(255, 193, 7, 0.3);
+            border: 2px solid #FFC107;
+            transform: translate(-50%, -50%);
+        }
+        
+        .sector-polygon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 160px;
+            height: 160px;
+            clip-path: polygon(50% 20%, 80% 35%, 75% 75%, 50% 85%, 25% 75%, 20% 35%);
+            background-color: rgba(144, 202, 249, 0.3);
+            border: 2px solid #90CAF9;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Bar chart placeholder */
+        .bar-chart-placeholder {
+            height: 250px;
+            position: relative;
+            padding-left: 50px;
+            padding-bottom: 30px;
+            display: flex;
+            align-items: flex-end;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .bar-chart-axis-y {
+            position: absolute;
+            top: 0;
+            left: 30px;
+            bottom: 0;
+            width: 1px;
+            background-color: #ddd;
+        }
+        
+        .bar-chart-axis-x {
+            position: absolute;
+            left: 30px;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            background-color: #ddd;
+        }
+        
+        .bar-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .bar {
+            width: 30px;
+            background-color: #FFC107;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .bar.sector {
+            background-color: #90CAF9;
+        }
+        
+        .bar.leader {
+            background-color: #4CAF50;
+        }
+        
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+            width: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* Line chart placeholder */
+        .line-chart-placeholder {
+            height: 250px;
+            position: relative;
+            padding-left: 50px;
+            padding-bottom: 30px;
+            margin: 30px 0;
+            border-left: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .line-path {
+            position: absolute;
+            bottom: 30px;
+            left: 50px;
+            height: 100px;
+            width: calc(100% - 50px);
+            fill: none;
+            stroke: #FFC107;
+            stroke-width: 2;
+        }
+        
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        
+        /* Alerts section */
+        .alerts-section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .alert-item {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+            background-color: #f9f9f9;
+        }
+        
+        .alert-critical {
+            border-left-color: #F44336;
+        }
+        
+        .alert-warning {
+            border-left-color: #FFC107;
+        }
+        
+        .alert-info {
+            border-left-color: #2196F3;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .alert-content {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .flex-row {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(90 25 25)"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(180 25 25)"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(270 25 25)"/>
+                    <path d="M25,8 L30,25 L25,42 L20,25 Z" fill="#FFC107" transform="rotate(-45 25 25)"/>
+                    <circle cx="25" cy="25" r="3" fill="#FF6F00"/>
+                </svg>
+            </div>
+            <div class="logo-text">ESG Digital Tool</div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar en la plataforma...">
+            <div style="color: #FF6F00; font-size: 14px;">⚲</div>
+        </div>
+        
+        <div class="user-controls">
+            <div class="icon-button" style="background-color: #129953; color: white;">?</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⚙</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⏱</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">🔔</div>
+            <div class="icon-button" style="background-color: #E91E63; color: white;">?</div>
+            <div style="margin-left: 15px; display: flex; align-items: center;">
+                <div class="icon-button" style="background-color: #673AB7; color: white;">U</div>
+                <span style="margin-left: 5px;">Usuario X</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="menu-item">1. Datos Base</div>
+            <div class="menu-item">2. Datos GGII</div>
+            <div class="menu-item active">3. Integración Externa</div>
+            <div class="sub-menu-item">► Legislación ESG</div>
+            <div class="sub-menu-item active">► Bases de Datos ESG</div>
+            <div class="menu-item">4. Análisis DM</div>
+            <div class="menu-item">5. Datapoints</div>
+            <div class="menu-item">6. Reporting</div>
+            
+            <div style="margin-top: 250px; padding: 15px; font-size: 11px; color: #666; background-color: #f5f5f5;">
+                <p style="margin-bottom: 5px; font-weight: 600;">ACTIVIDAD RECIENTE</p>
+                <div style="height: 1px; background-color: #ddd; margin: 5px 0 10px 0;"></div>
+                <p style="margin-bottom: 8px;">M3_I01 completado - Hace 3h</p>
+                <p style="margin-bottom: 8px;">M3_I02 completado - Hace 2h</p>
+                <p style="margin-bottom: 5px;">M3_D01 actualizado - Hace 1h</p>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="section-title">M3_D02: Análisis de Bases de Datos ESG</div>
+            
+            <div class="phase-indicator">
+                <span>Fase: Integración de Fuentes Externas</span>
+                <span>Progreso: 80%</span>
+            </div>
+            
+            <!-- Filtros -->
+            <div class="content-card">
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label class="filter-label">Fuente:</label>
+                        <select class="filter-select">
+                            <option>Todas las fuentes</option>
+                            <option>Clarity AI</option>
+                            <option>MSCI</option>
+                            <option>Bloomberg</option>
+                            <option>ISS</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Sector:</label>
+                        <select class="filter-select">
+                            <option>Manufactura</option>
+                            <option>Tecnología</option>
+                            <option>Energía</option>
+                            <option>Finanzas</option>
+                            <option>Retail</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Región:</label>
+                        <select class="filter-select">
+                            <option>Europa</option>
+                            <option>América del Norte</option>
+                            <option>América Latina</option>
+                            <option>Asia-Pacífico</option>
+                        </select>
+                    </div>
+                    
+                    <button class="export-btn">
+                        <span style="font-size: 14px;">↓</span> EXPORTAR
+                    </button>
+                </div>
+            </div>
+            
+            <!-- KPI Cards -->
+            <div class="kpi-cards">
+                <div class="kpi-card">
+                    <div class="kpi-title">Puntuación global</div>
+                    <div class="kpi-value">72<span style="font-size: 16px;">/100</span></div>
+                    <div class="kpi-context">Posición en el sector: <strong>12/45</strong></div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-title">Ambiental (E)</div>
+                    <div class="kpi-value">68<span style="font-size: 16px;">/100</span></div>
+                    <div class="kpi-context"><span class="kpi-trend-up">↑ 5pts</span> (último año)</div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-title">Social (S)</div>
+                    <div class="kpi-value">74<span style="font-size: 16px;">/100</span></div>
+                    <div class="kpi-context"><span class="kpi-trend-up">↑ 3pts</span> (último año)</div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-title">Gobernanza (G)</div>
+                    <div class="kpi-value">79<span style="font-size: 16px;">/100</span></div>
+                    <div class="kpi-context"><span class="kpi-trend-up">↑ 2pts</span> (último año)</div>
+                </div>
+            </div>
+            
+            <!-- Calificaciones ESG comparativas -->
+            <div class="content-card">
+                <div class="chart-title">Calificaciones ESG comparativas</div>
+                
+                <div class="radar-chart-container">
+                    <div class="radar-chart-placeholder">
+                        <div class="radar-lines"></div>
+                        <div class="radar-lines"></div>
+                        <div class="radar-lines"></div>
+                        <div class="radar-lines"></div>
+                        <div class="radar-lines"></div>
+                        <div class="radar-axis"></div>
+                        <div class="radar-axis"></div>
+                        <div class="radar-axis"></div>
+                        <div class="radar-axis"></div>
+                        <div class="radar-axis"></div>
+                        <div class="radar-axis"></div>
+                        <div class="sector-polygon"></div>
+                        <div class="company-polygon"></div>
+                        
+                        <div class="radar-label" style="top: 5%; left: 50%; transform: translateX(-50%);">Cambio climático</div>
+                        <div class="radar-label" style="top: 20%; right: 10%;">Ética empresarial</div>
+                        <div class="radar-label" style="top: 70%; right: 10%;">Economía circular</div>
+                        <div class="radar-label" style="bottom: 5%; left: 50%; transform: translateX(-50%);">Biodiversidad</div>
+                        <div class="radar-label" style="top: 70%; left: 10%;">Gobernanza</div>
+                        <div class="radar-label" style="top: 20%; left: 10%;">Diversidad</div>
+                    </div>
+                </div>
+                
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #FFC107;"></div>
+                        <span>Empresa</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #90CAF9;"></div>
+                        <span>Media del sector</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; font-size: 14px;">
+                    <div><strong>Puntuación global:</strong> 72/100</div>
+                    <div><strong>Posición en el sector:</strong> 12/45</div>
+                    <div><strong>Tendencia:</strong> <span class="kpi-trend-up">+5 pts</span> (último año)</div>
+                    <div style="margin-top: 10px;"><strong>Fortalezas:</strong> Uso de agua, Gobernanza</div>
+                    <div><strong>Áreas de mejora:</strong> Biodiversidad</div>
+                </div>
+            </div>
+            
+            <!-- Benchmarks sectoriales -->
+            <div class="flex-row">
+                <div class="flex-col">
+                    <div class="content-card">
+                        <div class="chart-title">Benchmarks sectoriales</div>
+                        
+                        <div>
+                            <!-- Bar chart placeholder -->
+                            <div class="bar-chart-placeholder">
+                                <div class="bar-chart-axis-y"></div>
+                                <div class="bar-chart-axis-x"></div>
+                                
+                                <div class="bar-group" style="height: 100%;">
+                                    <div class="bar" style="height: 70%"></div>
+                                    <div class="bar sector" style="height: 65%"></div>
+                                    <div class="bar-label">Ética empresarial</div>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #FFC107;"></div>
+                                    <span>Su empresa</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #90CAF9;"></div>
+                                    <span>Media sectorial</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex-col">
+                    <div class="content-card">
+                        <div class="chart-title">Evolución ESG (5 años)</div>
+                        
+                        <div>
+                            <!-- Line chart placeholder -->
+                            <div class="line-chart-placeholder">
+                                <!-- Simplified placeholder for a line chart -->
+                                <svg viewBox="0 0 400 200" width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+                                    <!-- Grid lines -->
+                                    <line x1="0" y1="0" x2="400" y2="0" stroke="#eee" />
+                                    <line x1="0" y1="50" x2="400" y2="50" stroke="#eee" />
+                                    <line x1="0" y1="100" x2="400" y2="100" stroke="#eee" />
+                                    <line x1="0" y1="150" x2="400" y2="150" stroke="#eee" />
+                                    <line x1="0" y1="200" x2="400" y2="200" stroke="#eee" />
+                                    
+                                    <!-- Y-axis labels -->
+                                    <text x="-5" y="0" text-anchor="end" font-size="12" fill="#666">100</text>
+                                    <text x="-5" y="50" text-anchor="end" font-size="12" fill="#666">80</text>
+                                    <text x="-5" y="100" text-anchor="end" font-size="12" fill="#666">60</text>
+                                    <text x="-5" y="150" text-anchor="end" font-size="12" fill="#666">40</text>
+                                    <text x="-5" y="200" text-anchor="end" font-size="12" fill="#666">20</text>
+                                    
+                                    <!-- X-axis labels -->
+                                    <text x="0" y="220" font-size="12" fill="#666">2020</text>
+                                    <text x="100" y="220" font-size="12" fill="#666">2021</text>
+                                    <text x="200" y="220" font-size="12" fill="#666">2022</text>
+                                    <text x="300" y="220" font-size="12" fill="#666">2023</text>
+                                    <text x="400" y="220" font-size="12" fill="#666">2024</text>
+                                    
+                                    <!-- Environmental line -->
+                                    <polyline 
+                                        points="0,150 100,130 200,110 300,90 400,70" 
+                                        fill="none" 
+                                        stroke="#4CAF50" 
+                                        stroke-width="2"
+                                    />
+                                    
+                                    <!-- Social line -->
+                                    <polyline 
+                                        points="0,170 100,140 200,120 300,90 400,60" 
+                                        fill="none" 
+                                        stroke="#2196F3" 
+                                        stroke-width="2"
+                                    />
+                                    
+                                    <!-- Governance line -->
+                                    <polyline 
+                                        points="0,130 100,110 200,90 300,70 400,50" 
+                                        fill="none" 
+                                        stroke="#FFC107" 
+                                        stroke-width="2"
+                                    />
+                                    
+                                    <!-- Data points -->
+                                    <circle cx="0" cy="150" r="4" fill="#4CAF50" />
+                                    <circle cx="100" cy="130" r="4" fill="#4CAF50" />
+                                    <circle cx="200" cy="110" r="4" fill="#4CAF50" />
+                                    <circle cx="300" cy="90" r="4" fill="#4CAF50" />
+                                    <circle cx="400" cy="70" r="4" fill="#4CAF50" />
+                                    
+                                    <circle cx="0" cy="170" r="4" fill="#2196F3" />
+                                    <circle cx="100" cy="140" r="4" fill="#2196F3" />
+                                    <circle cx="200" cy="120" r="4" fill="#2196F3" />
+                                    <circle cx="300" cy="90" r="4" fill="#2196F3" />
+                                    <circle cx="400" cy="60" r="4" fill="#2196F3" />
+                                    
+                                    <circle cx="0" cy="130" r="4" fill="#FFC107" />
+                                    <circle cx="100" cy="110" r="4" fill="#FFC107" />
+                                    <circle cx="200" cy="90" r="4" fill="#FFC107" />
+                                    <circle cx="300" cy="70" r="4" fill="#FFC107" />
+                                    <circle cx="400" cy="50" r="4" fill="#FFC107" />
+                                </svg>
+                            </div>
+                            
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #4CAF50;"></div>
+                                    <span>Ambiental (E)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #2196F3;"></div>
+                                    <span>Social (S)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background-color: #FFC107;"></div>
+                                    <span>Gobernanza (G)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tabla de indicadores detallados -->
+            <div class="content-card">
+                <div class="chart-title">Detalle de Indicadores Sectoriales</div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Indicador ESG</th>
+                                <th>Su Empresa</th>
+                                <th>Media Sectorial</th>
+                                <th>Líderes del Sector</th>
+                                <th>Posición Relativa</th>
+                                <th>Tendencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Intensidad emisiones (tCO2eq/€M)</td>
+                                <td>142,3</td>
+                                <td>186,5</td>
+                                <td>92,1</td>
+                                <td class="performance-good">Buena</td>
+                                <td class="performance-good">↓ Mejorando</td>
+                            </tr>
+                            <tr>
+                                <td>Intensidad energética (MWh/€M)</td>
+                                <td>328,5</td>
+                                <td>356,2</td>
+                                <td>267,4</td>
+                                <td class="performance-average">Media</td>
+                                <td>→ Estable</td>
+                            </tr>
+                            <tr>
+                                <td>Diversidad de género (%)</td>
+                                <td>38%</td>
+                                <td>28%</td>
+                                <td>45%</td>
+                                <td class="performance-good">Buena</td>
+                                <td class="performance-good">↑ Mejorando</td>
+                            </tr>
+                            <tr>
+                                <td>Accidentes laborales (por 1000 empleados)</td>
+                                <td>5,2</td>
+                                <td>7,8</td>
+                                <td>2,1</td>
+                                <td class="performance-average">Media</td>
+                                <td class="performance-good">↓ Mejorando</td>
+                            </tr>
+                            <tr>
+                                <td>Independencia del Consejo (%)</td>
+                                <td>62%</td>
+                                <td>54%</td>
+                                <td>72%</td>
+                                <td class="performance-good">Buena</td>
+                                <td class="performance-good">↑ Mejorando</td>
+                            </tr>
+                            <tr>
+                                <td>Rotación de empleados (%)</td>
+                                <td>12,6%</td>
+                                <td>11,7%</td>
+                                <td>8,4%</td>
+                                <td class="performance-bad">Mejorable</td>
+                                <td class="performance-bad">↑ Empeorando</td>
+                            </tr>
+                            <tr>
+                                <td>Consumo de agua (m³/€M)</td>
+                                <td>1.235</td>
+                                <td>1.680</td>
+                                <td>950</td>
+                                <td class="performance-good">Buena</td>
+                                <td class="performance-good">↓ Mejorando</td>
+                            </tr>
+                            <tr>
+                                <td>Brecha salarial (%)</td>
+                                <td>7,8%</td>
+                                <td>9,2%</td>
+                                <td>4,1%</td>
+                                <td class="performance-average">Media</td>
+                                <td class="performance-good">↓ Mejorando</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Alertas y recomendaciones -->
+            <div class="alerts-section">
+                <div class="chart-title">Alertas y recomendaciones</div>
+                
+                <div class="alert-item alert-warning">
+                    <div class="alert-title">Cambio en metodología de cálculo en MSCI</div>
+                    <div class="alert-content">La metodología de cálculo de emisiones de Alcance 3 ha sido modificada por MSCI. Recomendamos revisar los cálculos actuales para mantener la comparabilidad con el sector.</div>
+                </div>
+                
+                <div class="alert-item alert-critical">
+                    <div class="alert-title">Inconsistencia en datos de diversidad</div>
+                    <div class="alert-content">Se ha detectado una diferencia significativa entre los datos internos de diversidad y los reportados en las bases externas. Revisar la metodología de cálculo y validar antes del reporte final.</div>
+                </div>
+                
+                <div class="alert-item alert-info">
+                    <div class="alert-title">Oportunidad de mejora en economía circular</div>
+                    <div class="alert-content">Según el análisis comparativo, existe una oportunidad de mejora en métricas de economía circular. Los líderes del sector han implementado programas que han mejorado este indicador un 22% en el último año.</div>
+                </div>
+            </div>
+            
+            <!-- Integraciones con otros módulos -->
+            <div class="content-card">
+                <div class="chart-title">Integración con otros módulos</div>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <h4 style="font-size: 14px; margin-bottom: 10px; color: #666;">Módulo 1: Datos Base</h4>
+                        <p style="font-size: 13px; color: #666; line-height: 1.5;">Los datos de este dashboard complementan la información de la Cadena de Valor, especialmente para segmentos donde no hay datos directos disponibles.</p>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 200px;">
+                        <h4 style="font-size: 14px; margin-bottom: 10px; color: #666;">Módulo 4: Doble Materialidad</h4>
+                        <p style="font-size: 13px; color: #666; line-height: 1.5;">Los benchmarks sectoriales se utilizan para contrastar los IRO internos identificados y validar su relevancia en el análisis de materialidad.</p>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 200px;">
+                        <h4 style="font-size: 14px; margin-bottom: 10px; color: #666;">Módulo 5: Datapoints</h4>
+                        <p style="font-size: 13px; color: #666; line-height: 1.5;">Se verifica la comparabilidad de los datapoints seleccionados contra estándares internacionales como GRI, SASB e ISO.</p>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 200px;">
+                        <h4 style="font-size: 14px; margin-bottom: 10px; color: #666;">Módulo 6: Reporting</h4>
+                        <p style="font-size: 13px; color: #666; line-height: 1.5;">Los datos normalizados alimentan directamente los informes de sostenibilidad, garantizando cumplimiento con los estándares CSRD y ESRS.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>ESG Digital Tool © 2025 - Versión 1.2.0</p>
+                <p>Última actualización de datos: 15 de marzo de 2025</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Simple JavaScript for interactivity -->
+    <script>
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make filter dropdowns interactive
+            const selects = document.querySelectorAll('.filter-select');
+            selects.forEach(select => {
+                select.addEventListener('change', function() {
+                    // In a real implementation, this would trigger data refresh
+                    console.log('Filter changed:', this.value);
+                });
+            });
+            
+            // Make export button interactive
+            const exportBtn = document.querySelector('.export-btn');
+            exportBtn.addEventListener('click', function() {
+                alert('Exportando datos... Esta función estará disponible en la versión final.');
+            });
+        });
+    </script>
+</body>
+</html>100%;">
+                                    <div class="bar" style="height: 63%"></div>
+                                    <div class="bar sector" style="height: 50%"></div>
+                                    <div class="bar-label">Emisiones CO2</div>
+                                </div>
+                                
+                                <div class="bar-group" style="height: 100%;">
+                                    <div class="bar" style="height: 77%"></div>
+                                    <div class="bar sector" style="height: 60%"></div>
+                                    <div class="bar-label">Uso de agua</div>
+                                </div>
+                                
+                                <div class="bar-group" style="height: 100%;">
+                                    <div class="bar" style="height: 68%"></div>
+                                    <div class="bar sector" style="height: 72%"></div>
+                                    <div class="bar-label">Residuos</div>
+                                </div>
+                                
+                                <div class="bar-group" style="height: 100%;">
+                                    <div class="bar" style="height: 73%"></div>
+                                    <div class="bar sector" style="height: 65%"></div>
+                                    <div class="bar-label">Diversidad</div>
+                                </div>
+                                
+                                <div class="bar-group" style="height: 100%;">
+                                    <div class="bar" style="height: 75%"></div>
+                                    <div class="bar sector" style="height: 68%"></div>
+                                    <div class="bar-label">Gobernanza</div>
+                                </div>
+                                
+                                <div class="bar-group" style="height: 

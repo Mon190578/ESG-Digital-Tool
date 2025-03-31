@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - M6_I03 Generación del Informe Final</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .top-bar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            height: 30px;
+        }
+        
+        .search-text {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        /* Module Colors */
+        .menu-item.module1 {
+            color: #3b78c3; /* Azul para Módulo 1 */
+        }
+        
+        .menu-item.module2 {
+            color: #d16565; /* Rojo para Módulo 2 */
+        }
+        
+        .menu-item.module3 {
+            color: #F5CB57; /* Amarillo para Módulo 3 */
+        }
+        
+        .menu-item.module4 {
+            color: #1a9967; /* Verde para Módulo 4 */
+        }
+        
+        .menu-item.module5 {
+            color: #8E44AD; /* Púrpura para Módulo 5 */
+        }
+        
+        .menu-item.module6 {
+            color: #9C27B0; /* Morado para Módulo 6 */
+        }
+        
+        .menu-item.active {
+            background-color: #9C27B0;
+            color: #fff !important;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .submenu-item.active {
+            background-color: #f5e9f7;
+            font-weight: 600;
+            color: #9C27B0;
+        }
+        
+        .activity-panel {
+            background: #f0f0f0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-item {
+            margin-bottom: 5px;
+            font-size: 9px;
+        }
+        
+        /* Main panel */
+        .main-panel {
+            flex-grow: 1;
+            padding: 10px 20px;
+        }
+        
+        .content-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-header {
+            background-color: rgba(156, 39, 176, 0.1);
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background-color: rgba(156, 39, 176, 0.1);
+            font-weight: 600;
+            color: #9C27B0;
+        }
+        
+        /* Phase indicator */
+        .phase-indicator {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #9C27B0;
+            font-weight: 600;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        /* Info panel */
+        .info-panel {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-desc {
+            color: #555;
+        }
+        
+        .info-help {
+            font-size: 9px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        /* Form content */
+        .form-content {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .form-label {
+            font-size: 11px;
+            color: #333;
+            width: 150px;
+            padding-top: 8px;
+        }
+        
+        .form-field {
+            flex-grow: 1;
+        }
+        
+        .textarea-field {
+            width: 100%;
+            height: 60px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 8px;
+            font-size: 11px;
+            resize: vertical;
+        }
+        
+        .select-field {
+            width: 100%;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 0 8px;
+            font-size: 11px;
+            background-color: white;
+        }
+        
+        .radio-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            color: #333;
+        }
+        
+        .radio-option input {
+            margin-right: 5px;
+        }
+        
+        .required-mark {
+            color: #d16565;
+            margin-left: 3px;
+        }
+        
+        .info-tip {
+            background-color: #f5f8ff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #9C27B0;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        
+        .info-text {
+            font-size: 9px;
+            color: #555;
+        }
+        
+        /* Export options */
+        .export-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .export-option {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            flex: 1;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .export-option:hover {
+            background-color: #f5e9f7;
+        }
+        
+        .export-option.selected {
+            background-color: #f5e9f7;
+            border: 1px solid #9C27B0;
+        }
+        
+        .export-option-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .export-option-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #9C27B0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+        }
+        
+        .export-option-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .export-option-desc {
+            font-size: 9px;
+            color: #666;
+        }
+        
+        /* Template options */
+        .template-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .template-option {
+            width: 120px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        
+        .template-option.selected {
+            border: 2px solid #9C27B0;
+        }
+        
+        .template-preview {
+            width: 120px;
+            height: 160px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .template-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .template-select-overlay {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background-color: #9C27B0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        
+        .template-name {
+            padding: 5px;
+            font-size: 9px;
+            text-align: center;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        /* Checkbox styles */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .checkbox-container input {
+            margin-right: 8px;
+        }
+        
+        .checkbox-label {
+            font-size: 11px;
+            color: #333;
+        }
+        
+        /* Document Preview */
+        .document-preview {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .document-header {
+            background-color: #f5f5f5;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .document-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .document-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .document-action {
+            font-size: 9px;
+            color: #9C27B0;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .document-content {
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 10px;
+            color: #333;
+            background-color: white;
+            line-height: 1.5;
+        }
+        
+        .document-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            color: #333;
+        }
+        
+        .document-paragraph {
+            margin-bottom: 10px;
+        }
+        
+        .document-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 9px;
+        }
+        
+        .document-table th,
+        .document-table td {
+            border: 1px solid #e0e0e0;
+            padding: 6px 8px;
+        }
+        
+        .document-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            text-align: left;
+        }
+        
+        /* Progress indicator */
+        .progress-steps {
+            display: flex;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+        
+        .progress-step {
+            flex: 1;
+            position: relative;
+            text-align: center;
+            padding-top: 25px;
+        }
+        
+        .progress-step:before {
+            content: '';
+            height: 3px;
+            background-color: #e0e0e0;
+            position: absolute;
+            top: 12px;
+            left: 0;
+            right: 0;
+        }
+        
+        .progress-step:first-child:before {
+            left: 50%;
+        }
+        
+        .progress-step:last-child:before {
+            right: 50%;
+        }
+        
+        .progress-step.completed:before {
+            background-color: #9C27B0;
+        }
+        
+        .progress-step.active:before {
+            background-color: #9C27B0;
+        }
+        
+        .step-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .progress-step.completed .step-indicator {
+            background-color: #9C27B0;
+        }
+        
+        .progress-step.active .step-indicator {
+            background-color: #9C27B0;
+            box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.2);
+        }
+        
+        .step-text {
+            font-size: 9px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .progress-step.completed .step-text,
+        .progress-step.active .step-text {
+            color: #9C27B0;
+            font-weight: 600;
+        }
+        
+        /* Color picker */
+        .color-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .color-option {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .color-option.selected:after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .nav-button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-button.previous {
+            background-color: #F5CB57;
+            color: #333;
+        }
+        
+        .nav-button.save {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        .nav-button.next {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        /* Footer */
+        .footer {
+            height: 30px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 9px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <!-- Círculo exterior -->
+                        <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                        
+                        <!-- Puntas de la brújula -->
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                        <path d="M44,22 L39,25 L37,22 L39,19 Z" fill="#666666"/>
+                        <path d="M22,44 L19,39 L22,37 L25,39 Z" fill="#666666"/>
+                        <path d="M0,22 L5,19 L7,22 L5,25 Z" fill="#666666"/>
+                        
+                        <!-- Aguja -->
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#9C27B0" transform="rotate(-45 22 22)"/>
+                        
+                        <!-- Punto central -->
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+            
+            <div class="search-bar">
+                <div class="search-text">Buscar en la plataforma...</div>
+                <div class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                        <circle cx="7" cy="7" r="7" fill="#2196f3" stroke="#2196f3" stroke-width="1"/>
+                        <line x1="11" y1="11" x2="16" y2="16" stroke="#2196f3" stroke-width="2"/>
+                        <circle cx="7" cy="7" r="4" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="icon-button" style="background-color: #9C27B0;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                        <circle cx="4" cy="7" r="2" />
+                        <circle cx="7" cy="7" r="2" />
+                        <circle cx="10" cy="7" r="2" />
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#888888">
+                        <rect x="3" y="3" width="8" height="8" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="6" x2="9" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#666666">
+                        <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="7" y2="4" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="9" y2="9" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5; position: relative;">
+                    <svg width="14" height="14" viewBox="0 0 14 14">
+                        <path d="M3,11 C3,11 2,7 2,3 C2,-1 5,-3 7,-3 C9,-3 12,-1 12,3 C12,7 11,11 11,11 Z" fill="#FFCA28" stroke="#FFCA28" stroke-width="1" transform="translate(0, 3)"/>
+                        <circle cx="7" cy="12" r="2" fill="#FFCA28"/>
+                    </svg>
+                    <div style="position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background-color: #d16565; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold;">3</div>
+                </div>
+                
+                <div class="icon-button" style="background-color: #E91E63; color: white; font-weight: bold;">?</div>
+                
+                <div style="display: flex; align-items: center;">
+                    <div class="icon-button" style="background-color: #673AB7; color: white;">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                            <circle cx="7" cy="5" r="3"/>
+                            <path d="M2,14 C2,9 12,9 12,14" fill="white" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span style="margin-left: 8px; font-size: 12px;">Usuario X</span>
+                </div>
+                
+                <div class="company-selector">
+                    <span style="font-size: 12px;">Empresa S.A.</span>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#666" style="margin-left: 8px;">
+                        <polygon points="5,8 0,3 10,3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="menu-item module1">1. Datos Base</div>
+                <div class="menu-item module2">2. Datos GGII</div>
+                <div class="menu-item module3">3. Integración Externa</div>
+                <div class="menu-item module4">4. Análisis DM</div>
+                <div class="menu-item module5">5. Datapoints</div>
+                <div class="menu-item module6 active">6. Reporting</div>
+                <div class="submenu-item">► Revisión del Informe</div>
+                <div class="submenu-item">► Validación de Coherencia</div>
+                <div class="submenu-item active">► Generación Final</div>
+                <div class="submenu-item">► Exportación</div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <div class="activity-panel">
+                    <div class="activity-title">ACTIVIDAD RECIENTE</div>
+                    <div class="activity-item">M6_I01 completado - Hace 30m</div>
+                    <div class="activity-item">M6_I02 completado - Hace 10m</div>
+                    <div class="activity-item">M6_I03 en progreso - Hace 2m</div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-panel">
+                <div class="content-box">
+                    <div class="module-header">
+                        <div class="module-title">Módulo 6: Reporting</div>
+                    </div>
+                    
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab">REVISIÓN DEL INFORME</div>
+                        <div class="tab">VALIDACIÓN DE COHERENCIA</div>
+                        <div class="tab active">GENERACIÓN FINAL</div>
+                        <div class="tab">EXPORTACIÓN</div>
+                    </div>
+                    
+                    <!-- Progress Steps -->
+                    <div class="progress-steps">
+                        <div class="progress-step completed">
+                            <div class="step-indicator">✓</div>
+                            <div class="step-text">Revisión</div>
+                        </div>
+                        <div class="progress-step completed">
+                            <div class="step-indicator">✓</div>
+                            <div class="step-text">Validación</div>
+                        </div>
+                        <div class="progress-step active">
+                            <div class="step-indicator">3</div>
+                            <div class="step-text">Generación</div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="step-indicator">4</div>
+                            <div class="step-text">Exportación</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase Indicator -->
+                    <div class="phase-indicator">
+                        Generación del Informe Final - Configuración del formato y contenido
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                    
+                    <!-- Info Panel -->
+                    <div class="info-panel">
+                        <div class="info-title">M6_I03: Generación del Informe Final: </div>
+                        <div class="info-desc">Esta interfaz permite configurar la presentación final del informe CSRD, personalizar su estilo y generar el documento en diferentes formatos.</div>
+                        <div class="info-help">El contenido del informe ha sido validado y está listo para su generación final. Seleccione el formato, plantilla y opciones de personalización deseadas.</div>
+                    </div>
+                    
+                    <!-- Format Options -->
+                    <div class="form-content">
+                        <div class="form-section-title">FORMATO DEL INFORME</div>
+                        
+                        <div class="export-options">
+                            <div class="export-option selected">
+                                <div class="export-option-header">
+                                    <div class="export-option-icon">
+                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2">
+                                            <path d="M1,6 L11,6 M6,1 L6,11"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="export-option-title">XBRL (Estándar Regulatorio)</div>
+                                </div>
+                                <div class="export-option-desc">Formato estructurado compatible con los requerimientos ESRS y CSRD para presentación a autoridades.</div>
+                            </div>
+                            
+                            <div class="export-option">
+                                <div class="export-option-header">
+                                    <div class="export-option-icon">
+                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2">
+                                            <rect x="2" y="2" width="8" height="8" rx="1"></rect>
+                                        </svg>
+                                    </div>
+                                    <div class="export-option-title">PDF (Documento Completo)</div>
+                                </div>
+                                <div class="export-option-desc">Documento formateado con todos los datapoints, documentación asociada y visualizaciones para stakeholders.</div>
+                            </div>
+                            
+                            <div class="export-option">
+                                <div class="export-option-header">
+                                    <div class="export-option-icon">
+                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2">
+                                            <path d="M2,2 L10,2 L10,10 L2,10 Z M2,4 L10,4"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="export-option-title">HTML (Web Interactivo)</div>
+                                </div>
+                                <div class="export-option-desc">Versión digital interactiva para publicación web corporativa con navegación mejorada y gráficos dinámicos.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Template Selection -->
+                    <div class="form-content">
+                        <div class="form-section-title">PLANTILLA Y ESTILO</div>
+                        
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="form-label">Plantilla del informe:</div>
+                                <div class="form-field">
+                                    <div class="template-options">
+                                        <div class="template-option selected">
+                                            <div class="template-preview">
+                                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IndoaXRlIi8+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjOUMyN0IwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI0MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI4IiBmaWxsPSIjOUMyN0IwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI1OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiBmaWxsPSIjOUMyN0IwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI2OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiBmaWxsPSIjOUMyN0IwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI3OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiBmaWxsPSIjOUMyN0IwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI5OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI4IiBmaWxsPSIjOUMyN0IwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSIxMTYiIHdpZHRoPSIxMDAiIGhlaWdodD0iNCIgZmlsbD0iIzlDMjdCMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48cmVjdCB4PSIxMCIgeT0iMTI2IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQiIGZpbGw9IiM5QzI3QjAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iMTAiIHk9IjE0MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzlDMjdCMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48L3N2Zz4=" class="template-thumb">
+                                                <div class="template-select-overlay">✓</div>
+                                            </div>
+                                            <div class="template-name">Estándar CSRD</div>
+                                        </div>
+                                        
+                                        <div class="template-option">
+                                            <div class="template-preview">
+                                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IndoaXRlIi8+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSIzMCIgZmlsbD0iIzlDMjdCMCIvPjxyZWN0IHg9IjEwIiB5PSI0MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI1OCIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iNjIiIHk9IjU4IiB3aWR0aD0iNDgiIGhlaWdodD0iNCIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48cmVjdCB4PSIxMCIgeT0iNjgiIHdpZHRoPSI0OCIgaGVpZ2h0PSI0IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjYyIiB5PSI2OCIgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iMTAiIHk9Ijc4IiB3aWR0aD0iNDgiIGhlaWdodD0iNCIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48cmVjdCB4PSI2MiIgeT0iNzgiIHdpZHRoPSI0OCIgaGVpZ2h0PSI0IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI5OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSIxMTYiIHdpZHRoPSIxMDAiIGhlaWdodD0iNCIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48cmVjdCB4PSIwIiB5PSIxNDAiIHdpZHRoPSIxMjAiIGhlaWdodD0iMjAiIGZpbGw9IiM5QzI3QjAiLz48L3N2Zz4=" class="template-thumb">
+                                            </div>
+                                            <div class="template-name">Corporativo</div>
+                                        </div>
+                                        
+                                        <div class="template-option">
+                                            <div class="template-preview">
+                                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IndoaXRlIi8+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiM5QzI3QjAiLz48cmVjdCB4PSI2NSIgeT0iMTAiIHdpZHRoPSI0NSIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjY1IiB5PSIyNSIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjQiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iNjUiIHk9IjM1IiB3aWR0aD0iNDUiIGhlaWdodD0iNCIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48cmVjdCB4PSI2NSIgeT0iNDUiIHdpZHRoPSI0NSIgaGVpZ2h0PSI0IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjE1IiB5PSI3MCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjOUMyN0IwIiBmaWxsLW9wYWNpdHk9IjAuNSIvPjxyZWN0IHg9IjY1IiB5PSI3MCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjOUMyN0IwIiBmaWxsLW9wYWNpdHk9IjAuNSIvPjxyZWN0IHg9IjE1IiB5PSIxMjAiIHdpZHRoPSI5MCIgaGVpZ2h0PSIzMCIgZmlsbD0iIzlDMjdCMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48L3N2Zz4=" class="template-thumb">
+                                            </div>
+                                            <div class="template-name">Visual</div>
+                                        </div>
+                                        
+                                        <div class="template-option">
+                                            <div class="template-preview">
+                                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IndoaXRlIi8+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjE2MCIgZmlsbD0iIzlDMjdCMCIvPjxyZWN0IHg9IjUwIiB5PSIxMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjUwIiB5PSIzMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjQiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iNTAiIHk9IjQwIiB3aWR0aD0iNjAiIGhlaWdodD0iNCIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48cmVjdCB4PSI1MCIgeT0iNTAiIHdpZHRoPSI2MCIgaGVpZ2h0PSI0IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjUwIiB5PSI3MCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjUwIiB5PSI5MCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjQiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iNTAiIHk9IjEwMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjQiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iNTAiIHk9IjExMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjQiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iNTAiIHk9IjEzMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjwvc3ZnPg==" class="template-thumb">
+                                            </div>
+                                            <div class="template-name">Lateral</div>
+                                        </div>
+                                        
+                                        <div class="template-option">
+                                            <div class="template-preview">
+                                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDEyMCAxNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEyMCIgaGVpZ2h0PSIxNjAiIGZpbGw9IndoaXRlIi8+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiM5QzI3QjAiIHN0cm9rZS13aWR0aD0iMiIvPjxyZWN0IHg9IjEwIiB5PSI0MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI1OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI2OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI3OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSI5OCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI4IiBmaWxsPSIjMDAwMDAwIiBmaWxsLW9wYWNpdHk9IjAuMiIvPjxyZWN0IHg9IjEwIiB5PSIxMTYiIHdpZHRoPSIxMDAiIGhlaWdodD0iNCIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjIiLz48cmVjdCB4PSIxMCIgeT0iMTI2IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQiIGZpbGw9IiMwMDAwMDAiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PHJlY3QgeD0iMTAiIHk9IjE0MCIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjOUMyN0IwIiBzdHJva2Utd2lkdGg9IjIiLz48L3N2Zz4=" class="template-thumb">
+                                            </div>
+                                            <div class="template-name">Minimalista</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-label">Color principal:</div>
+                                <div class="form-field">
+                                    <div class="color-options">
+                                        <div class="color-option selected" style="background-color: #9C27B0;"></div>
+                                        <div class="color-option" style="background-color: #3b78c3;"></div>
+                                        <div class="color-option" style="background-color: #1a9967;"></div>
+                                        <div class="color-option" style="background-color: #d16565;"></div>
+                                        <div class="color-option" style="background-color: #F5CB57;"></div>
+                                        <div class="color-option" style="background-color: #607D8B;"></div>
+                                        <div class="color-option" style="background-color: #333333;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-label">Logotipo:</div>
+                                <div class="form-field">
+                                    <input type="file" style="font-size: 11px;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-section-title" style="margin-top: 20px;">OPCIONES DE CONTENIDO</div>
+                        
+                        <div class="form-group">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-toc" checked>
+                                <label class="checkbox-label" for="include-toc">Incluir tabla de contenidos</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-executive" checked>
+                                <label class="checkbox-label" for="include-executive">Incluir resumen ejecutivo</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-methodology" checked>
+                                <label class="checkbox-label" for="include-methodology">Incluir metodología y bases de preparación</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-charts" checked>
+                                <label class="checkbox-label" for="include-charts">Incluir gráficos y visualizaciones</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-appendices" checked>
+                                <label class="checkbox-label" for="include-appendices">Incluir apéndices con datos completos</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-glossary">
+                                <label class="checkbox-label" for="include-glossary">Incluir glosario de términos ESG</label>
+                            </div>
+                            
+                            <div class="form-row" style="margin-top: 15px;">
+                                <div class="form-label">Idioma principal:</div>
+                                <div class="form-field">
+                                    <select class="select-field">
+                                        <option>Español</option>
+                                        <option>English</option>
+                                        <option>Français</option>
+                                        <option>Deutsch</option>
+                                        <option>Italiano</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Document Preview -->
+                    <div class="document-preview">
+                        <div class="document-header">
+                            <div class="document-title">Vista previa del informe generado</div>
+                            <div class="document-actions">
+                                <div class="document-action">Ampliar vista previa</div>
+                                <div class="document-action">Actualizar</div>
+                            </div>
+                        </div>
+                        
+                        <div class="document-content">
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <div style="font-size: 16px; font-weight: 600; color: #9C27B0; margin-bottom: 5px;">INFORME DE SOSTENIBILIDAD 2025</div>
+                                <div style="font-size: 12px; font-weight: 600;">Empresa S.A.</div>
+                                <div style="font-size: 10px; margin-top: 5px;">Conforme a la Directiva CSRD y los Estándares ESRS</div>
+                            </div>
+                            
+                            <div class="document-section-title" style="color: #9C27B0;">ÍNDICE</div>
+                            <div style="font-size: 10px; margin-left: 10px;">
+                                <div>1. Información General.......................................3</div>
+                                <div>2. Modelo de Negocio y Estrategia....................5</div>
+                                <div>3. Análisis de Materialidad................................10</div>
+                                <div>4. Información Ambiental (E)...........................15</div>
+                                <div>5. Información Social (S).................................25</div>
+                                <div>6. Información de Gobernanza (G)..................35</div>
+                                <div>7. Apéndices y Datos Detallados.....................45</div>
+                            </div>
+                            
+                            <div class="document-section-title" style="color: #9C27B0;">1. INFORMACIÓN GENERAL</div>
+                            <div class="document-paragraph">
+                                Empresa S.A. es una compañía del sector manufacturero especializada en la producción de componentes industriales sostenibles. Operamos en 6 países de la Unión Europea con una plantilla total de 2.845 empleados. Este informe de sostenibilidad ha sido elaborado conforme a la Directiva CSRD y los Estándares Europeos de Información de Sostenibilidad (ESRS).
+                            </div>
+                            
+                            <div class="document-paragraph">
+                                El período cubierto por este informe es del 1 de enero al 31 de diciembre de 2025. Los datos han sido recopilados mediante sistemas internos verificados y han sido sometidos a procesos de validación por parte de nuestro equipo de sostenibilidad y auditores externos.
+                            </div>
+                            
+                            <div class="document-section-title" style="color: #9C27B0;">2. MODELO DE NEGOCIO Y ESTRATEGIA</div>
+                            <div class="document-paragraph">
+                                Nuestro modelo de negocio se basa en el diseño, fabricación y distribución de componentes industriales con un enfoque en la reducción del impacto ambiental y la eficiencia energética. La cadena de valor incluye proveedores de materias primas, procesos de fabricación propios, distribución a través de canales directos e indirectos, y servicios de mantenimiento postventa.
+                            </div>
+                            
+                            <div class="document-paragraph">
+                                La estrategia corporativa integra los aspectos ESG como pilares fundamentales del desarrollo empresarial, con objetivos específicos alineados con los ODS y el Acuerdo de París.
+                            </div>
+                            
+                            <div class="document-section-title" style="color: #9C27B0;">3. ANÁLISIS DE MATERIALIDAD</div>
+                            <div class="document-paragraph">
+                                El análisis de doble materialidad realizado identifica los siguientes temas materiales prioritarios:
+                            </div>
+                            
+                            <div class="document-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Tema</th>
+                                            <th>Mat. Impacto</th>
+                                            <th>Mat. Financiera</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>E1: Cambio climático</td>
+                                            <td>8.5</td>
+                                            <td>7.8</td>
+                                            <td>16.3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>S1: Personal propio</td>
+                                            <td>8.2</td>
+                                            <td>6.5</td>
+                                            <td>14.7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>E5: Economía circular</td>
+                                            <td>7.2</td>
+                                            <td>6.8</td>
+                                            <td>14.0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Metadata -->
+                    <div class="form-content">
+                        <div class="form-section-title">METADATOS Y ETIQUETADO XBRL</div>
+                        
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="form-label">Período de reporte:</div>
+                                <div class="form-field">
+                                    <select class="select-field">
+                                        <option>Anual (2025)</option>
+                                        <option>Semestral (H1-2025)</option>
+                                        <option>Trimestral (Q1-2025)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-label">Taxonomía XBRL:</div>
+                                <div class="form-field">
+                                    <select class="select-field">
+                                        <option>ESRS 2023</option>
+                                        <option>IFRS S1/S2</option>
+                                        <option>Combinado (ESRS + IFRS)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-label">Notas adicionales:</div>
+                                <div class="form-field">
+                                    <textarea class="textarea-field" placeholder="Información adicional para los metadatos del informe..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Tip -->
+                    <div class="info-tip">
+                        <div class="info-icon">i</div>
+                        <div class="info-text">El formato XBRL se generará según las especificaciones técnicas de la ESMA (European Securities and Markets Authority) para garantizar el cumplimiento del requisito de formato electrónico único europeo (ESEF). La taxonomía ESRS 2023 incluye todas las etiquetas requeridas para el cumplimiento normativo.</div>
+                    </div>
+                    
+                    <!-- Nav Buttons -->
+                    <div class="nav-buttons">
+                        <div class="nav-button previous">Anterior</div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="nav-button save">Generar Informe</div>
+                            <div class="nav-button next">Siguiente: Exportación</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+            <div>Versión 1.2.4</div>
+        </div>
+    </div>
+</body>
+</html>

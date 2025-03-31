@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - Módulo 4: Análisis de Doble Materialidad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            overflow-x: hidden;
+        }
+        
+        /* Círculos decorativos de fondo */
+        .bg-circle-1 {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background-color: #d3e0d8;
+            opacity: 0.4;
+            z-index: -1;
+        }
+        
+        .bg-circle-2 {
+            position: absolute;
+            bottom: 100px;
+            right: 100px;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background-color: #e3eae6;
+            opacity: 0.5;
+            z-index: -1;
+        }
+        
+        /* Barra superior */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            height: 70px;
+            padding: 0 20px;
+            border-bottom: 1px solid #e0e0e0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+        
+        /* Logo y nombre */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .compass-logo {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            margin-right: 10px;
+        }
+        
+        .app-name {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #333333;
+        }
+        
+        /* Barra de búsqueda */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            margin-left: 40px;
+            width: 300px;
+        }
+        
+        .search-input {
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            padding: 5px;
+            font-size: 12px;
+            color: #999999;
+        }
+        
+        .search-icon {
+            color: #2196f3;
+            cursor: pointer;
+        }
+        
+        /* Iconos de la barra superior */
+        .top-icons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .icon-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        .icon-chat {
+            background-color: #129953;
+            color: white;
+        }
+        
+        .icon-settings, .icon-history {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            color: #666666;
+        }
+        
+        .icon-notifications {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            color: #FFCA28;
+            position: relative;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 16px;
+            height: 16px;
+            background-color: #d16565;
+            border-radius: 50%;
+            color: white;
+            font-size: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .icon-help {
+            background-color: #E91E63;
+            color: white;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+        
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #673AB7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin-right: 10px;
+        }
+        
+        .user-name {
+            font-size: 12px;
+            color: #333333;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        .company-name {
+            font-size: 12px;
+            color: #333333;
+            margin-right: 10px;
+        }
+        
+        /* Barra lateral */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 70px;
+            width: 200px;
+            height: calc(100vh - 70px);
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            z-index: 90;
+        }
+        
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            color: #666666;
+            cursor: pointer;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .menu-item.active {
+            background-color: #129A4B;
+            color: #ffffff;
+        }
+        
+        .menu-item.mod1 {
+            color: #3b78c3;
+        }
+        
+        .menu-item.mod2 {
+            color: #d16565;
+        }
+        
+        .menu-item.mod3 {
+            color: #F5CB57;
+        }
+        
+        .menu-item-text {
+            font-size: 13px;
+            font-weight: 400;
+        }
+        
+        .menu-arrow {
+            font-size: 12px;
+            transform: rotate(90deg);
+        }
+        
+        .menu-arrow.down {
+            transform: rotate(0deg);
+        }
+        
+        .submenu {
+            background-color: #f9f9f9;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .submenu.open {
+            max-height: 200px;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            font-size: 11px;
+            color: #666666;
+            cursor: pointer;
+        }
+        
+        .submenu-item.active {
+            background-color: #ebf2fa;
+            color: #129A4B;
+            font-weight: 600;
+        }
+        
+        .recent-activity {
+            margin-top: auto;
+            background-color: #f0f0f0;
+            padding: 15px;
+        }
+        
+        .activity-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666666;
+            margin-bottom: 10px;
+        }
+        
+        .activity-divider {
+            border-bottom: 1px solid #dddddd;
+            margin: 10px 0;
+        }
+        
+        .activity-item {
+            font-size: 9px;
+            color: #666666;
+            margin: 10px 0;
+        }
+        
+        /* Contenido principal con barra de desplazamiento en la izquierda */
+        .main-content {
+            margin-left: 200px;
+            margin-top: 70px;
+            padding: 20px;
+            height: calc(100vh - 110px);
+            overflow-y: auto;
+            direction: rtl; /* Esto mueve la barra de desplazamiento al lado izquierdo */
+            position: relative;
+        }
+        
+        .content-wrapper {
+            direction: ltr; /* Restauramos la dirección normal del texto */
+        }
+        
+        /* Estilizar la barra de desplazamiento y posicionarla en la parte inferior */
+        .main-content::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        
+        .main-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+            margin-top: calc(100vh - 120px); /* Empuja la barra hacia abajo */
+        }
+        
+        .main-content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+        
+        .main-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Estilos para Firefox */
+        @supports (scrollbar-width: thin) {
+            .main-content {
+                scrollbar-width: thin;
+                scrollbar-color: #888 #f1f1f1;
+            }
+        }
+        
+        .content-container {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .module-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: rgba(18, 154, 75, 0.1);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #333333;
+            margin-left: 30px;
+        }
+        
+        /* Pestañas de navegación */
+        .tab-container {
+            display: flex;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 13px;
+            color: #666666;
+            cursor: pointer;
+        }
+        
+        .tab.active {
+            background-color: rgba(18, 154, 75, 0.1);
+            color: #129A4B;
+            font-weight: 600;
+        }
+        
+        /* Submenu de fases */
+        .subtab-container {
+            display: flex;
+            background-color: #f5f8ff;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .subtab {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 11px;
+            color: #666666;
+            cursor: pointer;
+        }
+        
+        .subtab.active {
+            background-color: rgba(18, 154, 75, 0.2);
+            color: #129A4B;
+            font-weight: 600;
+        }
+        
+        /* Indicador de fase */
+        .phase-indicator {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+        
+        .phase-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #129A4B;
+        }
+        
+        .premium-badge {
+            display: inline-block;
+            background-color: #FFC107;
+            border-radius: 10px;
+            padding: 3px 10px;
+            margin-left: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #333333;
+        }
+        
+        /* Panel informativo */
+        .info-panel {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+        
+        .info-desc {
+            font-size: 11px;
+            color: #555555;
+        }
+        
+        .info-small {
+            font-size: 9px;
+            color: #555555;
+            margin-top: 5px;
+        }
+        
+        /* Formulario */
+        .form-container {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .form-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 15px;
+        }
+        
+        .form-section {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .form-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 11px;
+            color: #333333;
+        }
+        
+        .checkbox-input {
+            margin-right: 10px;
+        }
+        
+        .form-button {
+            background-color: #129A4B;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .form-button-secondary {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            color: #333333;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+        
+        /* Alert panel */
+        .alert-panel {
+            background-color: #f5f8ff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .alert-icon {
+            background-color: #129A4B;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .alert-text {
+            font-size: 9px;
+            color: #555555;
+        }
+        
+        /* Navigation buttons */
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .button-group {
+            display: flex;
+        }
+        
+        .button-prev {
+            background-color: #F5CB57;
+            border: 1px solid #F5CB57;
+            color: #333333;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .button-save {
+            background-color: #129953;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .button-next {
+            background-color: #129A4B;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f5f5f5;
+            padding: 10px 20px;
+            font-size: 9px;
+            color: #666666;
+            display: flex;
+            justify-content: space-between;
+            z-index: 95;
+        }
+        
+        /* Marcador de posición de la barra de desplazamiento */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 40px;
+            left: 210px;
+            background-color: #129A4B;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 3px;
+            font-size: 9px;
+            z-index: 99;
+        }
+
+        /* Para añadir más contenido y forzar la barra de desplazamiento */
+        .empty-space {
+            height: 800px;  /* Espacio adicional para forzar scroll */
+        }
+    </style>
+</head>
+<body>
+    <!-- Círculos decorativos de fondo -->
+    <div class="bg-circle-1"></div>
+    <div class="bg-circle-2"></div>
+    
+    <!-- Barra superior -->
+    <div class="top-bar">
+        <div style="display: flex; align-items: center;">
+            <!-- Logo y nombre de la app -->
+            <div class="logo-container">
+                <div class="compass-logo">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666" transform="rotate(90, 22, 22)"/>
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666" transform="rotate(180, 22, 22)"/>
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666" transform="rotate(270, 22, 22)"/>
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#129A4B" transform="rotate(-45, 22, 22)"/>
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="app-name">ESG Digital Tool</div>
+            </div>
+            
+            <!-- Barra de búsqueda -->
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Buscar en la plataforma...">
+                <div class="search-icon">🔍</div>
+            </div>
+        </div>
+        
+        <!-- Iconos de la barra superior -->
+        <div style="display: flex; align-items: center;">
+            <div class="top-icons">
+                <div class="icon-button icon-chat">💬</div>
+                <div class="icon-button icon-settings">⚙️</div>
+                <div class="icon-button icon-history">🕒</div>
+                <div class="icon-button icon-notifications">
+                    🔔
+                    <div class="notification-badge">3</div>
+                </div>
+                <div class="icon-button icon-help">?</div>
+            </div>
+            
+            <!-- Información del usuario -->
+            <div class="user-info">
+                <div class="user-avatar">U</div>
+                <div class="user-name">Usuario X</div>
+            </div>
+            
+            <!-- Selector de empresa -->
+            <div class="company-selector">
+                <div class="company-name">Empresa S.A.</div>
+                <div>▼</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Barra lateral -->
+    <div class="sidebar">
+        <!-- Módulo 1 (en azul) -->
+        <div class="menu-item mod1">
+            <div class="menu-item-text">1. Datos Base</div>
+            <div class="menu-arrow">▶</div>
+        </div>
+        
+        <!-- Módulo 2 (en rojo) -->
+        <div class="menu-item mod2">
+            <div class="menu-item-text">2. Datos GGII</div>
+            <div class="menu-arrow">▶</div>
+        </div>
+        
+        <!-- Módulo 3 (en amarillo) -->
+        <div class="menu-item mod3">
+            <div class="menu-item-text">3. Integración Externa</div>
+            <div class="menu-arrow">▶</div>
+        </div>
+        
+        <!-- Módulo 4 (activo, en verde) -->
+        <div class="menu-item active">
+            <div class="menu-item-text">4. Análisis DM</div>
+            <div class="menu-arrow down">▼</div>
+        </div>
+        
+        <!-- Submenu del Módulo 4 -->
+        <div class="submenu open">
+            <div class="submenu-item active">► Configuración</div>
+            <div class="submenu-item">► Impactos</div>
+            <div class="submenu-item">► Riesgos/Oportunidades</div>
+            <div class="submenu-item">► Matriz DM</div>
+        </div>
+        
+        <!-- Módulo 5 -->
+        <div class="menu-item">
+            <div class="menu-item-text">5. Datapoints</div>
+            <div class="menu-arrow">▶</div>
+        </div>
+        
+        <!-- Módulo 6 -->
+        <div class="menu-item">
+            <div class="menu-item-text">6. Reporting</div>
+            <div class="menu-arrow">▶</div>
+        </div>
+        
+        <!-- Actividad reciente -->
+        <div class="recent-activity">
+            <div class="activity-title">ACTIVIDAD RECIENTE</div>
+            <div class="activity-divider"></div>
+            <div class="activity-item">M1_I01 completado - Hace 30m</div>
+            <div class="activity-item">M1_I02 completado - Hace 10m</div>
+            <div class="activity-item">Conexión API Bloomberg - Hace 3h</div>
+        </div>
+    </div>
+    
+    <!-- Indicador de barra de desplazamiento -->
+    <div class="scroll-indicator">Desplaza hacia abajo ▼</div>
+    
+    <!-- Contenido principal con barra de desplazamiento en la izquierda (abajo) -->
+    <div class="main-content">
+        <div class="content-wrapper">
+            <div class="content-container">
+                <!-- Cabecera del módulo -->
+                <div class="module-header">
+                    <div class="module-title">Módulo 4: Análisis de Doble Materialidad</div>
+                </div>
+                
+                <!-- Pestañas de navegación -->
+                <div class="tab-container">
+                    <div class="tab">CONTEXTO</div>
+                    <div class="tab active">CONFIGURACIÓN DEL ANÁLISIS</div>
+                    <div class="tab">IMPACTOS</div>
+                    <div class="tab">RIESGOS Y OPORTUNIDADES</div>
+                </div>
+                
+                <!-- Submenu de fases -->
+                <div class="subtab-container">
+                    <div class="subtab active">FASE 1</div>
+                    <div class="subtab">FASE 2</div>
+                    <div class="subtab">FASE 3</div>
+                    <div class="subtab">FASE 4</div>
+                </div>
+                
+                <!-- Indicador de fase -->
+                <div class="phase-indicator">
+                    <div class="phase-text">Fase 1: Configuración del Análisis de Materialidad</div>
+                    <span class="premium-badge">PREMIUM</span>
+                </div>
+                
+                <!-- Panel informativo -->
+                <div class="info-panel">
+                    <div class="info-title">Configuración del Análisis de Materialidad (M4_I01):</div>
+                    <div class="info-desc">Esta interfaz permite definir los parámetros generales y conectar con los datos de los módulos anteriores para preparar el análisis de doble materialidad.</div>
+                    <div class="info-small">Para un análisis completo, asegúrese de haber completado los módulos de Cadena de Valor, Grupos de Interés y normativa aplicable.</div>
+                </div>
+                
+                <!-- Formulario principal -->
+                <div class="form-container">
+                    <div class="form-title">1. PARÁMETROS GENERALES DEL ANÁLISIS</div>
+                    
+                    <!-- Sección 1 -->
+                    <div class="form-section">
+                        <div class="form-label">Seleccione las fuentes de datos para el análisis:</div>
+                        
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Datos de Cadena de Valor (Módulo 1)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Evaluación de Grupos de Interés (Módulo 2)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Normativa aplicable (Módulo 3)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input">
+                                Datos sectoriales externos (Versión Premium)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección 2 -->
+                    <div class="form-section">
+                        <div class="form-label">Ámbitos ESG a incluir en el análisis:</div>
+                        
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Ambiental (E)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Social (S)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Gobernanza (G)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección 3 -->
+                    <div class="form-section">
+                        <div class="form-label">Horizontes temporales a considerar:</div>
+                        
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Corto plazo (periodo actual de estados financieros)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Medio plazo (hasta 5 años)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                Largo plazo (más de 5 años)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección 4 -->
+                    <div class="form-title" style="margin-top: 20px;">2. TEMAS ESRS DE REFERENCIA</div>
+                    
+                    <div class="form-section">
+                        <div class="form-label">Seleccione los temas ESRS de la NEIS 1 que desea incluir:</div>
+                        
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                E1: Cambio climático
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                E2: Contaminación
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                E3: Agua y recursos marinos
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                E4: Biodiversidad y ecosistemas
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                E5: Economía circular
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                S1: Personal propio
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                S2: Trabajadores de la cadena de valor
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                S3: Colectivos afectados
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                S4: Consumidores y usuarios finales
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" checked>
+                                G1: Conducta empresarial
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección 5 -->
+                    <div class="form-section">
+                        <div class="form-label">Temas adicionales específicos de la empresa:</div>
+                        <textarea class="form-input" placeholder="Indique si existen temas específicos de su empresa que no estén contemplados en los estándares ESRS pero que considere relevantes para el análisis..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Panel de información normativa -->
+                <div class="alert-panel">
+                    <div class="alert-icon">i</div>
+                    <div class="alert-text">El análisis de doble materialidad debe realizarse conforme a la Guía IG 1 de EFRAG, considerando tanto la materialidad de impacto (sobre medioambiente y sociedad) como la materialidad financiera (sobre la empresa).</div>
+                </div>
+                
+                <!-- Botones de navegación -->
+                <div class="button-container">
+                    <div class="button-group">
+                        <button class="button-prev">Anterior</button>
+                        <button class="button-save">Guardar</button>
+                    </div>
+                    <div>
+                        <button class="button-next">Siguiente (Identificación de IRO)</button>
+                    </div>
+                </div>
+                
+                <!-- Contenido adicional para forzar el scroll -->
+                <div class="empty-space"></div>
+                
+                <!-- Sección de información adicional -->
+                <div class="info-panel">
+                    <div class="info-title">Consideraciones sobre la matriz de doble materialidad:</div>
+                    <div class="info-desc">
+                        La matriz de doble materialidad es una herramienta fundamental para identificar y priorizar los aspectos ESG más relevantes para su organización, considerando tanto el impacto de la empresa en el entorno como los efectos del entorno sobre la empresa.
+                    </div>
+                    <div class="info-small">
+                        Recuerde que es necesario evaluar tanto los impactos actuales como los potenciales, y considerar diferentes horizontes temporales en su análisis para obtener una visión completa.
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-label">Metodología de evaluación:</div>
+                    <p style="font-size: 11px; color: #555555;">
+                        Para cada tema material, se evaluará tanto su materialidad de impacto (efectos de la empresa sobre el medio ambiente y la sociedad) como su materialidad financiera (efectos de los factores ESG sobre el rendimiento financiero de la empresa).
+                    </p>
+                    <p style="font-size: 11px; color: #555555;">
+                        Esta evaluación permitirá clasificar los temas en diferentes cuadrantes de relevancia estratégica, facilitando la toma de decisiones y el establecimiento de prioridades en la gestión ESG.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+        <div>Versión 1.2.4</div>
+    </div>
+</body>
+</html>

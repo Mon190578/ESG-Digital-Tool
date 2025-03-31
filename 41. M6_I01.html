@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - M6_I01 Revisión del Informe Previo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        /* Header */
+        .top-bar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            height: 30px;
+        }
+        
+        .search-text {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 71px;
+            height: calc(100vh - 71px);
+            overflow-y: auto;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        /* Module Colors */
+        .menu-item.module1 {
+            color: #3b78c3; /* Azul para Módulo 1 */
+        }
+        
+        .menu-item.module2 {
+            color: #d16565; /* Rojo para Módulo 2 */
+        }
+        
+        .menu-item.module3 {
+            color: #F5CB57; /* Amarillo para Módulo 3 */
+        }
+        
+        .menu-item.module4 {
+            color: #1a9967; /* Verde para Módulo 4 */
+        }
+        
+        .menu-item.module5 {
+            color: #8E44AD; /* Púrpura para Módulo 5 */
+        }
+        
+        .menu-item.module6 {
+            color: #9C27B0; /* Morado para Módulo 6 */
+        }
+        
+        .menu-item.active {
+            background-color: #9C27B0;
+            color: #fff !important;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .submenu-item.active {
+            background-color: #f5e9f7;
+            font-weight: 600;
+            color: #9C27B0;
+        }
+        
+        .activity-panel {
+            background: #f0f0f0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+            margin-top: auto;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-item {
+            margin-bottom: 5px;
+            font-size: 9px;
+        }
+        
+        /* Main panel */
+        .main-panel-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #9C27B0 #f0f0f0;
+        }
+        
+        /* Estilizar la barra de desplazamiento para Chrome, Edge, y Safari */
+        .main-panel-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .main-panel-container::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        
+        .main-panel-container::-webkit-scrollbar-thumb {
+            background-color: #9C27B0;
+            border-radius: 10px;
+            border: 2px solid #f0f0f0;
+        }
+        
+        .main-panel {
+            padding: 10px 20px;
+        }
+        
+        .content-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-header {
+            background-color: rgba(156, 39, 176, 0.1);
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background-color: rgba(156, 39, 176, 0.1);
+            font-weight: 600;
+            color: #9C27B0;
+        }
+        
+        /* Phase indicator */
+        .phase-indicator {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #9C27B0;
+            font-weight: 600;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        /* Info panel */
+        .info-panel {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-desc {
+            color: #555;
+        }
+        
+        .info-help {
+            font-size: 9px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        /* Form content */
+        .form-content {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .form-label {
+            font-size: 11px;
+            color: #333;
+            width: 150px;
+            padding-top: 8px;
+        }
+        
+        .form-field {
+            flex-grow: 1;
+        }
+        
+        .textarea-field {
+            width: 100%;
+            height: 60px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 8px;
+            font-size: 11px;
+            resize: vertical;
+        }
+        
+        .select-field {
+            width: 100%;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 0 8px;
+            font-size: 11px;
+            background-color: white;
+        }
+        
+        .radio-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            color: #333;
+        }
+        
+        .radio-option input {
+            margin-right: 5px;
+        }
+        
+        .required-mark {
+            color: #d16565;
+            margin-left: 3px;
+        }
+        
+        .info-tip {
+            background-color: #f5f8ff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #9C27B0;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        
+        .info-text {
+            font-size: 9px;
+            color: #555;
+        }
+        
+        /* Review elements */
+        .summary-box {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .summary-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .summary-status {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+        
+        .status-complete {
+            background-color: #e6f7ef;
+            color: #1a9967;
+        }
+        
+        .status-warning {
+            background-color: #fff8e6;
+            color: #f5a623;
+        }
+        
+        .status-error {
+            background-color: #ffeaea;
+            color: #d16565;
+        }
+        
+        .summary-details {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .validation-items {
+            border-top: 1px dashed #e0e0e0;
+            padding-top: 10px;
+        }
+        
+        .validation-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            font-size: 10px;
+        }
+        
+        .validation-icon {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        
+        .validation-icon.success {
+            background-color: #1a9967;
+            color: white;
+        }
+        
+        .validation-icon.warning {
+            background-color: #f5a623;
+            color: white;
+        }
+        
+        .validation-icon.error {
+            background-color: #d16565;
+            color: white;
+        }
+        
+        .validation-text {
+            flex-grow: 1;
+        }
+        
+        .validation-action {
+            margin-left: 10px;
+            color: #9C27B0;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .section-tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 15px;
+        }
+        
+        .section-tab {
+            padding: 8px 15px;
+            font-size: 10px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .section-tab.active {
+            color: #9C27B0;
+            font-weight: 600;
+            border-bottom: 2px solid #9C27B0;
+        }
+        
+        .document-preview {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .document-header {
+            background-color: #f5f5f5;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .document-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .document-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .document-action {
+            font-size: 9px;
+            color: #9C27B0;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .document-content {
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 10px;
+            color: #333;
+            background-color: white;
+            line-height: 1.5;
+        }
+        
+        .document-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            color: #333;
+        }
+        
+        .document-paragraph {
+            margin-bottom: 10px;
+        }
+        
+        .document-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 9px;
+        }
+        
+        .document-table th,
+        .document-table td {
+            border: 1px solid #e0e0e0;
+            padding: 6px 8px;
+        }
+        
+        .document-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            text-align: left;
+        }
+        
+        .document-comment {
+            background-color: #fff8e6;
+            border-left: 3px solid #f5a623;
+            padding: 8px;
+            margin: 8px 0;
+            font-size: 9px;
+            color: #666;
+        }
+        
+        .error-highlight {
+            background-color: #ffeaea;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .checkbox-container input {
+            margin-right: 8px;
+        }
+        
+        .checkbox-label {
+            font-size: 11px;
+            color: #333;
+        }
+        
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .nav-button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-button.previous {
+            background-color: #F5CB57;
+            color: #333;
+        }
+        
+        .nav-button.save {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        .nav-button.next {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        /* Footer */
+        .footer {
+            height: 30px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 9px;
+            color: #666;
+            position: sticky;
+            bottom: 0;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg width="30" height="30" viewBox="0 0 44 44">
+                        <!-- Círculo exterior -->
+                        <circle cx="22" cy="22" r="20" fill="#e9efe2" stroke="#9a8f8f" stroke-width="1"/>
+                        
+                        <!-- Puntas de la brújula -->
+                        <path d="M22,2 L24,5 L22,7 L20,5 Z" fill="#666666"/>
+                        <path d="M42,22 L39,24 L37,22 L39,20 Z" fill="#666666"/>
+                        <path d="M22,42 L20,39 L22,37 L24,39 Z" fill="#666666"/>
+                        <path d="M2,22 L5,20 L7,22 L5,24 Z" fill="#666666"/>
+                        
+                        <!-- Aguja -->
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#9C27B0" transform="rotate(-45 22 22)"/>
+                        
+                        <!-- Punto central -->
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+            
+            <div class="search-bar">
+                <div class="search-text">Buscar en la plataforma...</div>
+                <div class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                        <circle cx="7" cy="7" r="7" fill="#2196f3" stroke="#2196f3" stroke-width="1"/>
+                        <line x1="11" y1="11" x2="16" y2="16" stroke="#2196f3" stroke-width="2"/>
+                        <circle cx="7" cy="7" r="4" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="icon-button" style="background-color: #9C27B0;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                        <circle cx="4" cy="7" r="2" />
+                        <circle cx="7" cy="7" r="2" />
+                        <circle cx="10" cy="7" r="2" />
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#888888">
+                        <rect x="3" y="3" width="8" height="8" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="6" x2="9" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#666666">
+                        <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="7" y2="4" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="9" y2="9" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5; position: relative;">
+                    <svg width="14" height="14" viewBox="0 0 14 14">
+                        <path d="M3,11 C3,11 2,7 2,3 C2,-1 5,-3 7,-3 C9,-3 12,-1 12,3 C12,7 11,11 11,11 Z" fill="#FFCA28" stroke="#FFCA28" stroke-width="1" transform="translate(0, 3)"/>
+                        <circle cx="7" cy="12" r="2" fill="#FFCA28"/>
+                    </svg>
+                    <div style="position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background-color: #d16565; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold;">3</div>
+                </div>
+                
+                <div class="icon-button" style="background-color: #E91E63; color: white; font-weight: bold;">?</div>
+                
+                <div style="display: flex; align-items: center;">
+                    <div class="icon-button" style="background-color: #673AB7; color: white;">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                            <circle cx="7" cy="5" r="3"/>
+                            <path d="M2,14 C2,9 12,9 12,14" fill="white" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span style="margin-left: 8px; font-size: 12px;">Usuario X</span>
+                </div>
+                
+                <div class="company-selector">
+                    <span style="font-size: 12px;">Empresa S.A.</span>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#666" style="margin-left: 8px;">
+                        <polygon points="5,8 0,3 10,3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="menu-item module1">1. Datos Base</div>
+                <div class="menu-item module2">2. Datos GGII</div>
+                <div class="menu-item module3">3. Integración Externa</div>
+                <div class="menu-item module4">4. Análisis DM</div>
+                <div class="menu-item module5">5. Datapoints</div>
+                <div class="menu-item module6 active">6. Reporting</div>
+                <div class="submenu-item active">► Revisión del Informe</div>
+                <div class="submenu-item">► Validación de Coherencia</div>
+                <div class="submenu-item">► Generación Final</div>
+                <div class="submenu-item">► Exportación</div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <div class="activity-panel">
+                    <div class="activity-title">ACTIVIDAD RECIENTE</div>
+                    <div class="activity-item">M5_I06 completado - Hace 15m</div>
+                    <div class="activity-item">M6_I01 en progreso - Hace 3m</div>
+                    <div class="activity-item">Datapoints validados: 84/84 - Hace 20m</div>
+                </div>
+            </div>
+            
+            <!-- Main Content with scroll -->
+            <div class="main-panel-container">
+                <div class="main-panel">
+                    <div class="content-box">
+                        <div class="module-header">
+                            <div class="module-title">Módulo 6: Reporting</div>
+                        </div>
+                        
+                        <!-- Tabs -->
+                        <div class="tabs">
+                            <div class="tab active">REVISIÓN DEL INFORME</div>
+                            <div class="tab">VALIDACIÓN DE COHERENCIA</div>
+                            <div class="tab">GENERACIÓN FINAL</div>
+                            <div class="tab">EXPORTACIÓN</div>
+                        </div>
+                        
+                        <!-- Phase Indicator -->
+                        <div class="phase-indicator">
+                            Revisión del Informe Previo - Validación de Estructura y Contenido
+                            <span class="premium-badge">PREMIUM</span>
+                        </div>
+                        
+                        <!-- Info Panel -->
+                        <div class="info-panel">
+                            <div class="info-title">M6_I01: Revisión del Informe Previo: </div>
+                            <div class="info-desc">Esta interfaz permite revisar el borrador del informe CSRD y verificar su estructura, contenido y coherencia antes de su generación final.</div>
+                            <div class="info-help">El sistema ha identificado elementos que requieren atención. Revise las alertas y realice las correcciones necesarias para asegurar la conformidad con los estándares ESRS.</div>
+                        </div>
+                        
+                        <!-- Validation Summary -->
+                        <div class="form-content">
+                            <div class="form-section-title">RESUMEN DE VALIDACIÓN</div>
+                            
+                            <div class="summary-box">
+                                <div class="summary-header">
+                                    </div>
+                                    <div class="validation-item">
+                                        <div class="validation-icon warning">!</div>
+                                        <div class="validation-text">Falta descripción detallada de riesgos climáticos según ESRS E1-17.</div>
+                                        <div class="validation-action">Completar</div>
+                                    </div>
+                                    <div class="validation-item">
+                                        <div class="validation-icon error">✕</div>
+                                        <div class="validation-text">No se ha aportado referencia a metodologías de cálculo de huella de carbono en sección E1 (requerimiento obligatorio).</div>
+                                        <div class="validation-action">Corregir</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="section-tabs">
+                                <div class="section-tab active">Todos (5)</div>
+                                <div class="section-tab">Error (1)</div>
+                                <div class="section-tab">Advertencia (2)</div>
+                                <div class="section-tab">Correcto (2)</div>
+                            </div>
+                            
+                            <div class="summary-box">
+                                <div class="summary-header">
+                                    <div class="summary-title">ESRS 1: Información General</div>
+                                    <div class="summary-status status-complete">Completado</div>
+                                </div>
+                                <div class="validation-items">
+                                    <div class="validation-item">
+                                        <div class="validation-icon success">✓</div>
+                                        <div class="validation-text">Definición correcta del modelo de negocio según ESRS 1 BP-1.</div>
+                                    </div>
+                                    <div class="validation-item">
+                                        <div class="validation-icon success">✓</div>
+                                        <div class="validation-text">Justificación de doble materialidad conforme a ESRS 1 IRO-1.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-box">
+                                <div class="summary-header">
+                                    <div class="summary-title">ESRS E1: Cambio Climático</div>
+                                    <div class="summary-status status-error">Corrección necesaria</div>
+                                </div>
+                                <div class="validation-items">
+                                    <div class="validation-item">
+                                        <div class="validation-icon error">✕</div>
+                                        <div class="validation-text">No se ha aportado referencia a metodologías de cálculo de huella de carbono (requerimiento obligatorio).</div>
+                                        <div class="validation-action">Corregir</div>
+                                    </div>
+                                    <div class="validation-item">
+                                        <div class="validation-icon warning">!</div>
+                                        <div class="validation-text">Inconsistencia entre dato de emisiones GEI en sección E1 (15.056,82 tCO₂e) y referencia en texto narrativo (15.562 tCO₂e).</div>
+                                        <div class="validation-action">Resolver</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-box">
+                                <div class="summary-header">
+                                    <div class="summary-title">ESRS S1: Personal Propio</div>
+                                    <div class="summary-status status-warning">Requiere revisión</div>
+                                </div>
+                                <div class="validation-items">
+                                    <div class="validation-item">
+                                        <div class="validation-icon success">✓</div>
+                                        <div class="validation-text">Datos de diversidad e igualdad conformes a ESRS S1-5.</div>
+                                    </div>
+                                    <div class="validation-item">
+                                        <div class="validation-icon warning">!</div>
+                                        <div class="validation-text">Falta análisis de brecha salarial por categoría profesional según ESRS S1-7.</div>
+                                        <div class="validation-action">Completar</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Document Preview -->
+                        <div class="document-preview">
+                            <div class="document-header">
+                                <div class="document-title">Vista previa del informe CSRD</div>
+                                <div class="document-actions">
+                                    <div class="document-action">Ver en pantalla completa</div>
+                                    <div class="document-action">Mostrar tabla de contenidos</div>
+                                </div>
+                            </div>
+                            
+                            <div class="document-content">
+                                <div class="document-section-title">1. Información General</div>
+                                <div class="document-paragraph">
+                                    Empresa S.A. es una compañía del sector manufacturero especializada en la producción de componentes industriales sostenibles. Operamos en 6 países de la Unión Europea con una plantilla total de 2.845 empleados. Este informe de sostenibilidad ha sido elaborado conforme a la Directiva CSRD y los Estándares Europeos de Información de Sostenibilidad (ESRS).
+                                </div>
+                                
+                                <div class="document-section-title">2. Modelo de Negocio y Estrategia</div>
+                                <div class="document-paragraph">
+                                    Nuestro modelo de negocio se basa en el diseño, fabricación y distribución de componentes industriales con un enfoque en la reducción del impacto ambiental y la eficiencia energética. La cadena de valor incluye proveedores de materias primas, procesos de fabricación propios, distribución a través de canales directos e indirectos, y servicios de mantenimiento postventa.
+                                </div>
+                                
+                                <div class="document-comment">
+                                    Validación: Esta sección cumple con ESRS 1 BP-1 sobre descripción del modelo de negocio. Se incluye información sobre actividades, mercados y posición en la cadena de valor.
+                                </div>
+                                
+                                <div class="document-section-title">3. Análisis de Materialidad</div>
+                                <div class="document-paragraph">
+                                    El análisis de doble materialidad realizado identifica los siguientes temas materiales prioritarios:
+                                </div>
+                                
+                                <div class="document-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Tema</th>
+                                                <th>Materialidad de Impacto</th>
+                                                <th>Materialidad Financiera</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>E1: Cambio climático</td>
+                                                <td>8.5</td>
+                                                <td>7.8</td>
+                                                <td>16.3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>S1: Personal propio</td>
+                                                <td>8.2</td>
+                                                <td>6.5</td>
+                                                <td>14.7</td>
+                                            </tr>
+                                            <tr>
+                                                <td>E5: Economía circular</td>
+                                                <td>7.2</td>
+                                                <td>6.8</td>
+                                                <td>14.0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="document-section-title">4. Información Ambiental (E)</div>
+                                <div class="document-paragraph">
+                                    <b>E1: Cambio climático</b><br>
+                                    En 2025, nuestras emisiones totales de gases de efecto invernadero fueron de <span class="error-highlight">15.562 tCO₂e</span>, lo que representa una reducción del 8% respecto a 2024. Las emisiones de alcance 1 y 2 representan el 65% del total, mientras que las de alcance 3 suponen el 35% restante.
+                                </div>
+                                
+                                <div class="document-comment">
+                                    Error: Inconsistencia detectada. El valor correcto según los datapoints validados es 15.056,82 tCO₂e. Además, falta incluir la metodología de cálculo utilizada (GHG Protocol, ISO 14064, etc.) según requisito ESRS E1-9.
+                                </div>
+                                
+                                <div class="document-paragraph">
+                                    Nuestro objetivo es reducir las emisiones absolutas en un 30% para 2030 y alcanzar la neutralidad climática antes de 2050. Para ello, hemos implementado iniciativas de eficiencia energética y aumento del uso de energías renovables.
+                                </div>
+                                
+                                <div class="document-section-title">5. Información Social (S)</div>
+                                <div class="document-paragraph">
+                                    <b>S1: Personal propio</b><br>
+                                    La composición de nuestra plantilla (2.845 empleados) refleja nuestro compromiso con la diversidad e inclusión. El 43% son mujeres y el 28% ocupan puestos directivos. La brecha salarial de género es del 12,3%, que estamos trabajando activamente para reducir.
+                                </div>
+                                
+                                <div class="document-comment">
+                                    Advertencia: Se requiere añadir análisis de brecha salarial por categoría profesional según ESRS S1-7, no solo el dato global.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Final checks -->
+                        <div class="form-content">
+                            <div class="form-section-title">VERIFICACIÓN FINAL</div>
+                            
+                            <div class="form-group">
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="check-complete" checked>
+                                    <label class="checkbox-label" for="check-complete">He revisado todas las alertas y comentarios identificados por el sistema</label>
+                                </div>
+                                
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="check-structure" checked>
+                                    <label class="checkbox-label" for="check-structure">La estructura del informe es conforme a los estándares ESRS requeridos</label>
+                                </div>
+                                
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="check-datapoints">
+                                    <label class="checkbox-label" for="check-datapoints">Todos los datapoints están correctamente referenciados en el texto narrativo</label>
+                                </div>
+                                
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="check-consistency">
+                                    <label class="checkbox-label" for="check-consistency">He verificado la coherencia entre cifras y textos en todo el informe</label>
+                                </div>
+                                
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="check-formatting">
+                                    <label class="checkbox-label" for="check-formatting">El formato y estilo del documento cumplen con los estándares de la empresa</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Info Tip -->
+                        <div class="info-tip">
+                            <div class="info-icon">i</div>
+                            <div class="info-text">Según el Artículo 19a y 29a de la Directiva CSRD, la información de sostenibilidad debe ser coherente y verificable. El sistema ha identificado elementos que podrían afectar la conformidad del informe con estos requisitos. Corrija estos elementos antes de generar la versión final.</div>
+                        </div>
+                        
+                        <!-- Nav Buttons -->
+                        <div class="nav-buttons">
+                            <div class="nav-button previous">Anterior</div>
+                            <div style="display: flex; gap: 10px;">
+                                <div class="nav-button save">Guardar Revisión</div>
+                                <div class="nav-button next">Siguiente: Validación</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+            <div>Versión 1.2.4</div>
+        </div>
+    </div>
+</body>
+</html><div class="summary-title">Estado general del informe</div>
+                                    <div class="summary-status status-warning">Requiere atención</div>
+                                </div>
+                                <div class="summary-details">
+                                    El informe cumple con los requisitos estructurales de la CSRD, pero presenta algunas inconsistencias y elementos pendientes que requieren revisión.
+                                </div>
+                                
+                                <div class="validation-items">
+                                    <div class="validation-item">
+                                        <div class="validation-icon success">✓</div>
+                                        <div class="validation-text">Estructura general del informe conforme a ESRS.</div>
+                                    </div>
+                                    <div class="validation-item">
+                                        <div class="validation-icon success">✓</div>
+                                        <div class="validation-text">Datapoints necesarios para cumplimiento CSRD incorporados (84/84).</div>
+                                    </div>
+                                    <div class="validation-item">
+                                        <div class="validation-icon warning">!</div>
+                                        <div class="validation-text">Inconsistencia entre dato de emisiones GEI en sección E1 (15.056,82 tCO₂e) y referencia en texto narrativo (15.562 tCO₂e).</div>
+                                        <div class="validation-action">Resolver</div>
+                                    
