@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - M4_I05 Calificación Financiera de IRO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .top-bar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            height: 30px;
+        }
+        
+        .search-text {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .search-icon {
+            color: #2196f3;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0 10px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .dropdown-icon {
+            margin-left: 5px;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid #333;
+        }
+        
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        /* Module Colors */
+        .menu-item.module1 {
+            color: #3b78c3; /* Azul para Módulo 1 */
+        }
+        
+        .menu-item.module2 {
+            color: #d16565; /* Rojo para Módulo 2 */
+        }
+        
+        .menu-item.module3 {
+            color: #F5CB57; /* Amarillo para Módulo 3 */
+        }
+        
+        .menu-item.module4 {
+            color: #1a9967; /* Verde para Módulo 4 */
+        }
+        
+        .menu-item.active {
+            background-color: #1a9967;
+            color: #fff !important;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .submenu-item.active {
+            background-color: #ebf9f2;
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        .activity-panel {
+            background: #f0f0f0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-item {
+            margin-bottom: 5px;
+            font-size: 9px;
+        }
+        
+        /* Main panel */
+        .main-panel {
+            flex-grow: 1;
+            padding: 10px 20px;
+        }
+        
+        .content-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-header {
+            background-color: rgba(26, 153, 103, 0.1);
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background-color: rgba(26, 153, 103, 0.1);
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        .subtabs {
+            display: flex;
+            background-color: #f5f8ff;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .subtab {
+            padding: 8px 15px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 11px;
+            flex: 1;
+        }
+        
+        .subtab.active {
+            background-color: rgba(26, 153, 103, 0.2);
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        /* Phase indicator */
+        .phase-indicator {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #1a9967;
+            font-weight: 600;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        /* Info panel */
+        .info-panel {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-desc {
+            color: #555;
+        }
+        
+        .info-help {
+            font-size: 9px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        /* Form content */
+        .form-content {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .form-label {
+            font-size: 11px;
+            color: #333;
+            width: 150px;
+            padding-top: 8px;
+        }
+        
+        .form-field {
+            flex-grow: 1;
+        }
+        
+        .textarea-field {
+            width: 100%;
+            height: 60px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 8px;
+            font-size: 11px;
+            resize: vertical;
+        }
+        
+        .select-field {
+            width: 100%;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 0 8px;
+            font-size: 11px;
+            background-color: white;
+        }
+        
+        .radio-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            color: #333;
+        }
+        
+        .radio-option input {
+            margin-right: 5px;
+        }
+        
+        .checkbox-group {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-label {
+            font-size: 11px;
+            color: #333;
+            margin-left: 5px;
+        }
+        
+        .required-mark {
+            color: #d16565;
+            margin-left: 3px;
+        }
+        
+        .info-tip {
+            background-color: #f5f8ff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #1a9967;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        
+        .info-text {
+            font-size: 9px;
+            color: #555;
+        }
+        
+        /* Rating Matrix */
+        .rating-matrix {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .rating-matrix th, .rating-matrix td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .rating-matrix th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+        
+        .rating-matrix td.param-label {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            text-align: left;
+            width: 150px;
+        }
+        
+        .rating-matrix td.level-5 {
+            background-color: #ffdddd;
+        }
+        
+        .rating-matrix td.level-4 {
+            background-color: #ffe9dd;
+        }
+        
+        .rating-matrix td.level-3 {
+            background-color: #fff6dd;
+        }
+        
+        .rating-matrix td.level-2 {
+            background-color: #f1f7e2;
+        }
+        
+        .rating-matrix td.level-1 {
+            background-color: #e2f7e8;
+        }
+
+        .rating-matrix td.selected {
+            position: relative;
+        }
+
+        .rating-matrix td.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            font-size: 14px;
+            color: #1a9967;
+        }
+        
+        .matrix-section {
+            margin-bottom: 25px;
+        }
+        
+        .matrix-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1a9967;
+        }
+        
+        .impact-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        
+        .impact-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .impact-details {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .impact-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            margin-right: 5px;
+            font-weight: 500;
+        }
+        
+        .tag-environmental {
+            background-color: #e2f7e8;
+            color: #1a9967;
+        }
+        
+        .tag-risk {
+            background-color: #ffdddd;
+            color: #d16565;
+        }
+        
+        .tag-opportunity {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .financial-impact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .financial-impact-item {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .financial-impact-title {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .impact-checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .calculation-box {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 11px;
+        }
+        
+        .calculation-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .calculation-label {
+            font-weight: 600;
+        }
+        
+        .calculation-value {
+            font-weight: 400;
+        }
+        
+        .final-score {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #d0e3ff;
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .nav-button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-button.previous {
+            background-color: #F5CB57;
+            color: #333;
+        }
+        
+        .nav-button.save {
+            background-color: #129953;
+            color: white;
+        }
+        
+        .nav-button.next {
+            background-color: #1a9967;
+            color: white;
+        }
+        
+        /* Footer */
+        .footer {
+            height: 30px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 9px;
+            color: #666;
+        }
+        
+        /* Notification counter */
+        .notification-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 16px;
+            height: 16px;
+            background-color: #d16565;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <!-- Círculo exterior -->
+                        <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                        
+                        <!-- Puntas de la brújula -->
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                        <path d="M44,22 L39,25 L37,22 L39,19 Z" fill="#666666"/>
+                        <path d="M22,44 L19,39 L22,37 L25,39 Z" fill="#666666"/>
+                        <path d="M0,22 L5,19 L7,22 L5,25 Z" fill="#666666"/>
+                        
+                        <!-- Aguja -->
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#1a9967" transform="rotate(-45 22 22)"/>
+                        
+                        <!-- Punto central -->
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+            
+            <div class="search-bar">
+                <div class="search-text">Buscar en la plataforma...</div>
+                <div class="search-icon">🔍</div>
+            </div>
+            
+            <div class="user-controls">
+                <!-- Chat/Asistente -->
+                <div class="icon-button" style="background-color: #129953;">💬</div>
+                
+                <!-- Configuración -->
+                <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⚙️</div>
+                
+                <!-- Historial -->
+                <div class="icon-button" style="background-color: #f5f5f5; color: #666;">🕒</div>
+                
+                <!-- Notificaciones -->
+                <div class="icon-button" style="background-color: #f5f5f5; color: #666; position: relative;">
+                    🔔
+                    <div class="notification-counter">3</div>
+                </div>
+                
+                <!-- Ayuda -->
+                <div class="icon-button" style="background-color: #E91E63;">?</div>
+                
+                <!-- Usuario -->
+                <div class="icon-button" style="background-color: #673AB7;">U</div>
+                <span style="font-size: 12px;">Usuario X</span>
+                
+                <!-- Selector de empresa -->
+                <div class="company-selector">
+                    Empresa S.A.
+                    <div class="dropdown-icon"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="menu-item module1">1. Datos Base</div>
+                <div class="menu-item module2">2. Datos GGII</div>
+                <div class="menu-item module3">3. Integración Externa</div>
+                <div class="menu-item module4 active">4. Análisis DM</div>
+                <div class="submenu-item">► Comprensión del Contexto</div>
+                <div class="submenu-item">► Configuración del Análisis</div>
+                <div class="submenu-item">► Impactos</div>
+                <div class="submenu-item active">► Riesgos y Oportunidades</div>
+                <div class="submenu-item">► Matriz de Materialidad</div>
+                <div class="menu-item">5. Datapoints</div>
+                <div class="menu-item">6. Reporting</div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <div class="activity-panel">
+                    <div class="activity-title">ACTIVIDAD RECIENTE</div>
+                    <div class="activity-item">M4_I04 completado - Hace 15m</div>
+                    <div class="activity-item">M4_I05 en progreso - Hace 2m</div>
+                    <div class="activity-item">Impactos evaluados: 7/10 - Hace 20m</div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-panel">
+                <div class="content-box">
+                    <div class="module-header">
+                        <div class="module-title">Módulo 4: Análisis de Doble Materialidad</div>
+                    </div>
+                    
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab">COMPRENSIÓN DEL CONTEXTO</div>
+                        <div class="tab">CONFIGURACIÓN DEL ANÁLISIS</div>
+                        <div class="tab">IMPACTOS</div>
+                        <div class="tab active">RIESGOS Y OPORTUNIDADES</div>
+                    </div>
+                    
+                    <!-- Subtabs -->
+                    <div class="subtabs">
+                        <div class="subtab">FASE 1</div>
+                        <div class="subtab">FASE 2</div>
+                        <div class="subtab active">FASE 3</div>
+                        <div class="subtab">FASE 4</div>
+                    </div>
+                    
+                    <!-- Phase Indicator -->
+                    <div class="phase-indicator">
+                        Fase 3: Calificación Financiera de Riesgos y Oportunidades
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                    
+                    <!-- Info Panel -->
+                    <div class="info-panel">
+                        <div class="info-title">M4_I05: Calificación Financiera de IRO: </div>
+                        <div class="info-desc">Evaluación detallada del nivel de materialidad financiera de los riesgos y oportunidades previamente identificados.</div>
+                        <div class="info-help">Este formulario permite evaluar cada riesgo u oportunidad según su probabilidad e impacto financiero, siguiendo los criterios de la CSRD y NEIS 2.</div>
+                    </div>
+                    
+                    <!-- Riesgo/Oportunidad a evaluar -->
+                    <div class="impact-card">
+                        <div class="impact-title">Reducción de costes operativos por implementación de sistemas de energía renovable</div>
+                        <div class="impact-details">
+                            <span class="impact-tag tag-environmental">Ambiental</span>
+                            <span class="impact-tag tag-opportunity">Oportunidad</span>
+                            <span class="impact-tag" style="background-color: #f0f7ff; color: #3b78c3;">E1: Cambio climático</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Form Content -->
+                    <div class="form-content">
+                        <div class="form-section-title">EVALUACIÓN DE MATERIALIDAD FINANCIERA</div>
+                        
+                        <div class="matrix-section">
+                            <div class="matrix-title">1. EVALUACIÓN DE PROBABILIDAD</div>
+                            
+                            <table class="rating-matrix">
+                                <thead>
+                                    <tr>
+                                        <th width="150">Probabilidad</th>
+                                        <th>Casi segura</th>
+                                        <th>Muy probable</th>
+                                        <th>Probable</th>
+                                        <th>Poco probable</th>
+                                        <th>Improbable</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th>5</th>
+                                        <th>4</th>
+                                        <th>3</th>
+                                        <th>2</th>
+                                        <th>1</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="param-label">Probabilidad Base</td>
+                                        <td class="level-5"></td>
+                                        <td class="level-4"></td>
+                                        <td class="level-3 selected"></td>
+                                        <td class="level-2"></td>
+                                        <td class="level-1"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="form-group" style="margin-top: 15px;">
+                                <div class="form-row">
+                                    <div class="form-label">Horizonte temporal<span class="required-mark">*</span>:</div>
+                                    <div class="form-field">
+                                        <div class="radio-field">
+                                            <div class="radio-option">
+                                                <input type="radio" id="short" name="timeframe">
+                                                <label for="short">Corto plazo: periodo actual de estados financieros (factor = 1)</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="medium" name="timeframe" checked>
+                                                <label for="medium">Medio plazo: hasta 5 años (factor = 0,5)</label>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" id="long" name="timeframe">
+                                                <label for="long">Largo plazo: más de 5 años (factor = 0,25)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="matrix-section">
+                            <div class="matrix-title">2. EVALUACIÓN DE GRAVEDAD FINANCIERA</div>
+                            
+                            <div class="form-group">
+                                <div class="form-section-title" style="font-size: 11px; margin-bottom: 15px;">¿Afecta directamente a los siguientes aspectos financieros?</div>
+                                
+                                <div class="financial-impact-grid">
+                                    <div class="financial-impact-item">
+                                        <div class="financial-impact-title">Posición financiera</div>
+                                        <div class="impact-checkbox-container">
+                                            <input type="checkbox" id="position" checked>
+                                            <label class="checkbox-label" for="position">Sí, afecta</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="financial-impact-item">
+                                        <div class="financial-impact-title">Rendimiento financiero</div>
+                                        <div class="impact-checkbox-container">
+                                            <input type="checkbox" id="performance" checked>
+                                            <label class="checkbox-label" for="performance">Sí, afecta</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="financial-impact-item">
+                                        <div class="financial-impact-title">Flujos de efectivo</div>
+                                        <div class="impact-checkbox-container">
+                                            <input type="checkbox" id="cashflow" checked>
+                                            <label class="checkbox-label" for="cashflow">Sí, afecta</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="financial-impact-item">
+                                        <div class="financial-impact-title">Acceso a financiación / Coste del capital</div>
+                                        <div class="impact-checkbox-container">
+                                            <input type="checkbox" id="financing">
+                                            <label class="checkbox-label" for="financing">Sí, afecta</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row" style="margin-top: 15px;">
+                                    <div class="form-label">Descripción del impacto financiero:</div>
+                                    <div class="form-field">
+                                        <textarea class="textarea-field" placeholder="Detalle cómo esta oportunidad afecta a los aspectos financieros seleccionados...">La implementación de sistemas de energía renovable reducirá los costes operativos en un 12-15% según estimaciones, mejorando los márgenes y el flujo de caja. Se espera un ROI en aproximadamente 4 años.</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calculation-box">
+                            <div class="calculation-row">
+                                <div class="calculation-label">Probabilidad Base:</div>
+                                <div class="calculation-value">3 (Probable)</div>
+                            </div>
+                            <div class="calculation-row">
+                                <div class="calculation-label">Factor Temporal:</div>
+                                <div class="calculation-value">+0,5 (Medio plazo)</div>
+                            </div>
+                            <div class="calculation-row">
+                                <div class="calculation-label">Total Probabilidad:</div>
+                                <div class="calculation-value">3,5</div>
+                            </div>
+                            <div class="calculation-row">
+                                <div class="calculation-label">Probabilidad Final (×1/6):</div>
+                                <div class="calculation-value">0,58</div>
+                            </div>
+                            
+                            <div style="margin: 10px 0; border-top: 1px dashed #ccc; padding-top: 10px;"></div>
+                            
+                            <div class="calculation-row">
+                                <div class="calculation-label">Posición financiera:</div>
+                                <div class="calculation-value">1</div>
+                            </div>
+                            <div class="calculation-row">
+                                <div class="calculation-label">Rendimiento financiero:</div>
+                                <div class="calculation-value">1</div>
+                            </div>
+                            <div class="calculation-row">
+                                <div class="calculation-label">Flujos de efectivo:</div>
+                                <div class="calculation-value">1</div>
+                            </div>
+                            <div class="calculation-row">
+                                <div class="calculation-label">Acceso a financiación:</div>
+                                <div class="calculation-value">0</div>
+                            </div>
+                            <div class="calculation-row">
+                                <div class="calculation-label">Total Gravedad Financiera:</div>
+                                <div class="calculation-value">3</div>
+                            </div>
+                            <div class="calculation-row">
+                                <div class="calculation-label">Gravedad Final (×1/4):</div>
+                                <div class="calculation-value">0,75</div>
+                            </div>
+                            
+                            <div class="final-score">
+                                <div class="calculation-row">
+                                    <div class="calculation-label">MATERIALIDAD FINANCIERA:</div>
+                                    <div class="calculation-value">0,44 (Probabilidad × Gravedad)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 15px;">
+                            <div class="form-label">Comentarios adicionales:</div>
+                            <textarea class="textarea-field" placeholder="Añada observaciones relevantes para la evaluación financiera de este riesgo u oportunidad..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Tip -->
+                    <div class="info-tip">
+                        <div class="info-icon">i</div>
+                        <div class="info-text">La materialidad financiera se calcula multiplicando la probabilidad final por la gravedad financiera final. Según NEIS 2 IRO-4, es necesario evaluar el impacto en la posición financiera, rendimiento financiero, flujos de efectivo y acceso a financiación para determinar la materialidad.</div>
+                    </div>
+                    
+                    <!-- Nav Buttons -->
+                    <div class="nav-buttons">
+                        <div class="nav-button previous">Anterior</div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="nav-button save">Guardar</div>
+                            <div class="nav-button next">Siguiente Riesgo/Oportunidad</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+            <div>Versión 1.2.4</div>
+        </div>
+    </div>
+</body>
+</html>

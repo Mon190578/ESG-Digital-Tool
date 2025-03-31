@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - M4_D03 Análisis de Materialidad de Impacto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .top-bar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            height: 30px;
+        }
+        
+        .search-text {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        /* Module Colors */
+        .menu-item.module1 {
+            color: #3b78c3; /* Azul para Módulo 1 */
+        }
+        
+        .menu-item.module2 {
+            color: #d16565; /* Rojo para Módulo 2 */
+        }
+        
+        .menu-item.module3 {
+            color: #F5CB57; /* Amarillo para Módulo 3 */
+        }
+        
+        .menu-item.module4 {
+            color: #1a9967; /* Verde para Módulo 4 */
+        }
+        
+        .menu-item.active {
+            background-color: #1a9967;
+            color: #fff !important;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .submenu-item.active {
+            background-color: #ebf9f2;
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        .activity-panel {
+            background: #f0f0f0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-item {
+            margin-bottom: 5px;
+            font-size: 9px;
+        }
+        
+        /* Main panel */
+        .main-panel {
+            flex-grow: 1;
+            padding: 10px 20px;
+        }
+        
+        .content-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-header {
+            background-color: rgba(26, 153, 103, 0.1);
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background-color: rgba(26, 153, 103, 0.1);
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        .dashboard-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .dashboard-description {
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        
+        /* Filter section */
+        .filter-section {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+        
+        .filter-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .filter-select {
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 0 5px;
+            font-size: 10px;
+            background-color: white;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .filter-button {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 5px 10px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+        
+        .filter-button.apply {
+            background-color: #1a9967;
+            color: white;
+            border: none;
+        }
+        
+        /* Matrix section */
+        .matrix-container {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            height: 400px;
+            position: relative;
+        }
+        
+        .matrix-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .matrix-axes {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            right: 40px;
+            bottom: 40px;
+            border-left: 1px solid #888;
+            border-bottom: 1px solid #888;
+        }
+        
+        .axis-label-x {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            color: #555;
+        }
+        
+        .axis-label-y {
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: rotate(-90deg) translateX(50%);
+            font-size: 10px;
+            color: #555;
+            white-space: nowrap;
+        }
+        
+        .matrix-tick {
+            position: absolute;
+            font-size: 8px;
+            color: #888;
+        }
+        
+        /* X-axis ticks */
+        .tick-x-0 {
+            bottom: -20px;
+            left: 0;
+        }
+        
+        .tick-x-25 {
+            bottom: -20px;
+            left: 25%;
+        }
+        
+        .tick-x-50 {
+            bottom: -20px;
+            left: 50%;
+        }
+        
+        .tick-x-75 {
+            bottom: -20px;
+            left: 75%;
+        }
+        
+        .tick-x-100 {
+            bottom: -20px;
+            right: 0;
+        }
+        
+        /* Y-axis ticks */
+        .tick-y-0 {
+            left: -20px;
+            bottom: 0;
+        }
+        
+        .tick-y-25 {
+            left: -20px;
+            bottom: 25%;
+        }
+        
+        .tick-y-50 {
+            left: -20px;
+            bottom: 50%;
+        }
+        
+        .tick-y-75 {
+            left: -20px;
+            bottom: 75%;
+        }
+        
+        .tick-y-100 {
+            left: -20px;
+            top: 0;
+        }
+        
+        /* Matrix quadrants */
+        .matrix-quadrant {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            text-align: center;
+            color: #888;
+            background-color: rgba(0,0,0,0.02);
+        }
+        
+        .quadrant-top-right {
+            top: 0;
+            right: 0;
+            background-color: rgba(26, 153, 103, 0.05);
+            border-top-right-radius: 5px;
+        }
+        
+        .quadrant-top-left {
+            top: 0;
+            left: 0;
+            background-color: rgba(59, 120, 195, 0.05);
+        }
+        
+        .quadrant-bottom-left {
+            bottom: 0;
+            left: 0;
+            background-color: rgba(218, 218, 218, 0.1);
+        }
+        
+        .quadrant-bottom-right {
+            bottom: 0;
+            right: 0;
+            background-color: rgba(209, 101, 101, 0.05);
+            border-bottom-right-radius: 5px;
+        }
+        
+        /* Impact bubbles */
+        .impact-bubble {
+            position: absolute;
+            background-color: #3b78c3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 9px;
+            text-align: center;
+            padding: 5px;
+            transform: translate(-50%, 50%);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .impact-bubble:hover {
+            transform: translate(-50%, 50%) scale(1.1);
+            z-index: 100;
+        }
+        
+        .impact-bubble.environmental {
+            background-color: #1a9967;
+        }
+        
+        .impact-bubble.social {
+            background-color: #d16565;
+        }
+        
+        .impact-bubble.governance {
+            background-color: #F5CB57;
+        }
+        
+        .impact-bubble.positive {
+            border: 2px solid white;
+        }
+        
+        .impact-bubble.negative {
+            /* Default without border */
+        }
+        
+        /* Legend */
+        .matrix-legend {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+            padding: 8px;
+            font-size: 9px;
+            width: 150px;
+        }
+        
+        .legend-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3px;
+        }
+        
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        /* Results table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .results-table th, .results-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .results-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .results-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .impact-tag {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 8px;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .tag-environmental {
+            background-color: #e2f7e8;
+            color: #1a9967;
+        }
+        
+        .tag-social {
+            background-color: #ffdddd;
+            color: #d16565;
+        }
+        
+        .tag-governance {
+            background-color: #fff6dd;
+            color: #F5CB57;
+        }
+        
+        .tag-positive {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .tag-negative {
+            background-color: #fff2e8;
+            color: #fa541c;
+        }
+        
+        .materiality-indicator {
+            display: inline-block;
+            width: 60px;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #e2f7e8, #ffdddd, #d16565);
+            position: relative;
+        }
+        
+        .materiality-marker {
+            position: absolute;
+            width: 2px;
+            height: 12px;
+            background-color: #333;
+            top: -2px;
+            transform: translateX(-50%);
+        }
+        
+        /* Export buttons */
+        .export-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .export-button {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+        
+        .export-button svg {
+            margin-right: 5px;
+        }
+        
+        /* Footer */
+        .footer {
+            height: 30px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 9px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <!-- Círculo exterior -->
+                        <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                        
+                        <!-- Puntas de la brújula -->
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                        <path d="M44,22 L39,25 L37,22 L39,19 Z" fill="#666666"/>
+                        <path d="M22,44 L19,39 L22,37 L25,39 Z" fill="#666666"/>
+                        <path d="M0,22 L5,19 L7,22 L5,25 Z" fill="#666666"/>
+                        
+                        <!-- Aguja -->
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#1a9967" transform="rotate(-45 22 22)"/>
+                        
+                        <!-- Punto central -->
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+            
+            <div class="search-bar">
+                <div class="search-text">Buscar en la plataforma...</div>
+                <div class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                        <circle cx="7" cy="7" r="7" fill="#2196f3" stroke="#2196f3" stroke-width="1"/>
+                        <line x1="11" y1="11" x2="16" y2="16" stroke="#2196f3" stroke-width="2"/>
+                        <circle cx="7" cy="7" r="4" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="icon-button" style="background-color: #129953;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                        <circle cx="4" cy="7" r="2" />
+                        <circle cx="7" cy="7" r="2" />
+                        <circle cx="10" cy="7" r="2" />
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#888888">
+                        <rect x="3" y="3" width="8" height="8" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="6" x2="9" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#666666">
+                        <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="7" y2="4" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="9" y2="9" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5; position: relative;">
+                    <svg width="14" height="14" viewBox="0 0 14 14">
+                        <path d="M3,11 C3,11 2,7 2,3 C2,-1 5,-3 7,-3 C9,-3 12,-1 12,3 C12,7 11,11 11,11 Z" fill="#FFCA28" stroke="#FFCA28" stroke-width="1" transform="translate(0, 3)"/>
+                        <circle cx="7" cy="12" r="2" fill="#FFCA28"/>
+                    </svg>
+                    <div style="position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background-color: #d16565; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold;">3</div>
+                </div>
+                
+                <div class="icon-button" style="background-color: #E91E63; color: white; font-weight: bold;">?</div>
+                
+                <div style="display: flex; align-items: center;">
+                    <div class="icon-button" style="background-color: #673AB7; color: white;">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                            <circle cx="7" cy="5" r="3"/>
+                            <path d="M2,14 C2,9 12,9 12,14" fill="white" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span style="margin-left: 8px; font-size: 12px;">Usuario X</span>
+                </div>
+                
+                <div class="company-selector">
+                    <span style="font-size: 12px;">Empresa S.A.</span>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#666" style="margin-left: 8px;">
+                        <polygon points="5,8 0,3 10,3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="menu-item module1">1. Datos Base</div>
+                <div class="menu-item module2">2. Datos GGII</div>
+                <div class="menu-item module3">3. Integración Externa</div>
+                <div class="menu-item module4 active">4. Análisis DM</div>
+                <div class="submenu-item">► Comprensión del Contexto</div>
+                <div class="submenu-item">► Configuración del Análisis</div>
+                <div class="submenu-item active">► Impactos</div>
+                <div class="submenu-item">► Riesgos y Oportunidades</div>
+                <div class="submenu-item">► Matriz de Materialidad</div>
+                <div class="menu-item">5. Datapoints</div>
+                <div class="menu-item">6. Reporting</div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <div class="activity-panel">
+                    <div class="activity-title">ACTIVIDAD RECIENTE</div>
+                    <div class="activity-item">M4_I04 completado - Hace 30m</div>
+                    <div class="activity-item">Todos los impactos evaluados - Hace 10m</div>
+                    <div class="activity-item">M4_D03 visualizado - Hace 2m</div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-panel">
+                <div class="content-box">
+                    <div class="module-header">
+                        <div class="module-title">Módulo 4: Análisis de Doble Materialidad</div>
+                    </div>
+                    
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab">COMPRENSIÓN DEL CONTEXTO</div>
+                        <div class="tab">CONFIGURACIÓN DEL ANÁLISIS</div>
+                        <div class="tab active">IMPACTOS</div>
+                        <div class="tab">RIESGOS Y OPORTUNIDADES</div>
+                    </div>
+                    
+                    <!-- Dashboard Header -->
+                    <div class="dashboard-title">Análisis de Materialidad de Impacto</div>
+                    <div class="dashboard-description">
+                        Este dashboard visualiza la materialidad de los impactos ESG identificados, representando la relación entre la probabilidad y la gravedad de cada impacto. El tamaño de cada burbuja representa la materialidad total calculada.
+                    </div>
+                    
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <div class="filter-label">Tipo de impacto</div>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option>Positivos</option>
+                                <option>Negativos</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-label">Ámbito ASG</div>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option>Ambiental</option>
+                                <option>Social</option>
+                                <option>Gobernanza</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-label">Horizonte temporal</div>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option>Corto plazo</option>
+                                <option>Medio plazo</option>
+                                <option>Largo plazo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-label">Cadena de valor</div>
+                            <select class="filter-select">
+                                <option>Todas</option>
+                                <option>Operaciones propias</option>
+                                <option>Aguas arriba</option>
+                                <option>Aguas abajo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-buttons">
+                            <button class="filter-button">Limpiar</button>
+                            <button class="filter-button apply">Aplicar</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Export Buttons -->
+                    <div class="export-buttons">
+                        <button class="export-button">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="#666">
+                                <path d="M19,11h-4v4h-2v-4H9V9h4V5h2v4h4V11z M3,5v14h18V5H3z"/>
+                            </svg>
+                            Excel
+                        </button>
+                        <button class="export-button">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="#666">
+                                <path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M9,17H7v-7h2V17z M13,17h-2V7h2V17z M17,17h-2v-4h2V17z"/>
+                            </svg>
+                            PDF
+                        </button>
+                    </div>
+                    
+                    <!-- Matrix Visualization -->
+                    <div class="matrix-container">
+                        <div class="matrix-title">Matriz de Materialidad de Impacto</div>
+                        
+                        <div class="matrix-axes">
+                            <!-- Axis labels -->
+                            <div class="axis-label-x">Probabilidad (0-1)</div>
+                            <div class="axis-label-y">Gravedad/Severidad (0-1)</div>
+                            
+                            <!-- X-axis ticks -->
+                            <div class="matrix-tick tick-x-0">0</div>
+                            <div class="matrix-tick tick-x-25">0.25</div>
+                            <div class="matrix-tick tick-x-50">0.50</div>
+                            <div class="matrix-tick tick-x-75">0.75</div>
+                            <div class="matrix-tick tick-x-100">1.0</div>
+                            
+                            <!-- Y-axis ticks -->
+                            <div class="matrix-tick tick-y-0">0</div>
+                            <div class="matrix-tick tick-y-25">0.25</div>
+                            <div class="matrix-tick tick-y-50">0.50</div>
+                            <div class="matrix-tick tick-y-75">0.75</div>
+                            <div class="matrix-tick tick-y-100">1.0</div>
+                            
+                            <!-- Quadrants -->
+                            <div class="matrix-quadrant quadrant-top-right">
+                                ALTA MATERIALIDAD<br>
+                                Alta gravedad, alta probabilidad
+                            </div>
+                            <div class="matrix-quadrant quadrant-top-left">
+                                MONITORIZAR<br>
+                                Alta gravedad, baja probabilidad
+                            </div>
+                            <div class="matrix-quadrant quadrant-bottom-left">
+                                BAJA MATERIALIDAD<br>
+                                Baja gravedad, baja probabilidad
+                            </div>
+                            <div class="matrix-quadrant quadrant-bottom-right">
+                                GESTIONAR<br>
+                                Baja gravedad, alta probabilidad
+                            </div>
+                            
+                            <!-- Impact Bubbles -->
+                            <div class="impact-bubble environmental" style="left: 83%; bottom: 60%; width: 40px; height: 40px;" title="Emisiones GEI en transporte">E1</div>
+                            <div class="impact-bubble environmental positive" style="left: 58%; bottom: 48%; width: 32px; height: 32px;" title="Reducción de consumo de agua">E3</div>
+                            <div class="impact-bubble social" style="left: 70%; bottom: 70%; width: 44px; height: 44px;" title="Condiciones laborales en proveedores">S2</div>
+                            <div class="impact-bubble governance" style="left: 45%; bottom: 35%; width: 28px; height: 28px;" title="Prácticas de pago a proveedores">G1</div>
+                            <div class="impact-bubble environmental" style="left: 85%; bottom: 25%; width: 30px; height: 30px;" title="Residuos de embalajes">E5</div>
+                            <div class="impact-bubble social positive" style="left: 30%; bottom: 75%; width: 36px; height: 36px;" title="Desarrollo de comunidades locales">S3</div>
+                            <div class="impact-bubble social" style="left: 65%; bottom: 52%; width: 38px; height: 38px;" title="Privacidad de datos de clientes">S4</div>
+                        </div>
+                        
+                        <!-- Legend -->
+                        <div class="matrix-legend">
+                            <div class="legend-title">Leyenda</div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #1a9967;"></div>
+                                <div>Ambiental</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #d16565;"></div>
+                                <div>Social</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #F5CB57;"></div>
+                                <div>Gobernanza</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: transparent; border: 2px solid white;"></div>
+                                <div>Impacto positivo</div>
+                            </div>
+                            <div class="legend-item">
+                                <div>Tamaño = Materialidad total</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Table -->
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Descripción del impacto</th>
+                                <th>Ámbito</th>
+                                <th>Temática NEIS1</th>
+                                <th>Horizonte</th>
+                                <th>Probabilidad</th>
+                                <th>Gravedad</th>
+                                <th>Materialidad</th>
+                                <th>Nivel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Emisiones de gases de efecto invernadero en transporte de mercancías</td>
+                                <td><span class="impact-tag tag-environmental">Ambiental</span></td>
+                                <td>E1: Cambio climático</td>
+                                <td>Corto plazo</td>
+                                <td>0.83</td>
+                                <td>0.60</td>
+                                <td>0.50</td>
+                                <td>
+                                    <div class="materiality-indicator">
+                                        <div class="materiality-marker" style="left: 83%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Condiciones laborales en proveedores de primer nivel</td>
+                                <td><span class="impact-tag tag-social">Social</span></td>
+                                <td>S2: Trabajadores cadena valor</td>
+                                <td>Corto plazo</td>
+                                <td>0.70</td>
+                                <td>0.70</td>
+                                <td>0.49</td>
+                                <td>
+                                    <div class="materiality-indicator">
+                                        <div class="materiality-marker" style="left: 82%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Uso de datos personales de clientes y privacidad</td>
+                                <td><span class="impact-tag tag-social">Social</span></td>
+                                <td>S4: Consumidores</td>
+                                <td>Medio plazo</td>
+                                <td>0.65</td>
+                                <td>0.52</td>
+                                <td>0.34</td>
+                                <td>
+                                    <div class="materiality-indicator">
+                                        <div class="materiality-marker" style="left: 57%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Reducción de consumo de agua en procesos productivos</td>
+                                <td><span class="impact-tag tag-environmental">Ambiental</span> <span class="impact-tag tag-positive">Positivo</span></td>
+                                <td>E3: Agua y recursos marinos</td>
+                                <td>Medio plazo</td>
+                                <td>0.58</td>
+                                <td>0.48</td>
+                                <td>0.28</td>
+                                <td>
+                                    <div class="materiality-indicator">
+                                        <div class="materiality-marker" style="left: 47%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Residuos de embalajes y envasado de productos</td>
+                                <td><span class="impact-tag tag-environmental">Ambiental</span></td>
+                                <td>E5: Economía circular</td>
+                                <td>Corto plazo</td>
+                                <td>0.85</td>
+                                <td>0.25</td>
+                                <td>0.21</td>
+                                <td>
+                                    <div class="materiality-indicator">
+                                        <div class="materiality-marker" style="left: 35%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Prácticas de pago a proveedores pequeños</td>
+                                <td><span class="impact-tag tag-governance">Gobernanza</span></td>
+                                <td>G1: Conducta empresarial</td>
+                                <td>Medio plazo</td>
+                                <td>0.45</td>
+                                <td>0.35</td>
+                                <td>0.16</td>
+                                <td>
+                                    <div class="materiality-indicator">
+                                        <div class="materiality-marker" style="left: 27%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Desarrollo de comunidades locales en zonas de operación</td>
+                                <td><span class="impact-tag tag-social">Social</span> <span class="impact-tag tag-positive">Positivo</span></td>
+                                <td>S3: Colectivos afectados</td>
+                                <td>Largo plazo</td>
+                                <td>0.30</td>
+                                <td>0.75</td>
+                                <td>0.23</td>
+                                <td>
+                                    <div class="materiality-indicator">
+                                        <div class="materiality-marker" style="left: 38%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+            <div>Versión 1.2.4</div>
+        </div>
+    </div>
+</body>
+</html>

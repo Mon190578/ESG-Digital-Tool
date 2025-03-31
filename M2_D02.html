@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard M2_D02: Mapa de Grupos de Interés Externos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333333;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Header styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 5px;
+            outline: none;
+            font-size: 12px;
+            color: #999999;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            padding-top: 70px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+        
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .menu-item.active {
+            background-color: #d32f2f;
+            color: #ffffff;
+        }
+        
+        .sub-menu-item {
+            padding: 12px 35px;
+            font-size: 13px;
+            color: #666666;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .sub-menu-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .sub-menu-item.active {
+            background-color: #ffebee;
+            color: #d32f2f;
+            font-weight: 600;
+            border-left: 3px solid #d32f2f;
+        }
+        
+        /* Main content */
+        .main-content {
+            margin-left: 220px;
+            padding: 90px 30px 30px;
+            width: calc(100% - 220px);
+        }
+        
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .tabs-container {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        
+        .tabs {
+            display: flex;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .tab:hover {
+            color: #3b78c3;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #d32f2f;
+            color: #d32f2f;
+            font-weight: 600;
+        }
+        
+        .phase-indicator {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            color: #d32f2f;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333333;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        /* Table styles */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .chart-container {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #d32f2f;
+        }
+        
+        /* Footer styles */
+        .footer {
+            background-color: #f5f5f5;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+        }
+        
+        /* Stakeholder grid styles */
+        .stakeholder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stakeholder-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stakeholder-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .stakeholder-header {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stakeholder-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stakeholder-type {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .stakeholder-body {
+            padding: 15px;
+        }
+        
+        .info-item {
+            margin-bottom: 12px;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .info-value {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        
+        .tag {
+            background-color: #f0f0f0;
+            color: #666;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        .stakeholder-footer {
+            padding: 12px 15px;
+            background-color: #fafafa;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .influence-indicator {
+            display: flex;
+            align-items: center;
+        }
+        
+        .influence-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .high {
+            background-color: #d32f2f;
+        }
+        
+        .medium {
+            background-color: #ff9800;
+        }
+        
+        .low {
+            background-color: #4caf50;
+        }
+        
+        .action-button {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .action-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        /* Filtros */
+        .filter-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-label {
+            font-size: 13px;
+            color: #666;
+            margin-right: 8px;
+            font-weight: 600;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .filter-option {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-option:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .filter-option.active {
+            background-color: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+        }
+        
+        /* Stats summary */
+        .stats-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            flex: 1;
+            min-width: 150px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #d32f2f;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* Radar chart */
+        .radar-chart {
+            width: 100%;
+            height: 300px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><circle cx="150" cy="150" r="150" fill="%23f9f9f9" /><polygon points="150,10 280,150 150,290 20,150" fill="%23f0f0f0" stroke="%23ddd" stroke-width="1" /><circle cx="150" cy="150" r="120" fill="none" stroke="%23ddd" stroke-width="1" /><circle cx="150" cy="150" r="90" fill="none" stroke="%23ddd" stroke-width="1" /><circle cx="150" cy="150" r="60" fill="none" stroke="%23ddd" stroke-width="1" /><circle cx="150" cy="150" r="30" fill="none" stroke="%23ddd" stroke-width="1" /><line x1="150" y1="0" x2="150" y2="300" stroke="%23ddd" stroke-width="1" /><line x1="0" y1="150" x2="300" y2="150" stroke="%23ddd" stroke-width="1" /></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            position: relative;
+        }
+        
+        .radar-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #d32f2f;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .radar-label {
+            position: absolute;
+            font-size: 12px;
+            color: #333;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Interaction history section */
+        .interaction-history {
+            margin-top: 30px;
+        }
+        
+        .timeline {
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 15px;
+            width: 2px;
+            background-color: #e0e0e0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .timeline-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #d32f2f;
+            margin-top: 6px;
+            margin-right: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            background-color: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        
+        .timeline-date {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-text {
+            font-size: 13px;
+            color: #333;
+        }
+        
+        .stakeholder-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .stakeholder-table th, .stakeholder-table td {
+            padding: 10px 15px;
+            text-align: left;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .stakeholder-table th {
+            background-color: #d32f2f;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .stakeholder-table tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        
+        .impact-high {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+        
+        .impact-medium {
+            color: #ff9800;
+            font-weight: 600;
+        }
+        
+        .impact-low {
+            color: #4caf50;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(90 25 25)"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(180 25 25)"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(270 25 25)"/>
+                    <path d="M25,8 L30,25 L25,42 L20,25 Z" fill="#d32f2f" transform="rotate(-45 25 25)"/>
+                    <circle cx="25" cy="25" r="3" fill="#d16565"/>
+                </svg>
+            </div>
+            <div class="logo-text">ESG Digital Tool</div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar en la plataforma...">
+            <div style="color: #3b78c3; font-size: 14px;">⚲</div>
+        </div>
+        
+        <div class="user-controls">
+            <div class="icon-button" style="background-color: #129953; color: white;">?</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⚙</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⏱</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">🔔</div>
+            <div class="icon-button" style="background-color: #E91E63; color: white;">?</div>
+            <div style="margin-left: 15px; display: flex; align-items: center;">
+                <div class="icon-button" style="background-color: #673AB7; color: white;">U</div>
+                <span style="margin-left: 5px;">Usuario X</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="menu-item">1. Datos Base</div>
+            <div class="menu-item active">2. Datos GGII</div>
+            <div class="sub-menu-item">► GGII Internos</div>
+            <div class="sub-menu-item active">► GGII Externos</div>
+            <div class="sub-menu-item">► Matriz de Influencia</div>
+            <div class="menu-item">3. Integración Externa</div>
+            <div class="menu-item">4. Análisis DM</div>
+            <div class="menu-item">5. Datapoints</div>
+            <div class="menu-item">6. Reporting</div>
+            
+            <div style="margin-top: 250px; padding: 15px; font-size: 11px; color: #666; background-color: #f5f5f5;">
+                <p style="margin-bottom: 5px; font-weight: 600;">ACTIVIDAD RECIENTE</p>
+                <div style="height: 1px; background-color: #ddd; margin: 5px 0 10px 0;"></div>
+                <p style="margin-bottom: 8px;">M2_I03 completado - Hace 2h</p>
+                <p style="margin-bottom: 8px;">M2_I04 completado - Hace 1h</p>
+                <p style="margin-bottom: 5px;">M2_D01 actualizado - Hace 45m</p>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="section-title">M2_D02: Mapa de Grupos de Interés Externos</div>
+            
+            <div class="phase-indicator">
+                <span>Fase: Evaluación de Grupos de Interés Externos</span>
+                <span>Progreso: 75%</span>
+            </div>
+            
+            <div class="content-card">
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <div class="tab">Resumen</div>
+                        <div class="tab active">Clasificación Detallada</div>
+                        <div class="tab">Análisis de Influencia</div>
+                    </div>
+                </div>
+                
+                <div class="filter-panel">
+                    <div class="filter-group">
+                        <div class="filter-label">Tipo:</div>
+                        <div class="filter-options">
+                            <div class="filter-option active">Todos</div>
+                            <div class="filter-option">Proveedores</div>
+                            <div class="filter-option">Clientes</div>
+                            <div class="filter-option">Inversores</div>
+                            <div class="filter-option">Reguladores</div>
+                            <div class="filter-option">ONGs</div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <div class="filter-label">Influencia:</div>
+                        <div class="filter-options">
+                            <div class="filter-option active">Todos</div>
+                            <div class="filter-option">Alta</div>
+                            <div class="filter-option">Media</div>
+                            <div class="filter-option">Baja</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-summary">
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Total GGII Externos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Alta Influencia</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Media Influencia</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Baja Influencia</div>
+                    </div>
+                </div>
+                
+                <!-- Tabla resumen de temas ESG prioritarios -->
+                <h3 class="chart-title">Temas ESG Prioritarios por Tipo de Grupo de Interés</h3>
+                
+                <div class="table-container">
+                    <table class="stakeholder-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo de GGII</th>
+                                <th>Temas Ambientales</th>
+                                <th>Temas Sociales</th>
+                                <th>Temas de Gobernanza</th>
+                                <th>Nivel de prioridad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Proveedores</td>
+                                <td>Cambio climático, Economía circular</td>
+                                <td>Derechos humanos, Condiciones laborales</td>
+                                <td>Códigos de conducta</td>
+                                <td class="impact-high">Alta</td>
+                            </tr>
+                            <tr>
+                                <td>Clientes</td>
+                                <td>Huella de carbono, Productos sostenibles</td>
+                                <td>Transparencia, Seguridad</td>
+                                <td>Certificaciones, Etiquetado</td>
+                                <td class="impact-high">Alta</td>
+                            </tr>
+                            <tr>
+                                <td>Inversores</td>
+                                <td>Emisiones, Agua, Residuos</td>
+                                <td>Diversidad, Derechos laborales</td>
+                                <td>Gestión de riesgos, Transparencia</td>
+                                <td class="impact-high">Alta</td>
+                            </tr>
+                            <tr>
+                                <td>Reguladores</td>
+                                <td>Taxonomía verde, Impacto ambiental</td>
+                                <td>Diligencia debida</td>
+                                <td>Cumplimiento, Reporting</td>
+                                <td class="impact-high">Alta</td>
+                            </tr>
+                            <tr>
+                                <td>ONGs</td>
+                                <td>Biodiversidad, Emisiones, Agua</td>
+                                <td>Impacto comunitario, Derechos humanos</td>
+                                <td>Transparencia, Rendición de cuentas</td>
+                                <td class="impact-medium">Media</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Grupos de interés externos -->
+                <h3 class="chart-title">Detalle de Grupos de Interés Externos</h3>
+                
+                <div class="stakeholder-grid">
+                    <!-- Proveedor 1 -->
+                    <div class="stakeholder-card">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-name">
+                                <span>Proveedor MP Principal</span>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #d32f2f;"></div>
+                            </div>
+                            <div class="stakeholder-type">Proveedor Clave</div>
+                        </div>
+                        <div class="stakeholder-body">
+                            <div class="info-item">
+                                <div class="info-label">Descripción</div>
+                                <div class="info-value">Fondo de inversión especializado en empresas con alto desempeño ESG</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Necesitamos</div>
+                                <div class="info-value">Financiación para proyectos sostenibles y estabilidad en inversión</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Temas ESG prioritarios</div>
+                                <div class="tag-list">
+                                    <div class="tag">Emisiones</div>
+                                    <div class="tag">Gobernanza</div>
+                                    <div class="tag">Diversidad</div>
+                                    <div class="tag">Gestión de riesgos</div>
+                                </div>
+                            </div>="info-item">
+                                <div class="info-label">Descripción</div>
+                                <div class="info-value">Proveedor principal de materias primas estratégicas</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Necesitamos</div>
+                                <div class="info-value">Productos sostenibles, transparencia en cadena de valor</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Temas ESG prioritarios</div>
+                                <div class="tag-list">
+                                    <div class="tag">Cambio climático</div>
+                                    <div class="tag">Derechos humanos</div>
+                                    <div class="tag">Economía circular</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stakeholder-footer">
+                            <div class="influence-indicator">
+                                <div class="influence-dot high"></div>
+                                <span>Alta influencia</span>
+                            </div>
+                            <button class="action-button">Ver detalle</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Regulador -->
+                    <div class="stakeholder-card">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-name">
+                                <span>Comisión Europea</span>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #d32f2f;"></div>
+                            </div>
+                            <div class="stakeholder-type">Regulador</div>
+                        </div>
+                        <div class="stakeholder-body">
+                            <div class="info-item">
+                                <div class="info-label">Descripción</div>
+                                <div class="info-value">Organismo que define y supervisa el marco regulatorio de la CSRD</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Necesitamos</div>
+                                <div class="info-value">Claridad normativa, plazos de implementación razonables</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Temas ESG prioritarios</div>
+                                <div class="tag-list">
+                                    <div class="tag">Cumplimiento</div>
+                                    <div class="tag">Taxonomía verde</div>
+                                    <div class="tag">Transparencia</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stakeholder-footer">
+                            <div class="influence-indicator">
+                                <div class="influence-dot high"></div>
+                                <span>Alta influencia</span>
+                            </div>
+                            <button class="action-button">Ver detalle</button>
+                        </div>
+                    </div>
+                    
+                    <!-- ONG -->
+                    <div class="stakeholder-card">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-name">
+                                <span>ONG Ambiental X</span>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #ff9800;"></div>
+                            </div>
+                            <div class="stakeholder-type">ONG</div>
+                        </div>
+                        <div class="stakeholder-body">
+                            <div class="info-item">
+                                <div class="info-label">Descripción</div>
+                                <div class="info-value">Organización dedicada a la conservación de biodiversidad</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Necesitamos</div>
+                                <div class="info-value">Conocimiento especializado, colaboraciones en proyectos</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Temas ESG prioritarios</div>
+                                <div class="tag-list">
+                                    <div class="tag">Biodiversidad</div>
+                                    <div class="tag">Emisiones</div>
+                                    <div class="tag">Impacto local</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stakeholder-footer">
+                            <div class="influence-indicator">
+                                <div class="influence-dot medium"></div>
+                                <span>Media influencia</span>
+                            </div>
+                            <button class="action-button">Ver detalle</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Proveedor 2 -->
+                    <div class="stakeholder-card">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-name">
+                                <span>Proveedor Secundario</span>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #ff9800;"></div>
+                            </div>
+                            <div class="stakeholder-type">Proveedor</div>
+                        </div>
+                        <div class="stakeholder-body">
+                            <div class="info-item">
+                                <div class="info-label">Descripción</div>
+                                <div class="info-value">Suministro de componentes complementarios</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Necesitamos</div>
+                                <div class="info-value">Calidad consistente, cumplimiento normativo</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Temas ESG prioritarios</div>
+                                <div class="tag-list">
+                                    <div class="tag">Eficiencia energética</div>
+                                    <div class="tag">Condiciones laborales</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stakeholder-footer">
+                            <div class="influence-indicator">
+                                <div class="influence-dot medium"></div>
+                                <span>Media influencia</span>
+                            </div>
+                            <button class="action-button">Ver detalle</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Cliente B2B -->
+                    <div class="stakeholder-card">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-name">
+                                <span>Cliente Corporativo A</span>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #d32f2f;"></div>
+                            </div>
+                            <div class="stakeholder-type">Cliente B2B</div>
+                        </div>
+                        <div class="stakeholder-body">
+                            <div class="info-item">
+                                <div class="info-label">Descripción</div>
+                                <div class="info-value">Cliente corporativo con altos requisitos de sostenibilidad</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Necesitamos</div>
+                                <div class="info-value">Fidelidad, volumen de compra estable</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Temas ESG prioritarios</div>
+                                <div class="tag-list">
+                                    <div class="tag">Huella de carbono</div>
+                                    <div class="tag">Transparencia</div>
+                                    <div class="tag">Certificaciones</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stakeholder-footer">
+                            <div class="influence-indicator">
+                                <div class="influence-dot high"></div>
+                                <span>Alta influencia</span>
+                            </div>
+                            <button class="action-button">Ver detalle</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Inversor -->
+                    <div class="stakeholder-card">
+                        <div class="stakeholder-header">
+                            <div class="stakeholder-name">
+                                <span>Fondo Sostenible Alpha</span>
+                                <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #d32f2f;"></div>
+                            </div>
+                            <div class="stakeholder-type">Inversor</div>
+                        </div>
+                        <div class="stakeholder-body">
+                            <div class

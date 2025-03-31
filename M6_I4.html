@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - M6_I04 Exportación y Distribución</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        /* Header */
+        .top-bar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            height: 30px;
+        }
+        
+        .search-text {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        /* Module Colors */
+        .menu-item.module1 {
+            color: #3b78c3; /* Azul para Módulo 1 */
+        }
+        
+        .menu-item.module2 {
+            color: #d16565; /* Rojo para Módulo 2 */
+        }
+        
+        .menu-item.module3 {
+            color: #F5CB57; /* Amarillo para Módulo 3 */
+        }
+        
+        .menu-item.module4 {
+            color: #1a9967; /* Verde para Módulo 4 */
+        }
+        
+        .menu-item.module5 {
+            color: #8E44AD; /* Púrpura para Módulo 5 */
+        }
+        
+        .menu-item.module6 {
+            color: #9C27B0; /* Morado para Módulo 6 */
+        }
+        
+        .menu-item.active {
+            background-color: #9C27B0;
+            color: #fff !important;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .submenu-item.active {
+            background-color: #f5e9f7;
+            font-weight: 600;
+            color: #9C27B0;
+        }
+        
+        .activity-panel {
+            background: #f0f0f0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-item {
+            margin-bottom: 5px;
+            font-size: 9px;
+        }
+        
+        /* Main panel */
+        .main-panel {
+            flex-grow: 1;
+            padding: 10px 20px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #9C27B0 #f0f0f0;
+        }
+        
+        /* Personalización de la barra de desplazamiento para Chrome */
+        .main-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .main-panel::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        
+        .main-panel::-webkit-scrollbar-thumb {
+            background-color: #9C27B0;
+            border-radius: 4px;
+        }
+        
+        .content-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-header {
+            background-color: rgba(156, 39, 176, 0.1);
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background-color: rgba(156, 39, 176, 0.1);
+            font-weight: 600;
+            color: #9C27B0;
+        }
+        
+        /* Phase indicator */
+        .phase-indicator {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #9C27B0;
+            font-weight: 600;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        /* Info panel */
+        .info-panel {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-desc {
+            color: #555;
+        }
+        
+        .info-help {
+            font-size: 9px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        /* Form content */
+        .form-content {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .form-label {
+            font-size: 11px;
+            color: #333;
+            width: 150px;
+            padding-top: 8px;
+        }
+        
+        .form-field {
+            flex-grow: 1;
+        }
+        
+        .textarea-field {
+            width: 100%;
+            height: 60px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 8px;
+            font-size: 11px;
+            resize: vertical;
+        }
+        
+        .select-field {
+            width: 100%;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 0 8px;
+            font-size: 11px;
+            background-color: white;
+        }
+        
+        .radio-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            color: #333;
+        }
+        
+        .radio-option input {
+            margin-right: 5px;
+        }
+        
+        .required-mark {
+            color: #d16565;
+            margin-left: 3px;
+        }
+        
+        .info-tip {
+            background-color: #f5f8ff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-icon {
+            width: 18px;
+            height: 18px;
+            background-color: #9C27B0;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        
+        .info-text {
+            font-size: 9px;
+            color: #555;
+        }
+        
+        /* Export format cards */
+        .export-formats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .format-card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .format-card:hover {
+            border-color: #9C27B0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .format-card.selected {
+            border: 2px solid #9C27B0;
+            background-color: #f9f0fc;
+        }
+        
+        .format-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .format-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #9C27B0;
+            font-weight: bold;
+            background-color: rgba(156, 39, 176, 0.1);
+            border-radius: 4px;
+        }
+        
+        .format-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .format-desc {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .format-details {
+            font-size: 9px;
+            color: #888;
+        }
+        
+        /* Distribution options */
+        .distribution-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .distribution-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .distribution-option:hover {
+            background-color: #f9f0fc;
+        }
+        
+        .distribution-option input {
+            margin-right: 10px;
+        }
+        
+        .distribution-option-label {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .distribution-option-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .distribution-option-desc {
+            font-size: 9px;
+            color: #666;
+        }
+        
+        /* Security settings */
+        .security-settings {
+            margin-bottom: 20px;
+        }
+        
+        .security-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .security-row:hover {
+            background-color: #f9f0fc;
+        }
+        
+        .security-label {
+            flex: 1;
+            font-size: 11px;
+            color: #333;
+        }
+        
+        .security-value {
+            width: 100px;
+            text-align: right;
+        }
+        
+        .security-toggle {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+        
+        .security-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 20px;
+            transition: .4s;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            border-radius: 50%;
+            transition: .4s;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #9C27B0;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(16px);
+        }
+        
+        /* Distribution channel card */
+        .channel-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .channel-card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .channel-card:hover {
+            border-color: #9C27B0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .channel-card.selected {
+            border: 2px solid #9C27B0;
+            background-color: #f9f0fc;
+        }
+        
+        .channel-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            background-color: rgba(156, 39, 176, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .channel-icon svg {
+            width: 16px;
+            height: 16px;
+            color: #9C27B0;
+        }
+        
+        .channel-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .channel-desc {
+            font-size: 9px;
+            color: #666;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        
+        .status-ready {
+            background-color: #e6f7ef;
+            color: #1a9967;
+        }
+        
+        .status-pending {
+            background-color: #fff8e6;
+            color: #f5a623;
+        }
+        
+        /* Progress tracker */
+        .progress-tracker {
+            margin-bottom: 20px;
+        }
+        
+        .progress-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .progress-value {
+            color: #9C27B0;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #9C27B0;
+        }
+        
+        .audit-log {
+            height: 120px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        
+        .log-entry {
+            font-size: 9px;
+            color: #333;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        
+        .log-timestamp {
+            color: #888;
+            margin-right: 5px;
+        }
+        
+        .log-action {
+            color: #9C27B0;
+            font-weight: 600;
+        }
+        
+        /* Checkbox styles */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .checkbox-container input {
+            margin-right: 8px;
+        }
+        
+        .checkbox-label {
+            font-size: 11px;
+            color: #333;
+        }
+        
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .nav-button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-button.previous {
+            background-color: #F5CB57;
+            color: #333;
+        }
+        
+        .nav-button.save {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        .nav-button.next {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        /* Success indicator */
+        .success-indicator {
+            background-color: #e6f7ef;
+            border: 1px solid #1a9967;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .success-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #1a9967;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+        }
+        
+        .success-text {
+            font-size: 11px;
+            color: #1a9967;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            height: 30px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 9px;
+            color: #666;
+            position: sticky;
+            bottom: 0;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <!-- Círculo exterior -->
+                        <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                        
+                        <!-- Puntas de la brújula -->
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                        <path d="M44,22 L39,25 L37,22 L39,19 Z" fill="#666666"/>
+                        <path d="M22,44 L19,39 L22,37 L25,39 Z" fill="#666666"/>
+                        <path d="M0,22 L5,19 L7,22 L5,25 Z" fill="#666666"/>
+                        
+                        <!-- Aguja -->
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#9C27B0" transform="rotate(-45 22 22)"/>
+                        
+                        <!-- Punto central -->
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+            
+            <div class="search-bar">
+                <div class="search-text">Buscar en la plataforma...</div>
+                <div class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                        <circle cx="7" cy="7" r="7" fill="#2196f3" stroke="#2196f3" stroke-width="1"/>
+                        <line x1="11" y1="11" x2="16" y2="16" stroke="#2196f3" stroke-width="2"/>
+                        <circle cx="7" cy="7" r="4" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="icon-button" style="background-color: #9C27B0;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                        <circle cx="4" cy="7" r="2" />
+                        <circle cx="7" cy="7" r="2" />
+                        <circle cx="10" cy="7" r="2" />
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#888888">
+                        <rect x="3" y="3" width="8" height="8" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="6" x2="9" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#666666">
+                        <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="7" y2="4" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="9" y2="9" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5; position: relative;">
+                    <svg width="14" height="14" viewBox="0 0 14 14">
+                        <path d="M3,11 C3,11 2,7 2,3 C2,-1 5,-3 7,-3 C9,-3 12,-1 12,3 C12,7 11,11 11,11 Z" fill="#FFCA28" stroke="#FFCA28" stroke-width="1" transform="translate(0, 3)"/>
+                        <circle cx="7" cy="12" r="2" fill="#FFCA28"/>
+                    </svg>
+                    <div style="position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background-color: #d16565; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold;">3</div>
+                </div>
+                
+                <div class="icon-button" style="background-color: #E91E63; color: white; font-weight: bold;">?</div>
+                
+                <div style="display: flex; align-items: center;">
+                    <div class="icon-button" style="background-color: #673AB7; color: white;">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                            <circle cx="7" cy="5" r="3"/>
+                            <path d="M2,14 C2,9 12,9 12,14" fill="white" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span style="margin-left: 8px; font-size: 12px;">Usuario X</span>
+                </div>
+                
+                <div class="company-selector">
+                    <span style="font-size: 12px;">Empresa S.A.</span>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#666" style="margin-left: 8px;">
+                        <polygon points="5,8 0,3 10,3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="menu-item module1">1. Datos Base</div>
+                <div class="menu-item module2">2. Datos GGII</div>
+                <div class="menu-item module3">3. Integración Externa</div>
+                <div class="menu-item module4">4. Análisis DM</div>
+                <div class="menu-item module5">5. Datapoints</div>
+                <div class="menu-item module6 active">6. Reporting</div>
+                <div class="submenu-item">► Revisión del Informe</div>
+                <div class="submenu-item">► Validación de Coherencia</div>
+                <div class="submenu-item">► Generación Final</div>
+                <div class="submenu-item active">► Exportación y Distribución</div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <div class="activity-panel">
+                    <div class="activity-title">ACTIVIDAD RECIENTE</div>
+                    <div class="activity-item">M6_I02 completado - Hace 15m</div>
+                    <div class="activity-item">M6_I03 completado - Hace 8m</div>
+                    <div class="activity-item">M6_I04 en progreso - Hace 2m</div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-panel">
+                <div class="content-box">
+                    <div class="module-header">
+                        <div class="module-title">Módulo 6: Reporting</div>
+                    </div>
+                    
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab">REVISIÓN DEL INFORME</div>
+                        <div class="tab">VALIDACIÓN DE COHERENCIA</div>
+                        <div class="tab">GENERACIÓN FINAL</div>
+                        <div class="tab active">EXPORTACIÓN Y DISTRIBUCIÓN</div>
+                    </div>
+                    
+                    <!-- Phase Indicator -->
+                    <div class="phase-indicator">
+                        Exportación y Distribución del Informe CSRD
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                    
+                    <!-- Success indicator -->
+                    <div class="success-indicator">
+                        <div class="success-icon">✓</div>
+                        <div class="success-text">Informe ESG validado y listo para distribución. Todos los elementos obligatorios CSRD han sido verificados.</div>
+                    </div>
+                    
+                    <!-- Info Panel -->
+                    <div class="info-panel">
+                        <div class="info-title">M6_I04: Exportación y Distribución: </div>
+                        <div class="info-desc">Configure las opciones de exportación del informe CSRD definitivo y seleccione los canales de distribución para diferentes grupos de interés.</div>
+                        <div class="info-help">Puede exportar su informe en múltiples formatos, configurar la seguridad y distribuirlo a través de diferentes canales, manteniendo un registro de auditoría completo.</div>
+                    </div>
+                    
+                    <!-- Export Formats -->
+                    <div class="form-content">
+                        <div class="form-section-title">1. FORMATOS DE EXPORTACIÓN</div>
+                        
+                        <div class="export-formats">
+                            <div class="format-card selected">
+                                <div class="format-header">
+                                    <div class="format-icon">X</div>
+                                    <div class="format-title">XBRL</div>
+                                </div>
+                                <div class="format-desc">Formato estructurado para presentación a reguladores (ESEF)</div>
+                                <div class="format-details">• Conforme a la taxonomía ESRS<br>• Compatible con plataformas regulatorias UE</div>
+                            </div>
+                            
+                            <div class="format-card selected">
+                                <div class="format-header">
+                                    <div class="format-icon">P</div>
+                                    <div class="format-title">PDF</div>
+                                </div>
+                                <div class="format-desc">Documento completo para distribución general</div>
+                                <div class="format-details">• Incluye tablas, gráficos y visualizaciones<br>• Formato final con diseño corporativo</div>
+                            </div>
+                            
+                            <div class="format-card">
+                                <div class="format-header">
+                                    <div class="format-icon">H</div>
+                                    <div class="format-title">HTML</div>
+                                </div>
+                                <div class="format-desc">Versión web interactiva para publicación digital</div>
+                                <div class="format-details">• Navegación mejorada entre secciones<br>• Compatible con sitios web corporativos</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-section-title" style="font-size: 11px; margin-bottom: 10px;">Opciones adicionales</div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-excel" checked>
+                                <label class="checkbox-label" for="include-excel">Incluir anexo en Excel con datos completos</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-presentation">
+                                <label class="checkbox-label" for="include-presentation">Generar presentación PowerPoint con principales hallazgos</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="include-summary" checked>
+                                <label class="checkbox-label" for="include-summary">Incluir resumen ejecutivo independiente</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Settings -->
+                    <div class="form-content">
+                        <div class="form-section-title">2. CONFIGURACIÓN DE SEGURIDAD Y METADATOS</div>
+                        
+                        <div class="form-group">
+                            <div class="security-settings">
+                                <div class="security-row">
+                                    <div class="security-label">Agregar firma digital empresarial</div>
+                                    <div class="security-value">
+                                        <label class="security-toggle">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="security-row">
+                                    <div class="security-label">Proteger PDF con contraseña (para distribución confidencial)</div>
+                                    <div class="security-value">
+                                        <label class="security-toggle">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="security-row">
+                                    <div class="security-label">Incluir sello de tiempo verificable</div>
+                                    <div class="security-value">
+                                        <label class="security-toggle">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="security-row">
+                                    <div class="security-label">Habilitar restricciones de impresión/copia</div>
+                                    <div class="security-value">
+                                        <label class="security-toggle">
+                                            <input type="checkbox">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="security-row">
+                                    <div class="security-label">Registrar distribución en blockchain (trazabilidad)</div>
+                                    <div class="security-value">
+                                        <label class="security-toggle">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row" style="margin-top: 15px;">
+                                <div class="form-label">Comentario de validación:</div>
+                                <div class="form-field">
+                                    <textarea class="textarea-field" placeholder="Añada información adicional sobre la validación del informe...">Informe verificado internamente por el departamento de sostenibilidad y el comité de auditoría. Pendiente de revisión por verificador externo.</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Distribution Channels -->
+                    <div class="form-content">
+                        <div class="form-section-title">3. CANALES DE DISTRIBUCIÓN</div>
+                        
+                        <div class="channel-cards">
+                            <div class="channel-card selected">
+                                <div class="channel-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="4" width="20" height="16" rx="2" />
+                                        <path d="M22,4 L12,12 L2,4" />
+                                    </svg>
+                                </div>
+                                <div class="channel-title">Email a Grupos de Interés <span class="status-badge status-ready">Listo</span></div>
+                                <div class="channel-desc">Distribución a lista preconfigurada de stakeholders clave mediante correo electrónico.</div>
+                            </div>
+                            
+                            <div class="channel-card selected">
+                                <div class="channel-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="20" rx="2" />
+                                        <path d="M7,17 L17,7 M7,7 L17,7 L17,17" />
+                                    </svg>
+                                </div>
+                                <div class="channel-title">Web Corporativa <span class="status-badge status-pending">Pendiente</span></div>
+                                <div class="channel-desc">Publicación en la sección de sostenibilidad del sitio web oficial de la empresa.</div>
+                            </div>
+                            
+                            <div class="channel-card">
+                                <div class="channel-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M12,2 C6.5,2 2,6.5 2,12" />
+                                    </svg>
+                                </div>
+                                <div class="channel-title">Registro Regulatorio</div>
+                                <div class="channel-desc">Envío a la plataforma oficial ESAP (European Single Access Point) para cumplimiento CSRD.</div>
+                            </div>
+                            
+                            <div class="channel-card">
+                                <div class="channel-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22,7 L22,18 C22,19.1 21.1,20 20,20 L4,20 C2.9,20 2,19.1 2,18 L2,7" />
+                                        <path d="M17,2 L12,7 L7,2" />
+                                    </svg>
+                                </div>
+                                <div class="channel-title">Intranet Corporativa</div>
+                                <div class="channel-desc">Compartir con empleados a través de la plataforma interna de comunicación.</div>
+                            </div>
+                            
+                            <div class="channel-card">
+                                <div class="channel-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" />
+                                        <circle cx="8" cy="8" r="2" />
+                                        <circle cx="16" cy="16" r="2" />
+                                        <path d="M8,16 L16,8" />
+                                    </svg>
+                                </div>
+                                <div class="channel-title">Plataformas ESG</div>
+                                <div class="channel-desc">Publicación en Bloomberg ESG, MSCI, CDP y otras plataformas de datos de sostenibilidad.</div>
+                            </div>
+                            
+                            <div class="channel-card selected">
+                                <div class="channel-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M12,8 L12,16 M8,12 L16,12" />
+                                    </svg>
+                                </div>
+                                <div class="channel-title">Redes Sociales <span class="status-badge status-ready">Listo</span></div>
+                                <div class="channel-desc">Publicación de resumen y principales logros en LinkedIn, Twitter y otras redes corporativas.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-label">Destinatarios adicionales:</div>
+                            <div class="form-field">
+                                <textarea class="textarea-field" placeholder="Indique otros destinatarios que deban recibir el informe...">Consejo de Administración, Comité de Sostenibilidad, Inversores institucionales clave, Asociaciones sectoriales</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress and Audit -->
+                    <div class="form-content">
+                        <div class="form-section-title">4. REGISTRO DE AUDITORÍA Y SEGUIMIENTO</div>
+                        
+                        <div class="form-group">
+                            <div class="progress-tracker">
+                                <div class="progress-title">
+                                    <span>Estado de distribución global</span>
+                                    <span class="progress-value">33%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 33%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="audit-log">
+                                <div class="log-entry">
+                                    <span class="log-timestamp">26/03/2025 14:32</span>
+                                    <span class="log-action">Informe XBRL generado</span> por Usuario X (Dpto. Sostenibilidad)
+                                </div>
+                                <div class="log-entry">
+                                    <span class="log-timestamp">26/03/2025 14:35</span>
+                                    <span class="log-action">Informe PDF generado</span> por Usuario X (Dpto. Sostenibilidad)
+                                </div>
+                                <div class="log-entry">
+                                    <span class="log-timestamp">26/03/2025 14:40</span>
+                                    <span class="log-action">Firma digital aplicada</span> por Director de Sostenibilidad
+                                </div>
+                                <div class="log-entry">
+                                    <span class="log-timestamp">26/03/2025 14:45</span>
+                                    <span class="log-action">Email enviado</span> a 15 destinatarios clave
+                                </div>
+                                <div class="log-entry">
+                                    <span class="log-timestamp">26/03/2025 14:47</span>
+                                    <span class="log-action">Publicación en redes sociales programada</span> para 27/03/2025
+                                </div>
+                                <div class="log-entry">
+                                    <span class="log-timestamp">26/03/2025 14:50</span>
+                                    <span class="log-action">Preparación para web corporativa completada</span>, pendiente de aprobación final
+                                </div>
+                            </div>
+                            
+                            <div class="form-row" style="margin-top: 15px;">
+                                <div class="form-label">Fecha límite regulatoria:</div>
+                                <div class="form-field">
+                                    <input type="text" value="15/04/2025" style="width: 100px; height: 25px; border: 1px solid #ccc; border-radius: 3px; padding: 0 8px; font-size: 11px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Final confirmation -->
+                    <div class="form-content">
+                        <div class="form-section-title">5. CONFIRMACIÓN FINAL</div>
+                        
+                        <div class="form-group">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="confirm-compliance" checked>
+                                <label class="checkbox-label" for="confirm-compliance">Confirmo que el informe cumple con todos los requisitos de la Directiva CSRD y los estándares ESRS aplicables</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="confirm-accuracy" checked>
+                                <label class="checkbox-label" for="confirm-accuracy">Confirmo la exactitud y veracidad de todos los datos incluidos en el informe</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="confirm-approval" checked>
+                                <label class="checkbox-label" for="confirm-approval">Confirmo que el informe ha sido aprobado internamente por los órganos responsables</label>
+                            </div>
+                            
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="confirm-distribution">
+                                <label class="checkbox-label" for="confirm-distribution">Autorizo la distribución del informe a través de los canales seleccionados</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Tip -->
+                    <div class="info-tip">
+                        <div class="info-icon">i</div>
+                        <div class="info-text">Según el Art. 19a de la Directiva CSRD, la información de sostenibilidad debe publicarse junto con el informe de gestión y estar disponible en formato electrónico. Asegúrese de configurar correctamente el formato XBRL para cumplir con los requisitos del European Single Electronic Format (ESEF).</div>
+                    </div>
+                    
+                    <!-- Nav Buttons -->
+                    <div class="nav-buttons">
+                        <div class="nav-button previous">Anterior</div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="nav-button save">Guardar Configuración</div>
+                            <div class="nav-button next">Finalizar y Distribuir</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+            <div>Versión 1.2.4</div>
+        </div>
+    </div>
+</body>
+</html>

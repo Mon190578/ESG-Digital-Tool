@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - M4_D04 Análisis de Materialidad Financiera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .top-bar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            height: 30px;
+        }
+        
+        .search-text {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        /* Module Colors */
+        .menu-item.module1 {
+            color: #3b78c3; /* Azul para Módulo 1 */
+        }
+        
+        .menu-item.module2 {
+            color: #d16565; /* Rojo para Módulo 2 */
+        }
+        
+        .menu-item.module3 {
+            color: #F5CB57; /* Amarillo para Módulo 3 */
+        }
+        
+        .menu-item.module4 {
+            color: #1a9967; /* Verde para Módulo 4 */
+        }
+        
+        .menu-item.active {
+            background-color: #1a9967;
+            color: #fff !important;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .submenu-item.active {
+            background-color: #ebf9f2;
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        .activity-panel {
+            background: #f0f0f0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-item {
+            margin-bottom: 5px;
+            font-size: 9px;
+        }
+        
+        /* Main panel */
+        .main-panel {
+            flex-grow: 1;
+            padding: 10px 20px;
+        }
+        
+        .content-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-header {
+            background-color: rgba(26, 153, 103, 0.1);
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background-color: rgba(26, 153, 103, 0.1);
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        /* Dashboard styles */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a9967;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-button {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            color: #555;
+        }
+        
+        .action-button.export {
+            background-color: #1a9967;
+            color: white;
+            border: none;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 0 10px;
+            height: 30px;
+        }
+        
+        .filter-label {
+            font-size: 10px;
+            color: #666;
+            margin-right: 5px;
+        }
+        
+        .filter-select {
+            border: none;
+            background: transparent;
+            font-size: 11px;
+            color: #333;
+            height: 28px;
+            outline: none;
+        }
+        
+        .matrix-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        
+        .matrix {
+            width: 100%;
+            height: 450px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .matrix-quadrants {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .matrix-quadrant {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .quadrant-top-right {
+            top: 0;
+            right: 0;
+            border-left: 1px dashed #ccc;
+            border-bottom: 1px dashed #ccc;
+            background-color: rgba(26, 153, 103, 0.05);
+        }
+        
+        .quadrant-top-left {
+            top: 0;
+            left: 0;
+            border-right: 1px dashed #ccc;
+            border-bottom: 1px dashed #ccc;
+            background-color: rgba(211, 47, 47, 0.05);
+        }
+        
+        .quadrant-bottom-right {
+            bottom: 0;
+            right: 0;
+            border-left: 1px dashed #ccc;
+            border-top: 1px dashed #ccc;
+            background-color: rgba(255, 193, 7, 0.05);
+        }
+        
+        .quadrant-bottom-left {
+            bottom: 0;
+            left: 0;
+            border-right: 1px dashed #ccc;
+            border-top: 1px dashed #ccc;
+            background-color: rgba(158, 158, 158, 0.05);
+        }
+        
+        .matrix-axes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .x-axis, .y-axis {
+            position: absolute;
+            background-color: #555;
+        }
+        
+        .x-axis {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+        }
+        
+        .y-axis {
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+        }
+        
+        .axis-label {
+            position: absolute;
+            font-size: 10px;
+            color: #555;
+        }
+        
+        .axis-label.x-min {
+            bottom: 5px;
+            left: 5px;
+        }
+        
+        .axis-label.x-mid {
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .axis-label.x-max {
+            bottom: 5px;
+            right: 5px;
+        }
+        
+        .axis-label.y-min {
+            left: 5px;
+            bottom: 5px;
+            transform: rotate(-90deg);
+            transform-origin: left bottom;
+        }
+        
+        .axis-label.y-mid {
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: left center;
+        }
+        
+        .axis-label.y-max {
+            left: 5px;
+            top: 5px;
+            transform: rotate(-90deg);
+            transform-origin: left top;
+        }
+        
+        .axis-title {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .axis-title.x-title {
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        
+        .axis-title.y-title {
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: left center;
+            text-align: center;
+        }
+        
+        .data-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-point.risk {
+            background-color: #d16565;
+        }
+        
+        .data-point.opportunity {
+            background-color: #1a9967;
+        }
+        
+        .data-label {
+            position: absolute;
+            font-size: 8px;
+            font-weight: 600;
+            text-shadow: 0 0 3px white;
+            color: #333;
+            pointer-events: none;
+        }
+        
+        .matrix-legend {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            color: #555;
+        }
+        
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .legend-color.risk {
+            background-color: #d16565;
+        }
+        
+        .legend-color.opportunity {
+            background-color: #1a9967;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 11px;
+        }
+        
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .data-table th {
+            background-color: #f2f2f2;
+            font-weight: 600;
+        }
+        
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-size: 8px;
+            margin-right: 2px;
+            font-weight: 500;
+        }
+        
+        .tag.risk {
+            background-color: #ffdddd;
+            color: #d16565;
+        }
+        
+        .tag.opportunity {
+            background-color: #e2f7e8;
+            color: #1a9967;
+        }
+        
+        .tag.environmental {
+            background-color: #e2f7e8;
+            color: #1a9967;
+        }
+        
+        .tag.social {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .tag.governance {
+            background-color: #f9f0ff;
+            color: #722ed1;
+        }
+        
+        .materialidad-cell {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .materialidad-value {
+            font-weight: 600;
+        }
+        
+        .materialidad-bar {
+            height: 6px;
+            border-radius: 3px;
+            background-color: #e0e0e0;
+            min-width: 50px;
+            flex-grow: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .materialidad-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            border-radius: 3px;
+        }
+        
+        .materialidad-fill.high {
+            background-color: #d16565;
+        }
+        
+        .materialidad-fill.medium {
+            background-color: #F5CB57;
+        }
+        
+        .materialidad-fill.low {
+            background-color: #1a9967;
+        }
+        
+        .summary-panel {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .summary-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a9967;
+            margin-bottom: 10px;
+        }
+        
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .stat-label {
+            font-size: 9px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .summary-note {
+            font-size: 10px;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        
+        /* Footer */
+        .footer {
+            height: 30px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 9px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <!-- Círculo exterior -->
+                        <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                        
+                        <!-- Puntas de la brújula -->
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                        <path d="M44,22 L39,25 L37,22 L39,19 Z" fill="#666666"/>
+                        <path d="M22,44 L19,39 L22,37 L25,39 Z" fill="#666666"/>
+                        <path d="M0,22 L5,19 L7,22 L5,25 Z" fill="#666666"/>
+                        
+                        <!-- Aguja -->
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#1a9967" transform="rotate(-45 22 22)"/>
+                        
+                        <!-- Punto central -->
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+            
+            <div class="search-bar">
+                <div class="search-text">Buscar en la plataforma...</div>
+                <div class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                        <circle cx="7" cy="7" r="7" fill="#2196f3" stroke="#2196f3" stroke-width="1"/>
+                        <line x1="11" y1="11" x2="16" y2="16" stroke="#2196f3" stroke-width="2"/>
+                        <circle cx="7" cy="7" r="4" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="icon-button" style="background-color: #129953;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                        <circle cx="4" cy="7" r="2" />
+                        <circle cx="7" cy="7" r="2" />
+                        <circle cx="10" cy="7" r="2" />
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#888888">
+                        <rect x="3" y="3" width="8" height="8" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="6" x2="9" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#666666">
+                        <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="7" y2="4" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="9" y2="9" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5; position: relative;">
+                    <svg width="14" height="14" viewBox="0 0 14 14">
+                        <path d="M3,11 C3,11 2,7 2,3 C2,-1 5,-3 7,-3 C9,-3 12,-1 12,3 C12,7 11,11 11,11 Z" fill="#FFCA28" stroke="#FFCA28" stroke-width="1" transform="translate(0, 3)"/>
+                        <circle cx="7" cy="12" r="2" fill="#FFCA28"/>
+                    </svg>
+                    <div style="position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background-color: #d16565; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold;">3</div>
+                </div>
+                
+                <div class="icon-button" style="background-color: #E91E63; color: white; font-weight: bold;">?</div>
+                
+                <div style="display: flex; align-items: center;">
+                    <div class="icon-button" style="background-color: #673AB7; color: white;">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                            <circle cx="7" cy="5" r="3"/>
+                            <path d="M2,14 C2,9 12,9 12,14" fill="white" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span style="margin-left: 8px; font-size: 12px;">Usuario X</span>
+                </div>
+                
+                <div class="company-selector">
+                    <span style="font-size: 12px;">Empresa S.A.</span>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#666" style="margin-left: 8px;">
+                        <polygon points="5,8 0,3 10,3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="menu-item module1">1. Datos Base</div>
+                <div class="menu-item module2">2. Datos GGII</div>
+                <div class="menu-item module3">3. Integración Externa</div>
+                <div class="menu-item module4 active">4. Análisis DM</div>
+                <div class="submenu-item">► Comprensión del Contexto</div>
+                <div class="submenu-item">► Configuración del Análisis</div>
+                <div class="submenu-item">► Impactos</div>
+                <div class="submenu-item active">► Riesgos y Oportunidades</div>
+                <div class="submenu-item">► Matriz de Materialidad</div>
+                <div class="menu-item">5. Datapoints</div>
+                <div class="menu-item">6. Reporting</div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <div class="activity-panel">
+                    <div class="activity-title">ACTIVIDAD RECIENTE</div>
+                    <div class="activity-item">M4_I05 completado - Hace 5m</div>
+                    <div class="activity-item">Riesgos evaluados: 12/15 - Hace 10m</div>
+                    <div class="activity-item">Oportunidades evaluadas: 8/8 - Hace 15m</div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-panel">
+                <div class="content-box">
+                    <div class="module-header">
+                        <div class="module-title">Módulo 4: Análisis de Doble Materialidad</div>
+                    </div>
+                    
+                    <!-- Dashboard Header -->
+                    <div class="dashboard-header">
+                        <div class="dashboard-title">Dashboard: Análisis de Materialidad Financiera</div>
+                        
+                        <div class="dashboard-actions">
+                            <div class="action-button">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="M21 21l-4.3-4.3" />
+                                </svg>
+                                <span style="margin-left: 5px;">Buscar</span>
+                            </div>
+                            
+                            <div class="action-button">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2">
+                                    <path d="M12 5v14M5 12h14" />
+                                </svg>
+                                <span style="margin-left: 5px;">Zoom</span>
+                            </div>
+                            
+                            <div class="action-button export">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+                                </svg>
+                                <span style="margin-left: 5px;">Exportar</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter Bar -->
+                    <div class="filter-bar">
+                        <div class="filter-group">
+                            <div class="filter-label">Tipo:</div>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option>Riesgos</option>
+                                <option>Oportunidades</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-label">Ámbito ESG:</div>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option>Ambiental</option>
+                                <option>Social</option>
+                                <option>Gobernanza</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-label">Plazo:</div>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option>Corto</option>
+                                <option>Medio</option>
+                                <option>Largo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-label">Cadena de Valor:</div>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option>Operaciones propias</option>
+                                <option>Aguas arriba</option>
+                                <option>Aguas abajo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <div class="filter-label">Materialidad mínima:</div>
+                            <select class="filter-select">
+                                <option>Todos</option>
+                                <option>≥ 0.25</option>
+                                <option>≥ 0.50</option>
+                                <option>≥ 0.75</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Matrix Container -->
+                    <div class="matrix-container">
+                        <div class="matrix">
+                            <!-- Quadrants -->
+                            <div class="matrix-quadrants">
+                                <div class="matrix-quadrant quadrant-top-right">ALTA MATERIALIDAD FINANCIERA</div>
+                                <div class="matrix-quadrant quadrant-top-left">RIESGOS SIGNIFICATIVOS</div>
+                                <div class="matrix-quadrant quadrant-bottom-right">OPORTUNIDADES EMERGENTES</div>
+                                <div class="matrix-quadrant quadrant-bottom-left">BAJA MATERIALIDAD</div>
+                            </div>
+                            
+                            <!-- Axes -->
+                            <div class="matrix-axes">
+                                <div class="x-axis"></div>
+                                <div class="y-axis"></div>
+                                
+                                <div class="axis-label x-min">0</div>
+                                <div class="axis-label x-mid">5</div>
+                                <div class="axis-label x-max">10</div>
+                                
+                                <div class="axis-label y-min">0</div>
+                                <div class="axis-label y-mid">5</div>
+                                <div class="axis-label y-max">10</div>
+                                
+                                <div class="axis-title x-title">Gravedad Financiera (0-10)</div>
+                                <div class="axis-title y-title">Probabilidad (0-10)</div>
+                            </div>
+                            
+                            <!-- Data Points -->
+                            <div class="data-point risk" style="top: 35%; left: 65%;" title="Riesgo regulatorio de emisiones CO2"></div>
+                            <div class="data-label" style="top: 32%; left: 67%;">R1</div>
+                            
+                            <div class="data-point risk" style="top: 25%; left: 48%;" title="Riesgo de escasez hídrica"></div>
+                            <div class="data-label" style="top: 22%; left: 50%;">R2</div>
+                            
+                            <div class="data-point risk" style="top: 55%; left: 42%;" title="Riesgo laboral en cadena suministro"></div>
+                            <div class="data-label" style="top: 52%; left: 44%;">R3</div>
+                            
+                            <div class="data-point risk" style="top: 65%; left: 15%;" title="Riesgo de conflicto comunitario"></div>
+                            <div class="data-label" style="top: 62%; left: 17%;">R4</div>
+                            
+                            <div class="data-point risk" style="top: 15%; left: 72%;" title="Riesgo de incumplimiento normativo"></div>
+                            <div class="data-label" style="top: 12%; left: 74%;">R5</div>
+                            
+                            <div class="data-point opportunity" style="top: 25%; left: 80%;" title="Oportunidad de reducción de costes energéticos"></div>
+                            <div class="data-label" style="top: 22%; left: 82%;">O1</div>
+                            
+                            <div class="data-point opportunity" style="top: 75%; left: 65%;" title="Oportunidad de acceso a financiación verde"></div>
+                            <div class="data-label" style="top: 72%; left: 67%;">O2</div>
+                            
+                            <div class="data-point opportunity" style="top: 80%; left: 25%;" title="Oportunidad de desarrollo de productos sostenibles"></div>
+                            <div class="data-label" style="top: 77%; left: 27%;">O3</div>
+                        </div>
+                        
+                        <div class="matrix-legend">
+                            <div class="legend-item">
+                                <div class="legend-color risk"></div>
+                                <span>Riesgos</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color opportunity"></div>
+                                <span>Oportunidades</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary Panel -->
+                    <div class="summary-panel">
+                        <div class="summary-title">Resumen de Materialidad Financiera</div>
+                        
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">20</div>
+                                <div class="stat-label">Total de Riesgos y Oportunidades</div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Riesgos</div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-value">8</div>
+                                <div class="stat-label">Oportunidades</div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-value">7</div>
+                                <div class="stat-label">Alta Materialidad Financiera</div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-value">9</div>
+                                <div class="stat-label">Media Materialidad Financiera</div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-value">4</div>
+                                <div class="stat-label">Baja Materialidad Financiera</div>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-note">
+                            Nota: La materialidad financiera se calcula multiplicando la probabilidad (0-1) por la gravedad financiera (0-1). Los umbrales definidos son: Alta (≥0.5), Media (≥0.25 y <0.5), Baja (<0.25).
+                        </div>
+                    </div>
+                    
+                    <!-- Data Table -->
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Descripción</th>
+                                <th>Tipo</th>
+                                <th>Ámbito</th>
+                                <th>Probabilidad</th>
+                                <th>Gravedad</th>
+                                <th>Materialidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>R1</td>
+                                <td>Riesgo regulatorio de emisiones CO2</td>
+                                <td><span class="tag risk">Riesgo</span></td>
+                                <td><span class="tag environmental">Ambiental</span></td>
+                                <td>0.75</td>
+                                <td>0.75</td>
+                                <td>
+                                    <div class="materialidad-cell">
+                                        <div class="materialidad-value">0.56</div>
+                                        <div class="materialidad-bar">
+                                            <div class="materialidad-fill high" style="width: 56%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>O1</td>
+                                <td>Oportunidad de reducción de costes energéticos</td>
+                                <td><span class="tag opportunity">Oportunidad</span></td>
+                                <td><span class="tag environmental">Ambiental</span></td>
+                                <td>0.75</td>
+                                <td>0.75</td>
+                                <td>
+                                    <div class="materialidad-cell">
+                                        <div class="materialidad-value">0.56</div>
+                                        <div class="materialidad-bar">
+                                            <div class="materialidad-fill high" style="width: 56%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>R5</td>
+                                <td>Riesgo de incumplimiento normativo</td>
+                                <td><span class="tag risk">Riesgo</span></td>
+                                <td><span class="tag governance">Gobernanza</span></td>
+                                <td>0.83</td>
+                                <td>0.50</td>
+                                <td>
+                                    <div class="materialidad-cell">
+                                        <div class="materialidad-value">0.42</div>
+                                        <div class="materialidad-bar">
+                                            <div class="materialidad-fill medium" style="width: 42%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>R2</td>
+                                <td>Riesgo de escasez hídrica</td>
+                                <td><span class="tag risk">Riesgo</span></td>
+                                <td><span class="tag environmental">Ambiental</span></td>
+                                <td>0.75</td>
+                                <td>0.50</td>
+                                <td>
+                                    <div class="materialidad-cell">
+                                        <div class="materialidad-value">0.38</div>
+                                        <div class="materialidad-bar">
+                                            <div class="materialidad-fill medium" style="width: 38%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>O2</td>
+                                <td>Oportunidad de acceso a financiación verde</td>
+                                <td><span class="tag opportunity">Oportunidad</span></td>
+                                <td><span class="tag environmental">Ambiental</span></td>
+                                <td>0.42</td>
+                                <td>0.75</td>
+                                <td>
+                                    <div class="materialidad-cell">
+                                        <div class="materialidad-value">0.32</div>
+                                        <div class="materialidad-bar">
+                                            <div class="materialidad-fill medium" style="width: 32%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>R3</td>
+                                <td>Riesgo laboral en cadena suministro</td>
+                                <td><span class="tag risk">Riesgo</span></td>
+                                <td><span class="tag social">Social</span></td>
+                                <td>0.58</td>
+                                <td>0.50</td>
+                                <td>
+                                    <div class="materialidad-cell">
+                                        <div class="materialidad-value">0.29</div>
+                                        <div class="materialidad-bar">
+                                            <div class="materialidad-fill medium" style="width: 29%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>O3</td>
+                                <td>Oportunidad de desarrollo de productos sostenibles</td>
+                                <td><span class="tag opportunity">Oportunidad</span></td>
+                                <td><span class="tag environmental">Ambiental</span></td>
+                                <td>0.42</td>
+                                <td>0.25</td>
+                                <td>
+                                    <div class="materialidad-cell">
+                                        <div class="materialidad-value">0.11</div>
+                                        <div class="materialidad-bar">
+                                            <div class="materialidad-fill low" style="width: 11%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>R4</td>
+                                <td>Riesgo de conflicto comunitario</td>
+                                <td><span class="tag risk">Riesgo</span></td>
+                                <td><span class="tag social">Social</span></td>
+                                <td>0.50</td>
+                                <td>0.25</td>
+                                <td>
+                                    <div class="materialidad-cell">
+                                        <div class="materialidad-value">0.13</div>
+                                        <div class="materialidad-bar">
+                                            <div class="materialidad-fill low" style="width: 13%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+            <div>Versión 1.2.4</div>
+        </div>
+    </div>
+</body>
+</html>

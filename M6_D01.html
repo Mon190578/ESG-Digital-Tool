@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - M6_D01 Informe de Validación ESG</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .top-bar {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            height: 30px;
+        }
+        
+        .search-text {
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .company-selector {
+            display: flex;
+            align-items: center;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 0 10px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
+        /* Main content */
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        /* Module Colors */
+        .menu-item.module1 {
+            color: #3b78c3; /* Azul para Módulo 1 */
+        }
+        
+        .menu-item.module2 {
+            color: #d16565; /* Rojo para Módulo 2 */
+        }
+        
+        .menu-item.module3 {
+            color: #F5CB57; /* Amarillo para Módulo 3 */
+        }
+        
+        .menu-item.module4 {
+            color: #1a9967; /* Verde para Módulo 4 */
+        }
+        
+        .menu-item.module5 {
+            color: #8E44AD; /* Púrpura para Módulo 5 */
+        }
+        
+        .menu-item.module6 {
+            color: #9C27B0; /* Morado para Módulo 6 */
+        }
+        
+        .menu-item.active {
+            background-color: #9C27B0;
+            color: #fff !important;
+        }
+        
+        .submenu-item {
+            padding: 10px 35px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .submenu-item.active {
+            background-color: #f5e9f7;
+            font-weight: 600;
+            color: #9C27B0;
+        }
+        
+        .activity-panel {
+            background: #f0f0f0;
+            padding: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .activity-item {
+            margin-bottom: 5px;
+            font-size: 9px;
+        }
+        
+        /* Main panel */
+        .main-panel {
+            flex-grow: 1;
+            padding: 10px 20px;
+        }
+        
+        .content-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-header {
+            background-color: rgba(156, 39, 176, 0.1);
+            padding: 15px 20px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            align-items: center;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin: 0 -20px 20px -20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            flex: 1;
+        }
+        
+        .tab.active {
+            background-color: rgba(156, 39, 176, 0.1);
+            font-weight: 600;
+            color: #9C27B0;
+        }
+        
+        /* Phase indicator */
+        .phase-indicator {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #9C27B0;
+            font-weight: 600;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+        
+        /* Info panel */
+        .info-panel {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-desc {
+            color: #555;
+        }
+        
+        .info-help {
+            font-size: 9px;
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        /* Dashboard styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard-full {
+            grid-column: 1 / span 2;
+        }
+        
+        .dashboard-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .card-action {
+            font-size: 9px;
+            color: #9C27B0;
+            cursor: pointer;
+        }
+        
+        /* Progress indicators */
+        .progress-circle-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .progress-circle {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .circle-background {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+        }
+        
+        .circle-progress {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            clip: rect(0, 90px, 90px, 45px);
+        }
+        
+        .circle-progress-left {
+            transform: rotate(0deg);
+        }
+        
+        .circle-progress-right {
+            transform: rotate(180deg);
+        }
+        
+        .circle-inner {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: white;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .circle-label {
+            margin-top: 110px;
+            font-size: 10px;
+            text-align: center;
+            color: #666;
+        }
+        
+        /* Compliance table */
+        .compliance-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .compliance-table th, 
+        .compliance-table td {
+            border: 1px solid #e0e0e0;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        
+        .compliance-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .compliance-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-ok {
+            background-color: #1a9967;
+        }
+        
+        .status-warning {
+            background-color: #f5a623;
+        }
+        
+        .status-error {
+            background-color: #d16565;
+        }
+        
+        /* Progress bars */
+        .progress-container {
+            margin-bottom: 15px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            margin-bottom: 3px;
+        }
+        
+        .progress-title {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .progress-value {
+            color: #666;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #9C27B0;
+        }
+        
+        .progress-fill.success {
+            background-color: #1a9967;
+        }
+        
+        .progress-fill.warning {
+            background-color: #f5a623;
+        }
+        
+        .progress-fill.error {
+            background-color: #d16565;
+        }
+        
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 200px;
+            margin-top: 15px;
+        }
+        
+        .radar-chart {
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><polygon points="100,10 10,75 40,180 160,180 190,75" fill="none" stroke="%239C27B0" stroke-width="2" opacity="0.7"/><polygon points="100,40 40,90 60,150 140,150 160,90" fill="%239C27B0" fill-opacity="0.2" stroke="%239C27B0" stroke-width="2"/><circle cx="100" cy="100" r="80" fill="none" stroke="%23ccc" stroke-width="1" stroke-dasharray="2,2"/><circle cx="100" cy="100" r="60" fill="none" stroke="%23ccc" stroke-width="1" stroke-dasharray="2,2"/><circle cx="100" cy="100" r="40" fill="none" stroke="%23ccc" stroke-width="1" stroke-dasharray="2,2"/><circle cx="100" cy="100" r="20" fill="none" stroke="%23ccc" stroke-width="1" stroke-dasharray="2,2"/><line x1="100" y1="20" x2="100" y2="180" stroke="%23ccc" stroke-width="1" stroke-dasharray="2,2"/><line x1="20" y1="100" x2="180" y2="100" stroke="%23ccc" stroke-width="1" stroke-dasharray="2,2"/><line x1="29" y1="29" x2="171" y2="171" stroke="%23ccc" stroke-width="1" stroke-dasharray="2,2"/><line x1="29" y1="171" x2="171" y2="29" stroke="%23ccc" stroke-width="1" stroke-dasharray="2,2"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .bar-chart {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding-bottom: 30px;
+        }
+        
+        .bar {
+            width: 30px;
+            background-color: #9C27B0;
+            position: relative;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 9px;
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 9px;
+        }
+        
+        /* History table */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+        
+        .history-table th, 
+        .history-table td {
+            border: 1px solid #e0e0e0;
+            padding: 6px 8px;
+            text-align: left;
+        }
+        
+        .history-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .history-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .nav-button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-button.previous {
+            background-color: #F5CB57;
+            color: #333;
+        }
+        
+        .nav-button.report {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        .nav-button.next {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        /* Footer */
+        .footer {
+            height: 30px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 9px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <!-- Círculo exterior -->
+                        <circle cx="22" cy="22" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                        
+                        <!-- Puntas de la brújula -->
+                        <path d="M22,0 L25,5 L22,7 L19,5 Z" fill="#666666"/>
+                        <path d="M44,22 L39,25 L37,22 L39,19 Z" fill="#666666"/>
+                        <path d="M22,44 L19,39 L22,37 L25,39 Z" fill="#666666"/>
+                        <path d="M0,22 L5,19 L7,22 L5,25 Z" fill="#666666"/>
+                        
+                        <!-- Aguja -->
+                        <path d="M22,5 L27,22 L22,39 L17,22 Z" fill="#9C27B0" transform="rotate(-45 22 22)"/>
+                        
+                        <!-- Punto central -->
+                        <circle cx="22" cy="22" r="3" fill="#d16565"/>
+                    </svg>
+                </div>
+                <div class="logo-text">ESG Digital Tool</div>
+            </div>
+            
+            <div class="search-bar">
+                <div class="search-text">Buscar en la plataforma...</div>
+                <div class="search-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16">
+                        <circle cx="7" cy="7" r="7" fill="#2196f3" stroke="#2196f3" stroke-width="1"/>
+                        <line x1="11" y1="11" x2="16" y2="16" stroke="#2196f3" stroke-width="2"/>
+                        <circle cx="7" cy="7" r="4" fill="white"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="user-controls">
+                <div class="icon-button" style="background-color: #9C27B0;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                        <circle cx="4" cy="7" r="2" />
+                        <circle cx="7" cy="7" r="2" />
+                        <circle cx="10" cy="7" r="2" />
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#888888">
+                        <rect x="3" y="3" width="8" height="8" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="6" x2="9" y2="6" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="5" y1="8" x2="9" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5;">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="#666666">
+                        <circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="7" y2="4" stroke="currentColor" stroke-width="1.5"/>
+                        <line x1="7" y1="7" x2="9" y2="9" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <div class="icon-button" style="background-color: #f5f5f5; position: relative;">
+                    <svg width="14" height="14" viewBox="0 0 14 14">
+                        <path d="M3,11 C3,11 2,7 2,3 C2,-1 5,-3 7,-3 C9,-3 12,-1 12,3 C12,7 11,11 11,11 Z" fill="#FFCA28" stroke="#FFCA28" stroke-width="1" transform="translate(0, 3)"/>
+                        <circle cx="7" cy="12" r="2" fill="#FFCA28"/>
+                    </svg>
+                    <div style="position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background-color: #d16565; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold;">3</div>
+                </div>
+                
+                <div class="icon-button" style="background-color: #E91E63; color: white; font-weight: bold;">?</div>
+                
+                <div style="display: flex; align-items: center;">
+                    <div class="icon-button" style="background-color: #673AB7; color: white;">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="white">
+                            <circle cx="7" cy="5" r="3"/>
+                            <path d="M2,14 C2,9 12,9 12,14" fill="white" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span style="margin-left: 8px; font-size: 12px;">Usuario X</span>
+                </div>
+                
+                <div class="company-selector">
+                    <span style="font-size: 12px;">Empresa S.A.</span>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="#666" style="margin-left: 8px;">
+                        <polygon points="5,8 0,3 10,3" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="menu-item module1">1. Datos Base</div>
+                <div class="menu-item module2">2. Datos GGII</div>
+                <div class="menu-item module3">3. Integración Externa</div>
+                <div class="menu-item module4">4. Análisis DM</div>
+                <div class="menu-item module5">5. Datapoints</div>
+                <div class="menu-item module6 active">6. Reporting</div>
+                <div class="submenu-item">► Revisión del Informe</div>
+                <div class="submenu-item active">► Validación de Coherencia</div>
+                <div class="submenu-item">► Generación Final</div>
+                <div class="submenu-item">► Exportación</div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <div class="activity-panel">
+                    <div class="activity-title">ACTIVIDAD RECIENTE</div>
+                    <div class="activity-item">M6_I01 completado - Hace 10m</div>
+                    <div class="activity-item">M6_D01 en visualización - Hace 2m</div>
+                    <div class="activity-item">Errores corregidos: 1/3 - Hace 12m</div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-panel">
+                <div class="content-box">
+                    <div class="module-header">
+                        <div class="module-title">Módulo 6: Reporting</div>
+                    </div>
+                    
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tab">RESUMEN EJECUTIVO</div>
+                        <div class="tab active">ESTADO DE VALIDACIÓN</div>
+                        <div class="tab">COMPARATIVA HISTÓRICA</div>
+                        <div class="tab">RECOMENDACIONES</div>
+                    </div>
+                    
+                    <!-- Phase Indicator -->
+                    <div class="phase-indicator">
+                        Dashboard de Validación ESG - Análisis de Cumplimiento Normativo CSRD
+                        <span class="premium-badge">PREMIUM</span>
+                    </div>
+                    
+                    <!-- Info Panel -->
+                    <div class="info-panel">
+                        <div class="info-title">M6_D01: Informe de Validación ESG</div>
+                        <div class="info-desc">Este dashboard proporciona una visión completa del estado de cumplimiento del informe CSRD. Permite visualizar el progreso por sección ESRS, identificar áreas críticas y comparar con informes anteriores.</div>
+                        <div class="info-help">Utilice los filtros y opciones interactivas para analizar en detalle cada sección del informe. Las alertas se clasifican por nivel de criticidad para facilitar la priorización de correcciones.</div>
+                    </div>
+                    
+                    <!-- Dashboard Content -->
+                    <div class="dashboard-grid">
+                        <!-- Overall Compliance -->
+                        <div class="dashboard-card dashboard-full">
+                            <div class="card-header">
+                                <div class="card-title">Estado General de Cumplimiento CSRD</div>
+                                <div class="card-actions">
+                                    <div class="card-action">Exportar</div>
+                                    <div class="card-action">Detalles</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-circle-container">
+                                <div class="progress-circle">
+                                    <div class="circle-background"></div>
+                                    <div class="circle-progress circle-progress-left" style="background-color: #1a9967; transform: rotate(162deg);"></div>
+                                    <div class="circle-progress circle-progress-right" style="background-color: #1a9967; transform: rotate(180deg);"></div>
+                                    <div class="circle-inner">90%</div>
+                                    <div class="circle-label">Cumplimiento General</div>
+                                </div>
+                                
+                                <div class="progress-circle">
+                                    <div class="circle-background"></div>
+                                    <div class="circle-progress circle-progress-left" style="background-color: #1a9967; transform: rotate(180deg);"></div>
+                                    <div class="circle-progress circle-progress-right" style="background-color: #1a9967; transform: rotate(60deg);"></div>
+                                    <div class="circle-inner">100%</div>
+                                    <div class="circle-label">Estructura Normativa</div>
+                                </div>
+                                
+                                <div class="progress-circle">
+                                    <div class="circle-background"></div>
+                                    <div class="circle-progress circle-progress-left" style="background-color: #f5a623; transform: rotate(144deg);"></div>
+                                    <div class="circle-progress circle-progress-right" style="background-color: #f5a623; transform: rotate(0deg);"></div>
+                                    <div class="circle-inner">80%</div>
+                                    <div class="circle-label">Coherencia de Datos</div>
+                                </div>
+                                
+                                <div class="progress-circle">
+                                    <div class="circle-background"></div>
+                                    <div class="circle-progress circle-progress-left" style="background-color: #d16565; transform: rotate(126deg);"></div>
+                                    <div class="circle-progress circle-progress-right" style="background-color: #d16565; transform: rotate(0deg);"></div>
+                                    <div class="circle-inner">70%</div>
+                                    <div class="circle-label">Validación Técnica</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- ESRS Compliance -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Estado por Estándar ESRS</div>
+                                <div class="card-actions">
+                                    <div class="card-action">Filtrar</div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span class="progress-title">ESRS 1: Información General</span>
+                                    <span class="progress-value">100%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill success" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span class="progress-title">ESRS 2: Estrategia</span>
+                                    <span class="progress-value">95%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill success" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span class="progress-title">ESRS E1: Cambio Climático</span>
+                                    <span class="progress-value">70%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill error" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span class="progress-title">ESRS E2: Contaminación</span>
+                                    <span class="progress-value">90%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill success" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span class="progress-title">ESRS S1: Personal Propio</span>
+                                    <span class="progress-value">85%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill warning" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span class="progress-title">ESRS G1: Conducta Empresarial</span>
+                                    <span class="progress-value">95%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill success" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Validation Issues -->
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <div class="card-title">Incidencias de Validación</div>
+                                <div class="card-actions">
+                                    <div class="card-action">Exportar Lista</div>
+                                </div>
+                            </div>
+                            
+                            <table class="compliance-table">
+                                <thead>
+                                    <tr>
+                                        <th>Severidad</th>
+                                        <th>Estándar</th>
+                                        <th>Descripción</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="status-indicator status-error"></span> Alta</td>
+                                        <td>ESRS E1</td>
+                                        <td>Falta metodología de cálculo de GEI</td>
+                                        <td>Pendiente</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="status-indicator status-warning"></span> Media</td>
+                                        <td>ESRS E1</td>
+                                        <td>Inconsistencia datos emisiones</td>
+                                        <td>Corregido</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="status-indicator status-warning"></span> Media</td>
+                                        <td>ESRS S1</td>
+                                        <td>Falta detalle brecha salarial</td>
+                                        <td>En proceso</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="status-indicator status-ok"></span> Baja</td>
+                                        <td>ESRS 2</td>
+                                        <td>Ampliar descripción estrategia</td>
+                                        <td>Resuelto</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="status-indicator status-ok"></span> Baja</td>
+                                        <td>ESRS G1</td>
+                                        <td>Formatos de tabla inconsistentes</td>
+                                        <td>Resuelto</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Historical Comparison -->
+                        <div class="dashboard-card dashboard-full">
+                            <div class="card-header">
+                                <div class="card-title">Comparativa con Informes Anteriores</div>
+                                <div class="card-actions">
+                                    <div class="card-action">Ver tendencia</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bar-chart">
+                                <div class="bar" style="height: 60%; background-color: #d16565;">
+                                    <div class="bar-value">60%</div>
+                                    <div class="bar-label">2023</div>
+                                </div>
+                                <div class="bar" style="height: 75%; background-color: #f5a623;">
+                                    <div class="bar-value">75%</div>
+                                    <div class="bar-label">2024</div>
+                                </div>
+                                <div class="bar" style="height: 90%;">
+                                    <div class="bar-value">90%</div>
+                                    <div class="bar-label">2025</div>
+                                </div>
+                                <div class="bar" style="height: 40%; background-color: #ccc; opacity: 0.5;">
+                                    <div class="bar-value">100%</div>
+                                    <div class="bar-label">Objetivo</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Quality Metrics -->
+                        <div class="dashboard-card dashboard-full">
+                            <div class="card-header">
+                                <div class="card-title">Métricas de Calidad del Informe</div>
+                                <div class="card-actions">
+                                    <div class="card-action">Ver detalles</div>
+                                </div>
+                            </div>
+                            
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Métrica</th>
+                                        <th>Valor Actual</th>
+                                        <th>Valor Anterior</th>
+                                        <th>Sector (Media)</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Cobertura normativa</td>
+                                        <td>100%</td>
+                                        <td>95%</td>
+                                        <td>92%</td>
+                                        <td><span class="status-indicator status-ok"></span> Excelente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Coherencia de datos</td>
+                                        <td>94%</td>
+                                        <td>88%</td>
+                                        <td>90%</td>
+                                        <td><span class="status-indicator status-ok"></span> Bueno</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Trazabilidad documental</td>
+                                        <td>92%</td>
+                                        <td>85%</td>
+                                        <td>80%</td>
+                                        <td><span class="status-indicator status-ok"></span> Excelente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Explicación contextual</td>
+                                        <td>85%</td>
+                                        <td>70%</td>
+                                        <td>75%</td>
+                                        <td><span class="status-indicator status-ok"></span> Bueno</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Conformidad con materialidad</td>
+                                        <td>100%</td>
+                                        <td>100%</td>
+                                        <td>95%</td>
+                                        <td><span class="status-indicator status-ok"></span> Excelente</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Nav Buttons -->
+                    <div class="nav-buttons">
+                        <div class="nav-button previous">Volver a Revisión</div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="nav-button report">Generar Informe de Validación</div>
+                            <div class="nav-button next">Continuar a Generación Final</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>© 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto</div>
+            <div>Versión 1.2.4</div>
+        </div>
+    </div>
+</body>
+</html>

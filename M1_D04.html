@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - Dashboard M1_D04</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7f9;
+            color: #333333;
+        }
+        
+        .header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 5px;
+            outline: none;
+            font-size: 12px;
+            color: #999999;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        .sidebar {
+            width: 200px;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            height: calc(100vh - 70px);
+            float: left;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .menu-item.active {
+            background-color: #3b78c3;
+            color: #ffffff;
+        }
+        
+        .sub-menu-item {
+            padding: 10px 35px;
+            font-size: 11px;
+            color: #666666;
+            cursor: pointer;
+        }
+        
+        .sub-menu-item.active {
+            background-color: #ebf2fa;
+            color: #3b78c3;
+            font-weight: 600;
+        }
+        
+        .main-content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+        
+        .content-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333333;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid #3b78c3;
+            color: #3b78c3;
+            font-weight: 600;
+        }
+        
+        .phase-indicator {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            color: #3b78c3;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333333;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        
+        .value-chain-map {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .map-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .chain-node {
+            background-color: #f5f8ff;
+            border: 1px solid #d0e3ff;
+            border-radius: 5px;
+            padding: 15px;
+            width: 30%;
+            position: relative;
+        }
+        
+        .chain-node.upstream {
+            border-left: 4px solid #4caf50;
+        }
+        
+        .chain-node.operations {
+            border-left: 4px solid #2196f3;
+        }
+        
+        .chain-node.downstream {
+            border-left: 4px solid #ff9800;
+        }
+        
+        .node-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #3b78c3;
+        }
+        
+        .actor-list {
+            margin-top: 15px;
+        }
+        
+        .actor-item {
+            margin-bottom: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .actor-badge {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: inline-block;
+        }
+        
+        .actor-badge.contractual {
+            background-color: #4caf50;
+        }
+        
+        .actor-badge.non-contractual {
+            background-color: #ff9800;
+        }
+        
+        .process-tag {
+            background-color: #e6f7ff;
+            color: #0288d1;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+        
+        .impact-indicators {
+            margin-top: 20px;
+        }
+        
+        .impact-row {
+            display: flex;
+            margin-bottom: 10px;
+            font-size: 13px;
+            align-items: center;
+        }
+        
+        .impact-label {
+            width: 180px;
+            color: #666666;
+        }
+        
+        .impact-bar-container {
+            flex-grow: 1;
+            background-color: #f0f0f0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 0 10px;
+        }
+        
+        .impact-bar {
+            height: 100%;
+            border-radius: 4px;
+        }
+        
+        .impact-bar.high {
+            background-color: #f44336;
+            width: 80%;
+        }
+        
+        .impact-bar.medium {
+            background-color: #ff9800;
+            width: 50%;
+        }
+        
+        .impact-bar.low {
+            background-color: #4caf50;
+            width: 25%;
+        }
+        
+        .impact-value {
+            width: 50px;
+            text-align: right;
+            font-weight: 600;
+        }
+        
+        .alert-box {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #f57c00;
+        }
+        
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background-color: #f5f5f5;
+            text-align: left;
+            padding: 10px;
+            font-size: 13px;
+            color: #666666;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 13px;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .status-validated {
+            background-color: #4caf50;
+        }
+        
+        .status-pending {
+            background-color: #ff9800;
+        }
+        
+        .status-missing {
+            background-color: #f44336;
+        }
+        
+        .footer {
+            background-color: #f5f5f5;
+            padding: 10px 20px;
+            font-size: 9px;
+            color: #666666;
+            text-align: center;
+            margin-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            clear: both;
+        }
+        
+        .connector-line {
+            height: 2px;
+            background-color: #d0e3ff;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .connector-line::before,
+        .connector-line::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #3b78c3;
+            position: absolute;
+            top: -4px;
+        }
+        
+        .connector-line::before {
+            left: 0;
+        }
+        
+        .connector-line::after {
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(90 25 25)"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(180 25 25)"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(270 25 25)"/>
+                    <path d="M25,8 L30,25 L25,42 L20,25 Z" fill="#3b78c3" transform="rotate(-45 25 25)"/>
+                    <circle cx="25" cy="25" r="3" fill="#d16565"/>
+                </svg>
+            </div>
+            <div class="logo-text">ESG Digital Tool</div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar en la plataforma...">
+            <div style="color: #2196f3; font-size: 14px;">⚲</div>
+        </div>
+        
+        <div class="user-controls">
+            <div class="icon-button" style="background-color: #129953; color: white;">?</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⚙</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⏱</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">🔔</div>
+            <div class="icon-button" style="background-color: #E91E63; color: white;">?</div>
+            <div style="margin-left: 15px; display: flex; align-items: center;">
+                <div class="icon-button" style="background-color: #673AB7; color: white;">U</div>
+                <span style="margin-left: 5px;">Usuario X</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sidebar">
+        <div class="menu-item active">1. Datos Base</div>
+        <div class="sub-menu-item">► Requisitos Aplicables</div>
+        <div class="sub-menu-item active">► Cadena de Valor</div>
+        <div class="menu-item">2. Datos GGII</div>
+        <div class="menu-item">3. Integración Externa</div>
+        <div class="menu-item">4. Análisis DM</div>
+        <div class="menu-item">5. Datapoints</div>
+        <div class="menu-item">6. Reporting</div>
+    </div>
+    
+    <div class="main-content">
+        <div class="content-card">
+            <div class="section-title">Módulo 1: Datos Base - Dashboard M1_D04</div>
+            
+            <div class="tabs">
+                <div class="tab">REQUISITOS APLICABLES</div>
+                <div class="tab active">CADENA DE VALOR</div>
+            </div>
+            
+            <div class="phase-indicator">
+                Fase 3: Validación y Ajustes Finales de la Cadena de Valor
+                <span class="premium-badge">PREMIUM</span>
+            </div>
+            
+            <div class="alert-box">
+                <div class="alert-title">Validación Completa de la Cadena de Valor</div>
+                <p>Se ha completado el proceso de validación de la cadena de valor. Este mapa definitivo será utilizado en los módulos de Grupos de Interés y Doble Materialidad.</p>
+            </div>
+            
+            <div class="value-chain-map">
+                <h3>Mapa Definitivo de la Cadena de Valor</h3>
+                <div class="map-section">
+                    <div class="chain-node upstream">
+                        <div class="node-title">Aguas Arriba</div>
+                        <div class="process-tag">Abastecimiento</div>
+                        <div class="process-tag">Logística entrada</div>
+                        <div class="actor-list">
+                            <div class="actor-item">
+                                <span class="actor-badge contractual"></span>
+                                Proveedor de materias primas (España)
+                            </div>
+                            <div class="actor-item">
+                                <span class="actor-badge contractual"></span>
+                                Transportista principal (Francia)
+                            </div>
+                            <div class="actor-item">
+                                <span class="actor-badge non-contractual"></span>
+                                Proveedores secundarios (Global)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chain-node operations">
+                        <div class="node-title">Actividad Propia</div>
+                        <div class="process-tag">Producción</div>
+                        <div class="process-tag">Control calidad</div>
+                        <div class="actor-list">
+                            <div class="actor-item">
+                                <span class="actor-badge contractual"></span>
+                                Fábrica principal (Madrid)
+                            </div>
+                            <div class="actor-item">
+                                <span class="actor-badge contractual"></span>
+                                Centros administrativos
+                            </div>
+                            <div class="actor-item">
+                                <span class="actor-badge contractual"></span>
+                                Laboratorio control calidad
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chain-node downstream">
+                        <div class="node-title">Aguas Abajo</div>
+                        <div class="process-tag">Distribución</div>
+                        <div class="process-tag">Postventa</div>
+                        <div class="process-tag">Reciclaje</div>
+                        <div class="actor-list">
+                            <div class="actor-item">
+                                <span class="actor-badge contractual"></span>
+                                Distribuidores (Europa)
+                            </div>
+                            <div class="actor-item">
+                                <span class="actor-badge non-contractual"></span>
+                                Clientes finales
+                            </div>
+                            <div class="actor-item">
+                                <span class="actor-badge non-contractual"></span>
+                                Gestores de residuos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="connector-line"></div>
+                
+                <div class="impact-indicators">
+                    <h3>Evaluación de Impacto ESG por Proceso</h3>
+                    <div class="impact-row">
+                        <div class="impact-label">Producción (Act. Propia)</div>
+                        <div class="impact-bar-container">
+                            <div class="impact-bar high"></div>
+                        </div>
+                        <div class="impact-value">Alto</div>
+                    </div>
+                    <div class="impact-row">
+                        <div class="impact-label">Transporte (Aguas Arriba)</div>
+                        <div class="impact-bar-container">
+                            <div class="impact-bar medium"></div>
+                        </div>
+                        <div class="impact-value">Medio</div>
+                    </div>
+                    <div class="impact-row">
+                        <div class="impact-label">Reciclaje (Aguas Abajo)</div>
+                        <div class="impact-bar-container">
+                            <div class="impact-bar low"></div>
+                        </div>
+                        <div class="impact-value">Bajo</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <h3>Tabla de Validación de la Cadena de Valor</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Proceso</th>
+                            <th>Fase de la CV</th>
+                            <th>¿Validado?</th>
+                            <th>Motivo de Exclusión (si aplica)</th>
+                            <th>Notas finales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Producción</td>
+                            <td>Actividad Propia</td>
+                            <td><span class="status-indicator status-validated"></span> Sí</td>
+                            <td>-</td>
+                            <td>Listo para M4</td>
+                        </tr>
+                        <tr>
+                            <td>Transporte de Materias Primas</td>
+                            <td>Aguas Arriba</td>
+                            <td><span class="status-indicator status-pending"></span> No</td>
+                            <td>Datos insuficientes</td>
+                            <td>Necesita revisión</td>
+                        </tr>
+                        <tr>
+                            <td>Reciclaje</td>
+                            <td>Aguas Abajo</td>
+                            <td><span class="status-indicator status-validated"></span> Sí</td>
+                            <td>-</td>
+                            <td>Se integrará en M2</td>
+                        </tr>
+                        <tr>
+                            <td>Control de Calidad</td>
+                            <td>Actividad Propia</td>
+                            <td><span class="status-indicator status-validated"></span> Sí</td>
+                            <td>-</td>
+                            <td>Impacto ambiental bajo</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing</td>
+                            <td>Aguas Abajo</td>
+                            <td><span class="status-indicator status-missing"></span> No</td>
+                            <td>Baja relevancia ESG</td>
+                            <td>Excluido del análisis</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="alert-box" style="background-color: #f0f7ff; border-left: 4px solid #3b78c3;">
+                <div class="alert-title" style="color: #3b78c3;">Recomendaciones del Sistema</div>
+                <p>Basado en análisis sectorial, se recomienda incluir análisis detallado de la gestión de residuos en procesos de producción. Esta práctica es considerada material según datos importados de Clarity AI.</p>
+                <p>Completar la información pendiente sobre transporte de materias primas antes de continuar con el análisis de doble materialidad.</p>
+            </div>
+            
+            <div style="text-align: right; margin-top: 20px;">
+                <button style="background-color: #F5CB57; border: none; padding: 8px 15px; border-radius: 4px; margin-right: 10px; cursor: pointer;">Anterior</button>
+                <button style="background-color: #129953; border: none; padding: 8px 15px; border-radius: 4px; color: white; margin-right: 10px; cursor: pointer;">Guardar</button>
+                <button style="background-color: #3b78c3; border: none; padding: 8px 15px; border-radius: 4px; color: white; cursor: pointer;">Siguiente (Módulo 2)</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        © 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto | Versión 1.2.4
+    </div>
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Digital Tool - Dashboard M2_D01</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333333;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Header styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .search-bar {
+            background-color: #f5f5f5;
+            border: 1px solid #dddddd;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 300px;
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            padding: 5px;
+            outline: none;
+            font-size: 12px;
+            color: #999999;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .icon-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        
+        /* Sidebar styles */
+        .sidebar {
+            width: 220px;
+            background-color: #ffffff;
+            border-right: 1px solid #e0e0e0;
+            padding-top: 70px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+        
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .menu-item.active {
+            background-color: #d32f2f;
+            color: #ffffff;
+        }
+        
+        .sub-menu-item {
+            padding: 12px 35px;
+            font-size: 13px;
+            color: #666666;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .sub-menu-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .sub-menu-item.active {
+            background-color: #ffebee;
+            color: #d32f2f;
+            font-weight: 600;
+            border-left: 3px solid #d32f2f;
+        }
+        
+        /* Main content styles */
+        .main-content {
+            margin-left: 220px;
+            padding: 90px 30px 30px;
+            width: calc(100% - 220px);
+        }
+        
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .tabs-container {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        
+        .tabs {
+            display: flex;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .tab:hover {
+            color: #d32f2f;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #d32f2f;
+            color: #d32f2f;
+            font-weight: 600;
+        }
+        
+        .phase-indicator {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            color: #d32f2f;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .premium-badge {
+            background-color: #FFC107;
+            color: #333333;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        /* Bubble chart styles */
+        .chart-controls {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        
+        .filter-button {
+            padding: 8px 15px;
+            font-size: 13px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background-color: #f8f8f8;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-button:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .filter-button.active {
+            background-color: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+        }
+        
+        .bubble-chart-container {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            height: 450px;
+            position: relative;
+            background-color: #fdfdfd;
+        }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            padding: 5px;
+        }
+        
+        .bubble:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .axis {
+            position: absolute;
+            background-color: #ddd;
+        }
+        
+        .x-axis {
+            width: 90%;
+            height: 1px;
+            bottom: 50%;
+            left: 5%;
+        }
+        
+        .y-axis {
+            width: 1px;
+            height: 90%;
+            left: 50%;
+            top: 5%;
+        }
+        
+        .axis-label {
+            position: absolute;
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .chart-legend {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        
+        /* Department colors */
+        .direccion { background-color: #e53935; }
+        .comite-esg { background-color: #d81b60; }
+        .rrhh { background-color: #8e24aa; }
+        .finanzas { background-color: #5e35b1; }
+        .produccion { background-color: #3949ab; }
+        .marketing { background-color: #1e88e5; }
+        .it { background-color: #039be5; }
+        
+        /* Matrix styles */
+        .alignment-matrix {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .matrix-table th {
+            background-color: #f5f5f5;
+            padding: 12px;
+            font-weight: 600;
+            text-align: left;
+            font-size: 13px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .matrix-table td {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 13px;
+            text-align: center;
+        }
+        
+        .matrix-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        
+        .matrix-table td.high {
+            background-color: #ef5350;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .matrix-table td.medium {
+            background-color: #ffb74d;
+        }
+        
+        .matrix-table td.low {
+            background-color: #81c784;
+        }
+        
+        /* Alert styles */
+        .alert-box {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f57c00;
+            font-size: 15px;
+        }
+        
+        .alert-content {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        /* Insights styles */
+        .insights-section {
+            margin-top: 30px;
+        }
+        
+        .insight-card {
+            background-color: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .insight-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .insight-title {
+            color: #d32f2f;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .insight-content {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-previous {
+            background-color: #FFC107;
+            color: #333;
+        }
+        
+        .btn-save {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn-next {
+            background-color: #d32f2f;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* Footer styles */
+        .footer {
+            background-color: #f5f5f5;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="22" fill="#e9efe2" stroke="#9a8f8f" stroke-width="2"/>
+                    <path d="M25,8 L30,25 L25,42 L20,25 Z" fill="#d32f2f" transform="rotate(-45 25 25)"/>
+                    <circle cx="25" cy="25" r="3" fill="#d16565"/>
+                </svg>
+            </div>
+            <div class="logo-text">ESG Digital Tool</div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar en la plataforma...">
+            <div style="color: #2196f3; font-size: 14px;">⚲</div>
+        </div>
+        
+        <div class="user-controls">
+            <div class="icon-button" style="background-color: #129953; color: white;">?</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⚙</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">⏱</div>
+            <div class="icon-button" style="background-color: #f5f5f5; color: #666;">🔔</div>
+            <div class="icon-button" style="background-color: #E91E63; color: white;">?</div>
+            <div style="margin-left: 15px; display: flex; align-items: center;">
+                <div class="icon-button" style="background-color: #673AB7; color: white;">U</div>
+                <span style="margin-left: 5px;">Usuario X</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="menu-item">1. Datos Base</div>
+            <div class="menu-item active">2. Datos GGII</div>
+            <div class="sub-menu-item active">► GGII Internos</div>
+            <div class="sub-menu-item">► GGII Externos</div>
+            <div class="sub-menu-item">► Matriz de Influencia</div>
+            <div class="menu-item">3. Integración Externa</div>
+            <div class="menu-item">4. Análisis DM</div>
+            <div class="menu-item">5. Datapoints</div>
+            <div class="menu-item">6. Reporting</div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-card">
+                <div class="section-title">
+                    <span>Módulo 2: Datos GGII - Dashboard M2_D01</span>
+                </div>
+                
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <div class="tab active">MAPA DE GRUPOS DE INTERÉS INTERNOS</div>
+                        <div class="tab">MAPA DE GRUPOS DE INTERÉS EXTERNOS</div>
+                        <div class="tab">MATRIZ DE INFLUENCIA</div>
+                    </div>
+                </div>
+                
+                <div class="phase-indicator">
+                    <span>Análisis y Visualización de Grupos de Interés Internos</span>
+                    <span class="premium-badge">PREMIUM</span>
+                </div>
+                
+                <div class="chart-controls">
+                    <div class="filter-button active">Todos los departamentos</div>
+                    <div class="filter-button">Alta dirección</div>
+                    <div class="filter-button">Mandos intermedios</div>
+                    <div class="filter-button">Operaciones</div>
+                </div>
+                
+                <div class="bubble-chart-container">
+                    <h3 class="chart-title">Mapa de Grupos de Interés Internos: Influencia vs. Conocimiento ESG</h3>
+                    
+                    <div class="axis x-axis"></div>
+                    <div class="axis y-axis"></div>
+                    
+                    <!-- Etiquetas de ejes -->
+                    <div class="axis-label" style="bottom: 10px; left: 50%; transform: translateX(-50%);">Conocimiento de temas ESG</div>
+                    <div class="axis-label" style="left: 10px; top: 50%; transform: translateY(-50%) rotate(-90deg);">Influencia en decisiones ESG</div>
+                    <div class="axis-label" style="right: 10px; top: 10px;">Alta</div>
+                    <div class="axis-label" style="right: 10px; bottom: 10px;">Baja</div>
+                    <div class="axis-label" style="left: 10px; top: 10px;">Alta</div>
+                    <div class="axis-label" style="left: 10px; bottom: 10px;">Baja</div>
+                    
+                    <!-- Burbujas representando a los grupos internos -->
+                    <div class="bubble direccion" style="width: 110px; height: 110px; left: 75%; top: 25%;">
+                        Dirección General
+                    </div>
+                    <div class="bubble comite-esg" style="width: 85px; height: 85px; left: 70%; top: 30%;">
+                        Comité ESG
+                    </div>
+                    <div class="bubble rrhh" style="width: 75px; height: 75px; left: 60%; top: 45%;">
+                        RRHH
+                    </div>
+                    <div class="bubble finanzas" style="width: 70px; height: 70px; left: 55%; top: 35%;">
+                        Finanzas
+                    </div>
+                    <div class="bubble produccion" style="width: 100px; height: 100px; left: 35%; top: 40%;">
+                        Producción
+                    </div>
+                    <div class="bubble marketing" style="width: 55px; height: 55px; left: 45%; top: 65%;">
+                        Marketing
+                    </div>
+                    <div class="bubble it" style="width: 45px; height: 45px; left: 30%; top: 70%;">
+                        IT
+                    </div>
+                    
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color direccion"></div>
+                            <span>Dirección General</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color comite-esg"></div>
+                            <span>Comité ESG</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color rrhh"></div>
+                            <span>RRHH</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color finanzas"></div>
+                            <span>Finanzas</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color produccion"></div>
+                            <span>Producción</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color marketing"></div>
+                            <span>Marketing</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color it"></div>
+                            <span>IT</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alignment-matrix">
+                    <h3 class="chart-title">Matriz de Alineación ESG Interna</h3>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Este análisis muestra qué temas ESG son considerados prioritarios por cada grupo de interés interno.</p>
+                    
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th>Tema ESG / Grupo de Interés</th>
+                                <th>Dirección General</th>
+                                <th>Comité ESG</th>
+                                <th>RRHH</th>
+                                <th>Finanzas</th>
+                                <th>Producción</th>
+                                <th>Marketing</th>
+                                <th>IT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Cambio climático (E1)</strong></td>
+                                <td class="high">Alta</td>
+                                <td class="high">Alta</td>
+                                <td class="low">Baja</td>
+                                <td class="medium">Media</td>
+                                <td class="medium">Media</td>
+                                <td class="medium">Media</td>
+                                <td class="low">Baja</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Economía circular (E5)</strong></td>
+                                <td class="medium">Media</td>
+                                <td class="high">Alta</td>
+                                <td class="low">Baja</td>
+                                <td class="low">Baja</td>
+                                <td class="high">Alta</td>
+                                <td class="medium">Media</td>
+                                <td class="low">Baja</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Condiciones laborales (S1)</strong></td>
+                                <td class="medium">Media</td>
+                                <td class="medium">Media</td>
+                                <td class="high">Alta</td>
+                                <td class="low">Baja</td>
+                                <td class="high">Alta</td>
+                                <td class="low">Baja</td>
+                                <td class="medium">Media</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Diversidad e inclusión (S1)</strong></td>
+                                <td class="medium">Media</td>
+                                <td class="high">Alta</td>
+                                <td class="high">Alta</td>
+                                <td class="low">Baja</td>
+                                <td class="low">Baja</td>
+                                <td class="medium">Media</td>
+                                <td class="medium">Media</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Conducta empresarial (G1)</strong></td>
+                                <td class="high">Alta</td>
+                                <td class="high">Alta</td>
+                                <td class="medium">Media</td>
+                                <td class="high">Alta</td>
+                                <td class="low">Baja</td>
+                                <td class="medium">Media</td>
+                                <td class="low">Baja</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="alert-box">
+                    <div class="alert-title">Alertas de desalineación ESG</div>
+                    <div class="alert-content">
+                        <p>Se detectan desalineaciones significativas en la percepción de prioridades ESG entre los niveles directivos y operativos, especialmente en temas de economía circular y condiciones laborales.</p>
+                        <p style="margin-top: 10px;">Se recomienda revisar los canales de comunicación interna para mejorar la transmisión de la estrategia ESG a todos los niveles de la organización.</p>
+                    </div>
+                </div>
+                
+                <div class="insights-section">
+                    <h3 class="chart-title">Insights clave</h3>
+                    
+                    <div class="insight-card">
+                        <div class="insight-title">Diferentes percepciones sobre prioridades ESG</div>
+                        <div class="insight-content">
+                            <p>Mientras la dirección general prioriza temas de emisiones y gobierno corporativo, los equipos de producción se centran más en economía circular y condiciones laborales. Esta diferencia podría generar fricciones en la implementación de la estrategia ESG.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-title">Alta influencia con bajo conocimiento</div>
+                        <div class="insight-content">
+                            <p>El departamento de producción tiene una alta influencia en la huella ambiental de la empresa, pero un nivel medio-bajo de conocimiento en temas ESG. Se recomienda reforzar la formación en este colectivo.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-title">Oportunidad con el departamento de IT</div>
+                        <div class="insight-content">
+                            <p>A pesar de su bajo nivel de influencia actual, el departamento de IT puede ser clave para la digitalización de la medición de impactos ambientales. Se recomienda mayor integración en el comité ESG.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-previous">Anterior</button>
+                    <button class="btn btn-save">Guardar</button>
+                    <button class="btn btn-next">Siguiente (GGII Externos)</button>
+                </div>
+            </div>
+            
+            <footer class="footer">
+                © 2025 ESG Digital Tool | Términos de uso | Privacidad | Contacto | Versión 1.2.4
+            </footer>
+        </main>
+    </div>
+</body>
+</html> d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(90 25 25)"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(180 25 25)"/>
+                    <path d="M25,0 L28,5 L25,7 L22,5 Z" fill="#666666" transform="rotate(270 25 25)"/>
+                    <path 
